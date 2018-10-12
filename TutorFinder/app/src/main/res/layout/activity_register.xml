@@ -9,18 +9,54 @@
     tools:context=".RegisterActivity">
 
 
+    <TextView
+        android:layout_width="336dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="@string/sign_up"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:ignore="RtlCompat" />
+
+    <View
+        android:layout_width="336dp"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"/>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="64dp">
+        android:layout_marginTop="16dp">
+
+        <EditText
+            android:id="@+id/name_register"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/name"
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:backgroundTint="@android:color/black"
+            android:inputType="textEmailAddress"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp">
 
         <EditText
             android:id="@+id/email_register"
-            android:layout_width="256dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:hint="Email"
+            android:hint="@string/email"
             android:layout_gravity="center"
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"
@@ -36,9 +72,9 @@
 
         <EditText
             android:id="@+id/password_register"
-            android:layout_width="256dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/password"
             android:layout_gravity="center"
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"
@@ -54,9 +90,9 @@
 
         <EditText
             android:id="@+id/confirm_password_register"
-            android:layout_width="256dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:hint="Confirm Password"
+            android:hint="@string/confirm_password"
             android:layout_gravity="center"
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"
@@ -67,10 +103,15 @@
 
     <Button
         android:id="@+id/register_to_home_button"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
-        android:layout_marginTop="32dp"
-        android:text="Register"/>
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:background="@drawable/rounded_corner"
+        android:text="@string/sign_up"/>
 
 </LinearLayout>

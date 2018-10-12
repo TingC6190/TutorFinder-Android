@@ -1,5 +1,6 @@
 package com.example.tingc6190.tutorfinder;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,9 +11,11 @@ import com.example.tingc6190.tutorfinder.Account.Account;
 import com.example.tingc6190.tutorfinder.Favorite.Favorite;
 import com.example.tingc6190.tutorfinder.Message.Message;
 import com.example.tingc6190.tutorfinder.Search.Search;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private FirebaseAuth firebaseAuth;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -58,12 +61,21 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_container, new Search())
                 .commit();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    public void logOut()
+    {
+        firebaseAuth.signOut();
+        finish();
+        startActivity(new Intent(this, MainActivity.class));
     }
 
 }

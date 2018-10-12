@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button registerButton;
     private Button loginButton;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +21,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         registerButton = findViewById(R.id.register_button);
         loginButton = findViewById(R.id.login_button);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        if(firebaseAuth.getCurrentUser() != null)
+        {
+            //launch home screen
+            finish();
+            startActivity(new Intent(this, HomeActivity.class));
+        }
 
         registerButton.setOnClickListener(this);
         loginButton.setOnClickListener(this);

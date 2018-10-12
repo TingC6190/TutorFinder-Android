@@ -23,9 +23,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private Button registerButton;
     private EditText emailField;
     private EditText passwordField;
+    private EditText confirmPasswordField;
 
     private FirebaseAuth firebaseAuth;
-    //private FirebaseApp firebaseApp;
     private ProgressDialog progressDialog;
 
     @Override
@@ -33,20 +33,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //FirebaseApp.initializeApp(this);
         firebaseAuth = FirebaseAuth.getInstance();
-
-        if(firebaseAuth.getCurrentUser() != null)
-        {
-            //launch home screen
-            finish();
-            startActivity(new Intent(this, HomeActivity.class));
-        }
+//
+//        if(firebaseAuth.getCurrentUser() != null)
+//        {
+//            //launch home screen
+//            finish();
+//            startActivity(new Intent(this, HomeActivity.class));
+//        }
 
         progressDialog = new ProgressDialog(this);
 
         emailField = findViewById(R.id.email_register);
         passwordField = findViewById(R.id.password_register);
+        confirmPasswordField = findViewById(R.id.confirm_password_register);
 
 
         registerButton = findViewById(R.id.register_to_home_button);
@@ -59,39 +59,43 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     {
         String email = emailField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
+        String confirmPassword = confirmPasswordField.getText().toString().trim();
 
-        if(TextUtils.isEmpty(email))
+        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword))
         {
-            Toast.makeText(this, "Please enter an email.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(TextUtils.isEmpty(password))
-        {
-            Toast.makeText(this, "Please enter a password.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        progressDialog.setMessage("Registering Account...");
-        progressDialog.show();
+        //make sure user confirms their password
+        if (confirmPassword.equals(password))
+        {
+            progressDialog.setMessage("Registering Account...");
+            progressDialog.show();
 
-        //try to create a new user
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-                        if(task.isSuccessful())
-                        {
-                            finish();
-                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                            Toast.makeText(RegisterActivity.this, "Registered Successfully.", Toast.LENGTH_SHORT).show();
+            //try to create a new user
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            progressDialog.dismiss();
+                            if(task.isSuccessful())
+                            {
+                                finish();
+                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                Toast.makeText(RegisterActivity.this, "Registered Successfully.", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                Toast.makeText(RegisterActivity.this, "Register Failed.", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else
-                        {
-                            Toast.makeText(RegisterActivity.this, "Register Failed.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                    });
+        }
+        else
+        {
+            Toast.makeText(this, "Please make sure password fields match.", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
