@@ -13,6 +13,7 @@ import com.example.tingc6190.tutorfinder.Message.Message;
 import com.example.tingc6190.tutorfinder.Profile.Profile;
 import com.example.tingc6190.tutorfinder.Search.Search;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
+import com.example.tingc6190.tutorfinder.Welcome.Welcome;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         firebaseAuth = FirebaseAuth.getInstance();
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.content_container, new Search())
+                .replace(R.id.content_container, new Welcome())
                 .commit();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);

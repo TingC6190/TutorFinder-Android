@@ -32,4 +32,6 @@
     <string name="thu">THU</string>
     <string name="fri">FRI</string>
     <string name="sat">SAT</string>
+    <string name="welcome">Welcome</string>
+    <string name="welcome_question">What Subject Do You need Help With?</string>
 </resources>
