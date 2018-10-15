@@ -14,4 +14,22 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_up">Sign Up</string>
     <string name="log_in">Log In</string>
+    <string name="tutors">Tutors</string>
+    <string name="filter">Filter</string>
+    <string name="tutor_image">tutor image</string>
+    <string name="first_last">First Last</string>
+    <string name="_50_hr">$50/hr</string>
+    <string name="_5_0_rating">5.0 Rating</string>
+    <string name="subjects">Subjects</string>
+    <string name="profile">Profile</string>
+    <string name="profile_image">profile image</string>
+    <string name="about_me_fill_in">I am a junior at Columbia University majoring in Computer Science and Philosophy. I have been tutoring computer science since I was a senior in high school. My specialties are in tutoring courses such as Intro Java and Data Structures, with some Calculus on the side.</string>
+    <string name="sun">SUN</string>
+    <string name="time">time</string>
+    <string name="mon">MON</string>
+    <string name="tue">TUE</string>
+    <string name="wed">WED</string>
+    <string name="thu">THU</string>
+    <string name="fri">FRI</string>
+    <string name="sat">SAT</string>
 </resources>

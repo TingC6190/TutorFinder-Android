@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="royalBlue">#395AFF</color>
+    <color name="starYellow">#F7E71B</color>
+    <color name="starOrange">#F6B72E</color>
+    <color name="darkGray">#9B9A9B</color>
+    <color name="lightBlue">#6982FF</color>
 </resources>

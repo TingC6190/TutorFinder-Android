@@ -10,10 +10,12 @@
 
 
     <TextView
-        android:layout_width="336dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/sign_up"
         android:textAlignment="textEnd"
         android:textColor="@android:color/black"
@@ -22,21 +24,25 @@
         tools:ignore="RtlCompat" />
 
     <View
-        android:layout_width="336dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@android:color/black"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"/>
 
     <android.support.design.widget.TextInputLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp">
 
         <EditText
             android:id="@+id/name_register"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/name"
             android:layout_gravity="center"
@@ -47,14 +53,16 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp">
 
         <EditText
             android:id="@+id/email_register"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email"
             android:layout_gravity="center"
@@ -65,14 +73,16 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp">
 
         <EditText
             android:id="@+id/password_register"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
             android:layout_gravity="center"
@@ -83,14 +93,16 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp">
 
         <EditText
             android:id="@+id/confirm_password_register"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/confirm_password"
             android:layout_gravity="center"
@@ -103,12 +115,14 @@
 
     <Button
         android:id="@+id/register_to_home_button"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:textStyle="bold"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:background="@drawable/rounded_corner"
