@@ -7,7 +7,6 @@
     <string name="search">Search</string>
     <string name="messages">Messages</string>
     <string name="favorites">Favorites</string>
-    <string name="account">Account</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -34,4 +33,5 @@
     <string name="sat">SAT</string>
     <string name="welcome">Welcome</string>
     <string name="welcome_question">What Subject Do You need Help With?</string>
+    <string name="account">Account</string>
 </resources>

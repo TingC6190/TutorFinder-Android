@@ -5,24 +5,47 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.tingc6190.tutorfinder.Account.Account;
+import com.example.tingc6190.tutorfinder.DataObject.Location;
+import com.example.tingc6190.tutorfinder.DataObject.Schedule.Friday;
+import com.example.tingc6190.tutorfinder.DataObject.Schedule.Monday;
+import com.example.tingc6190.tutorfinder.DataObject.Schedule.Saturday;
+import com.example.tingc6190.tutorfinder.DataObject.Schedule.Schedule;
+import com.example.tingc6190.tutorfinder.DataObject.Schedule.Sunday;
+import com.example.tingc6190.tutorfinder.DataObject.Schedule.Thursday;
+import com.example.tingc6190.tutorfinder.DataObject.Schedule.Tuesday;
+import com.example.tingc6190.tutorfinder.DataObject.Schedule.Wednesday;
+import com.example.tingc6190.tutorfinder.DataObject.Student;
+import com.example.tingc6190.tutorfinder.DataObject.User;
 import com.example.tingc6190.tutorfinder.Favorite.Favorite;
 import com.example.tingc6190.tutorfinder.Message.Message;
 import com.example.tingc6190.tutorfinder.Profile.Profile;
+import com.example.tingc6190.tutorfinder.Profile.Review;
 import com.example.tingc6190.tutorfinder.Search.Search;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
 import com.example.tingc6190.tutorfinder.Welcome.Welcome;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements Search.TutorListener {
 
-    private ArrayList<Tutor> tutors = new ArrayList<>();
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase myDatabase;
+
+    private ArrayList<Tutor> tutors = new ArrayList<>();
+    private ArrayList<Review> reviews = new ArrayList<>();
+    private ArrayList<Student> students = new ArrayList<>();
     private Tutor tutor;
+    private Review review;
+    private User user;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -68,17 +91,59 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        tutors.add(new Tutor("James", "Campbell", 4.5, 50, "Intro Java, Data Structures, Calculus"));
-        tutors.add(new Tutor("Betty", "Garner", 4.0, 35, "English, Grammar, Writing certified tutor"));
-        tutors.add(new Tutor("Earnest", "Walker", 5.0, 45, "College Student Proficient in Math and English Studies"));
-        tutors.add(new Tutor("Melody", "Mitchell", 2.5, 40, "Columbia Grad for English Writing"));
-        tutors.add(new Tutor("Douglas", "Hyde", 3.9, 50, "Biochemist Specializing in Science, Math, and Test Prep"));
-        tutors.add(new Tutor("Ryan", "Perkins", 3.7, 20, "Biological Science Major with 3+ years of tutoring experience"));
-        tutors.add(new Tutor("Amy", "Jackson", 4.2, 40, "College/High School tutor Chemistry and Algebra 1"));
-        tutors.add(new Tutor("Martin", "Bell", 2.9, 35, "Recent graduate in mathematics"));
-
-
         firebaseAuth = FirebaseAuth.getInstance();
+
+        Sunday sunday = new Sunday("10:00 AM", "11:00 PM");
+        Monday monday = new Monday("09:00 AM", "12:00 AM");
+        Tuesday tuesday = new Tuesday("09:00 AM", "12:00 AM");
+        Wednesday wednesday = new Wednesday("09:00 AM", "12:00 AM");
+        Thursday thursday = new Thursday("09:00 AM", "12:00 AM");
+        Friday friday = new Friday("09:00 AM", "12:00 AM");
+        Saturday saturday = new Saturday("10:00 AM", "12:00 AM");
+
+        Schedule schedule = new Schedule(sunday, monday, tuesday, wednesday, thursday, friday, saturday);
+
+        reviews.add(new Review("10/15/2018", "Super helpful tutor, helped me pass my next exam."));
+        reviews.add(new Review("8/13/2018", "Thank you for a great lesson."));
+
+        Location location = new Location("Orlando", "FL", "32817");
+
+        tutors.add(new Tutor("James", "Campbell",  4.5, 50, reviews, schedule, location, "Intro Java, Data Structures, Calculus"));
+        tutors.add(new Tutor("Betty", "Garner",    4.0, 35, reviews, schedule, location, "English, Grammar, Writing certified tutor"));
+        tutors.add(new Tutor("Earnest", "Walker",  5.0, 45, reviews, schedule, location, "College Student Proficient in Math and English Studies"));
+        tutors.add(new Tutor("Melody", "Mitchell", 2.5, 40, reviews, schedule, location, "Columbia Grad for English Writing"));
+        tutors.add(new Tutor("Douglas", "Hyde",    3.9, 50, reviews, schedule, location, "Biochemist Specializing in Science, Math, and Test Prep"));
+        tutors.add(new Tutor("Ryan", "Perkins",    3.7, 20, reviews, schedule, location, "Biological Science Major with 3+ years of tutoring experience"));
+        tutors.add(new Tutor("Amy", "Jackson",     4.2, 40, reviews, schedule, location, "College/High School tutor Chemistry and Algebra 1"));
+        tutors.add(new Tutor("Martin", "Bell",     2.9, 35, reviews, schedule, location, "Recent graduate in mathematics"));
+
+        students.add(new Student("Ting", "Chen", "tingc6190@gmail.com", "08817", "Likes games"));
+        students.add(new Student("Richard", "Lopez", "raynooor0@yahoo.com", "32828", "Mustangs.. Vroom Vroom!!"));
+
+
+        user = new User();
+        user.setTutors(tutors);
+        user.setStudents(students);
+
+
+        myDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = myDatabase.getReference("users");
+        myRef.setValue(user);
+
+
+
+//        String last = myDatabase.getReference().child("users/tutors/2/lastName");
+
+
+
+
+
+
+
+
+
+
+
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_container, new Welcome())
