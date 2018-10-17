@@ -79,7 +79,7 @@
                         android:layout_gravity="end"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:visibility="visible"/>
+                        android:visibility="invisible"/>
 
                     <View
                         android:id="@+id/profile_favorite_button_unchecked"
@@ -91,6 +91,17 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginTop="-24dp"
                         android:visibility="invisible"/>
+
+                    <View
+                        android:id="@+id/profile_email_button"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/ic_email_black_24dp"
+                        android:layout_gravity="end"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="-24dp"
+                        android:visibility="visible"/>
 
                     <TextView
                         android:id="@+id/profile_price"
@@ -581,7 +592,7 @@
                     android:textSize="12sp"
                     android:textColor="@android:color/black"
                     android:layout_weight="0.5"
-                    android:text="10:00 AM - 12:00 AM"/>
+                    android:text="10:00 AM - 12:21 AM"/>
 
             </LinearLayout>
 

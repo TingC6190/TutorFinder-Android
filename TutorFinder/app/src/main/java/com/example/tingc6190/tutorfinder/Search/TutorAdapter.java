@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.tingc6190.tutorfinder.DataObject.Location;
 import com.example.tingc6190.tutorfinder.R;
 
 import java.util.ArrayList;
@@ -72,10 +73,15 @@ public class TutorAdapter extends BaseAdapter {
             String price = "$" + String.valueOf(tutor.getPrice()) + "/hr";
             String subject = tutor.getSubject();
 
+            Location location = tutor.getLocation();
+
+            String tutorLocation = location.getCity() + ", " + location.getState() + " " + location.getZipcode();
+
             vh.name.setText(name);
             vh.rating.setText(rating);
             vh.price.setText(price);
             vh.subjects.setText(subject);
+            vh.location.setText(tutorLocation);
 
         }
 
@@ -89,6 +95,7 @@ public class TutorAdapter extends BaseAdapter {
         final TextView rating;
         final TextView price;
         final TextView subjects;
+        final TextView location;
 
         ViewHolder(View _view)
         {
@@ -96,6 +103,7 @@ public class TutorAdapter extends BaseAdapter {
             rating = _view.findViewById(R.id.tutor_rating);
             price = _view.findViewById(R.id.tutor_price);
             subjects = _view.findViewById(R.id.tutor_subject);
+            location = _view.findViewById(R.id.tutor_location);
         }
     }
 }

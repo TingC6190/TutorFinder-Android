@@ -11,12 +11,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.tingc6190.tutorfinder.DataObject.Student;
 import com.example.tingc6190.tutorfinder.Welcome.Welcome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
@@ -25,6 +30,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText emailField;
     private EditText passwordField;
     private EditText confirmPasswordField;
+    private String email;
+    private EditText firstName_et;
+    private EditText lastName_et;
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
@@ -48,6 +56,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         emailField = findViewById(R.id.email_register);
         passwordField = findViewById(R.id.password_register);
         confirmPasswordField = findViewById(R.id.confirm_password_register);
+        firstName_et = findViewById(R.id.first_name_register);
+        lastName_et = findViewById(R.id.last_name_register);
 
 
         registerButton = findViewById(R.id.register_to_home_button);
@@ -58,11 +68,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     //create our user
     private void createUser()
     {
-        String email = emailField.getText().toString().trim();
+        email = emailField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
         String confirmPassword = confirmPasswordField.getText().toString().trim();
+        final String firstName = firstName_et.getText().toString().trim();
+        final String lastName = lastName_et.getText().toString().trim();
 
-        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword))
+        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)
+                || TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName))
         {
             Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
             return;
@@ -83,6 +96,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             if(task.isSuccessful())
                             {
                                 finish();
+
+                                //create student user in the database
+                                DatabaseReference studentUserRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + firebaseAuth.getUid());
+
+                                Student studentUser = new Student(firstName, lastName, email, "", "");
+                                studentUserRef.setValue(studentUser);
+
+
                                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                 Toast.makeText(RegisterActivity.this, "Registered Successfully.", Toast.LENGTH_SHORT).show();
                             }
@@ -108,4 +129,5 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
     }
+
 }

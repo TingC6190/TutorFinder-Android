@@ -38,4 +38,5 @@ public class Student {
     public String getZipcode() {
         return zipcode;
     }
+
 }

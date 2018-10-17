@@ -34,4 +34,7 @@
     <string name="welcome">Welcome</string>
     <string name="welcome_question">What Subject Do You need Help With?</string>
     <string name="account">Account</string>
+    <string name="location">location</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
 </resources>
