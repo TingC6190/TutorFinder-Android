@@ -15,12 +15,18 @@ public class Tutor {
     private String subject;
     private Location location;
     private Schedule schedule;
+    private Boolean isVerified;
+    private String dateVerified;
+    private String licenseNumber;
+    private String email;
+    private String aboutMe;
 
     public Tutor() {
     }
 
     public Tutor(String firstName, String lastName, Double rating,
-                 Integer price, ArrayList<Review> reviews, Schedule schedule, Location location, String subject) {
+                 Integer price, ArrayList<Review> reviews, Schedule schedule, Location location, Boolean isVerified,
+                 String dateVerified, String licenseNumber, String email, String aboutMe, String subject) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.rating = rating;
@@ -28,6 +34,11 @@ public class Tutor {
         this.reviews = reviews;
         this.schedule = schedule;
         this.location = location;
+        this.isVerified = isVerified;
+        this.dateVerified = dateVerified;
+        this.licenseNumber = licenseNumber;
+        this.email = email;
+        this.aboutMe = aboutMe;
         this.subject = subject;
     }
 
@@ -93,5 +104,45 @@ public class Tutor {
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
+    }
+
+    public Boolean getVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(Boolean verified) {
+        isVerified = verified;
+    }
+
+    public String getDateVerified() {
+        return dateVerified;
+    }
+
+    public void setDateVerified(String dateVerified) {
+        this.dateVerified = dateVerified;
+    }
+
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
     }
 }

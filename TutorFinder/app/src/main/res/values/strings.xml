@@ -42,6 +42,11 @@
     <string name="about_question">Tell us about yourself.</string>
     <string name="tutor_form">Tutor Form</string>
     <string name="next">Next</string>
+    <string name="where_do_you_live">Where do you live?</string>
+    <string name="city">City</string>
+    <string name="zipcode">Zipcode</string>
+    <string name="state">State</string>
+    <string name="apply">Apply</string>
 
 
     <string-array name="spinner_subject">

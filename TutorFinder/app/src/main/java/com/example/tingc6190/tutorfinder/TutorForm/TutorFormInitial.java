@@ -1,5 +1,6 @@
 package com.example.tingc6190.tutorfinder.TutorForm;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -56,6 +58,7 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
     Schedule schedule;
     Tutor tutor;
     TutorFormListener tutorFormListener;
+    String price;
 
     public TutorFormInitial() {
     }
@@ -107,6 +110,7 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
             EditText aboutMe_tutorForm = getView().findViewById(R.id.tutor_form_about_me);
             Spinner subjectSpinner = getView().findViewById(R.id.subject_spinner);
             Button nextButton = getView().findViewById(R.id.tutor_form_next_button);
+            final TextView pricePicker_tv = getView().findViewById(R.id.tutor_form_price);
 
             sundayStart_tv = getView().findViewById(R.id.sunday_start);
             sundayEnd_tv =   getView().findViewById(R.id.sunday_end);
@@ -145,6 +149,75 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
                 }
             });
 
+            pricePicker_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    final Dialog dialog = new Dialog(getContext());
+                    dialog.setTitle("NumberPicker");
+                    dialog.setContentView(R.layout.number_picker_dialog);
+
+                    Button confirmButton = dialog.findViewById(R.id.num_picker_confirm);
+                    Button cancelButton = dialog.findViewById(R.id.num_picker_cancel);
+
+                    final NumberPicker numberPicker1 = dialog.findViewById(R.id.num_picker1);
+                    numberPicker1.setMaxValue(9);
+                    numberPicker1.setMinValue(0);
+                    numberPicker1.setWrapSelectorWheel(false);
+                    numberPicker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                        @Override
+                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+
+                        }
+                    });
+
+                    final NumberPicker numberPicker2 = dialog.findViewById(R.id.num_picker2);
+                    numberPicker2.setMaxValue(9);
+                    numberPicker2.setMinValue(0);
+                    numberPicker2.setWrapSelectorWheel(false);
+                    numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                        @Override
+                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+
+                        }
+                    });
+
+                    final NumberPicker numberPicker3 = dialog.findViewById(R.id.num_picker3);
+                    numberPicker3.setMaxValue(9);
+                    numberPicker3.setMinValue(0);
+                    numberPicker3.setWrapSelectorWheel(false);
+                    numberPicker3.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                        @Override
+                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+
+                        }
+                    });
+
+                    confirmButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            price = String.valueOf(numberPicker1.getValue()) + numberPicker2.getValue() + numberPicker3.getValue();
+
+                            Log.d("__CHECK_FOR_PRICE__", price);
+
+                            pricePicker_tv.setText("$" + price);
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    cancelButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+                }
+            });
+
             sundayStart_tv.setOnClickListener(this);
             sundayEnd_tv.setOnClickListener(this);
             mondayStart_tv.setOnClickListener(this);
@@ -165,24 +238,37 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
                 @Override
                 public void onClick(View v) {
 
-//                    tutor.setFirstName("");
-//                    tutor.setLastName("");
-//                    tutor.setLocation(new Location("", "", ""));
-//                    tutor.setPrice(0);
-//                    tutor.setRating(0.0);
-//
-//                    //Review review = new Review("", "");
-//
-//                    ArrayList<Review> reviews = new ArrayList<>();
-//                    reviews.add(new Review("", ""));
-//                    tutor.setReviews(reviews);
-//
-//
-//
-//                    tutor.setSubject(subject);
-//                    tutor.setSchedule(schedule);
-//
-//                    tutorFormListener.getTutorToUpdate(tutor);
+                    tutor.setFirstName("");
+                    tutor.setLastName("");
+                    tutor.setLocation(new Location("", "", ""));
+                    tutor.setPrice(0);
+                    tutor.setRating(0.0);
+                    tutor.setDateVerified("");
+                    tutor.setEmail("");
+                    tutor.setLicenseNumber("");
+
+                    //Review review = new Review("", "");
+
+                    ArrayList<Review> reviews = new ArrayList<>();
+                    reviews.add(new Review("", ""));
+                    tutor.setReviews(reviews);
+
+                    tutor.setDateVerified("12/15/2017");
+                    tutor.setVerified(true);
+                    tutor.setAboutMe(aboutMe);
+                    tutor.setSubject(subject);
+                    tutor.setSchedule(schedule);
+                    tutor.setLicenseNumber("");
+
+                    tutorFormListener.getTutorToUpdate(tutor);
+
+
+
+                    //move to background check form
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.content_container, new TutorFormBackground())
+                            .addToBackStack("background form")
+                            .commit();
                 }
             });
         }

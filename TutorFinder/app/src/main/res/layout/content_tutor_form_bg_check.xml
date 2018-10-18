@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/tutor_form"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:ignore="RtlCompat" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/black"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/where_do_you_live"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/black"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp">
+
+        <EditText
+            android:id="@+id/tutor_form_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/city"
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:backgroundTint="@android:color/black"
+            android:inputType="textPersonName"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp">
+
+        <EditText
+            android:id="@+id/tutor_form_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/state"
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:backgroundTint="@android:color/black"
+            android:inputType="textPersonName"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp">
+
+        <EditText
+            android:id="@+id/tutor_form_zipcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/zipcode"
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:backgroundTint="@android:color/black"
+            android:inputType="number"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp">
+
+        <EditText
+            android:id="@+id/tutor_form_license"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Drivers License #"
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:backgroundTint="@android:color/black"
+            android:inputType="text"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/background_form_apply_button"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:background="@drawable/rounded_corner"
+        android:text="@string/apply"/>
+
+
+
+</LinearLayout>

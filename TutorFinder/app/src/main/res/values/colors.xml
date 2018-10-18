@@ -8,4 +8,5 @@
     <color name="starOrange">#F6B72E</color>
     <color name="darkGray">#9B9A9B</color>
     <color name="lightBlue">#6982FF</color>
+    <color name="numPickerDarkGray">#282828</color>
 </resources>

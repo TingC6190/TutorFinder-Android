@@ -26,6 +26,7 @@ import com.example.tingc6190.tutorfinder.Profile.Profile;
 import com.example.tingc6190.tutorfinder.Profile.Review;
 import com.example.tingc6190.tutorfinder.Search.Search;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
+import com.example.tingc6190.tutorfinder.TutorForm.TutorFormBackground;
 import com.example.tingc6190.tutorfinder.TutorForm.TutorFormInitial;
 import com.example.tingc6190.tutorfinder.Welcome.Welcome;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,7 +40,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class HomeActivity extends AppCompatActivity implements Search.TutorListener, TutorFormInitial.TutorFormListener {
+public class HomeActivity extends AppCompatActivity implements Search.TutorListener, TutorFormInitial.TutorFormListener, TutorFormBackground.BackgroundFormListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase myDatabase;
@@ -53,6 +54,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private User user;
     private String currentUserUID;
     private Student currentUserInfo;
+    private Tutor tutorFromInitialSetup;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -101,6 +103,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         firebaseAuth = FirebaseAuth.getInstance();
 
         currentUserUID = firebaseAuth.getUid();
+
+        tutorFromInitialSetup = new Tutor();
 
 //        Sunday sunday = new Sunday("10:00 AM", "11:00 PM");
 //        Monday monday = new Monday("09:00 AM", "12:00 AM");
@@ -251,10 +255,24 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     @Override
     public void getTutorToUpdate(Tutor tutor) {
 
-        DatabaseReference createTutor = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + currentUserUID);
+//        DatabaseReference createTutor = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + currentUserUID);
+//
+//        createTutor.setValue(tutor);
+        tutorFromInitialSetup = tutor;
+    }
 
-        createTutor.setValue(tutor);
+    @Override
+    public void getBackgroundFormListener(String city, String state, String zipcode, String license) {
 
+        //DatabaseReference createTutor = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + currentUserUID);
+
+        Log.d("_________", city + state + zipcode);
+
+        tutorFromInitialSetup.setLocation(new Location(city, state, zipcode));
+
+
+//
+        //createTutor.setValue(tutorFromInitialSetup);
     }
 
 
@@ -268,4 +286,16 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     {
         return tutor;
     }
+
+    public void pushTutorToDatabase()
+    {
+        DatabaseReference createTutor = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + currentUserUID);
+
+        createTutor.setValue(tutorFromInitialSetup);
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.content_container, new Search())
+                .commit();
+    }
+
 }
