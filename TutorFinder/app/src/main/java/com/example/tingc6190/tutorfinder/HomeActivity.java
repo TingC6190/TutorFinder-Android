@@ -269,8 +269,12 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         Log.d("_________", city + state + zipcode);
 
         tutorFromInitialSetup.setLocation(new Location(city, state, zipcode));
+        tutorFromInitialSetup.setLicenseNumber(license);
+        tutorFromInitialSetup.setEmail(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail());
+        tutorFromInitialSetup.setFirstName(currentUserInfo.getFirstName());
+        tutorFromInitialSetup.setLastName(currentUserInfo.getLastName());
 
-
+        pushTutorToDatabase();
 //
         //createTutor.setValue(tutorFromInitialSetup);
     }

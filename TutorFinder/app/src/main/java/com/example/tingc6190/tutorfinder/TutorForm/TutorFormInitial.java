@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -58,7 +59,7 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
     Schedule schedule;
     Tutor tutor;
     TutorFormListener tutorFormListener;
-    String price;
+    Integer price;
 
     public TutorFormInitial() {
     }
@@ -107,7 +108,7 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
         if (getView() != null)
         {
 
-            EditText aboutMe_tutorForm = getView().findViewById(R.id.tutor_form_about_me);
+            final EditText aboutMe_tutorForm = getView().findViewById(R.id.tutor_form_about_me);
             Spinner subjectSpinner = getView().findViewById(R.id.subject_spinner);
             Button nextButton = getView().findViewById(R.id.tutor_form_next_button);
             final TextView pricePicker_tv = getView().findViewById(R.id.tutor_form_price);
@@ -126,9 +127,6 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
             fridayEnd_tv =   getView().findViewById(R.id.friday_end);
             saturdayStart_tv = getView().findViewById(R.id.saturday_start);
             saturdayEnd_tv =   getView().findViewById(R.id.saturday_end);
-
-
-            aboutMe = aboutMe_tutorForm.getText().toString().trim();
 
 
             ArrayAdapter<CharSequence> subjectAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_subject, android.R.layout.simple_spinner_item);
@@ -197,9 +195,9 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
                         @Override
                         public void onClick(View v) {
 
-                            price = String.valueOf(numberPicker1.getValue()) + numberPicker2.getValue() + numberPicker3.getValue();
+                            price = Integer.valueOf(String.valueOf(numberPicker1.getValue()) + numberPicker2.getValue() + numberPicker3.getValue());
 
-                            Log.d("__CHECK_FOR_PRICE__", price);
+                            //Log.d("__CHECK_FOR_PRICE__", price);
 
                             pricePicker_tv.setText("$" + price);
 
@@ -238,10 +236,12 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
                 @Override
                 public void onClick(View v) {
 
+                    aboutMe = aboutMe_tutorForm.getText().toString().trim();
+
                     tutor.setFirstName("");
                     tutor.setLastName("");
                     tutor.setLocation(new Location("", "", ""));
-                    tutor.setPrice(0);
+                    tutor.setPrice(price);
                     tutor.setRating(0.0);
                     tutor.setDateVerified("");
                     tutor.setEmail("");
@@ -261,8 +261,6 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
                     tutor.setLicenseNumber("");
 
                     tutorFormListener.getTutorToUpdate(tutor);
-
-
 
                     //move to background check form
                     getFragmentManager().beginTransaction()

@@ -16,6 +16,8 @@ import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Search;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
 
+import org.w3c.dom.Text;
+
 public class Profile extends Fragment {
 
     private Tutor tutor;
@@ -52,6 +54,7 @@ public class Profile extends Fragment {
                 TextView timeThursday_tv;
                 TextView timeFriday_tv;
                 TextView timeSaturday_tv;
+                TextView email_textview;
                 final View favorite_checked_v;
                 final View favorite_unchecked_v;
                 final View email_v;
@@ -69,10 +72,12 @@ public class Profile extends Fragment {
                 timeFriday_tv = getView().findViewById(R.id.profile_time_fri);
                 timeSaturday_tv = getView().findViewById(R.id.profile_time_sat);
                 email_v = getView().findViewById(R.id.profile_email_button);
+                email_textview = getView().findViewById(R.id.profile_email);
 
                 String fullName = tutor.getFirstName() + " " + tutor.getLastName();
                 String price = "$" + tutor.getPrice() + "/hr";
                 String subject = tutor.getSubject();
+                String email = tutor.getEmail();
 
                 //tutor schedule
                 Schedule schedule = tutor.getSchedule();
@@ -95,6 +100,7 @@ public class Profile extends Fragment {
                 timeThursday_tv.setText(timeThursday);
                 timeFriday_tv.setText(timeFriday);
                 timeSaturday_tv.setText(timeSaturday);
+                email_textview.setText(email);
 
                 //checking for favorites
                 favorite_checked_v.setOnClickListener(new View.OnClickListener() {

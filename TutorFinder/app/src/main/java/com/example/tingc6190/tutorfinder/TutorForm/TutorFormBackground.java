@@ -91,8 +91,6 @@ public class TutorFormBackground extends Fragment {
                     license = license_et.getText().toString().trim();
 
                     backgroundFormListener.getBackgroundFormListener(city, state, zipcode, license);
-
-                    homeActivity.pushTutorToDatabase();
                 }
             });
 
