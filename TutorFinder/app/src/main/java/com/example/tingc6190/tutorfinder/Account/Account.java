@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.tingc6190.tutorfinder.HomeActivity;
+import com.example.tingc6190.tutorfinder.Profile.Profile;
 import com.example.tingc6190.tutorfinder.R;
+import com.example.tingc6190.tutorfinder.TutorForm.TutorFormInitial;
 
 public class Account extends Fragment {
 
@@ -34,10 +36,23 @@ public class Account extends Fragment {
         if (getView() != null)
         {
             Button logoutButton = getView().findViewById(R.id.logout_button);
+            Button applyTutorButton = getView().findViewById(R.id.apply_tutor_button);
+
             logoutButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     homeActivity.logOut();
+                }
+            });
+
+            applyTutorButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //launch initial tutor form
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.content_container, new TutorFormInitial())
+                            .addToBackStack("initial form")
+                            .commit();
                 }
             });
         }

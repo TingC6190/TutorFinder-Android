@@ -29,13 +29,22 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp"/>
 
+
+    <Button
+        android:id="@+id/apply_tutor_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Become a Tutor"
+        android:layout_gravity="center"
+        android:layout_marginTop="300dp"/>
+
     <Button
         android:id="@+id/logout_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Log Out"
         android:layout_gravity="center"
-        android:layout_marginTop="400dp"/>
+        android:layout_marginTop="16dp"/>
 
 
 </LinearLayout>

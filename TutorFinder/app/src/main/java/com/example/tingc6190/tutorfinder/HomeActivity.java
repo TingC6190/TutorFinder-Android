@@ -50,7 +50,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private Tutor tutor;
     private Review review;
     private User user;
-
+    private String currentUserUID;
+    private Student currentUserInfo;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -98,6 +99,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        currentUserUID = firebaseAuth.getUid();
 
 //        Sunday sunday = new Sunday("10:00 AM", "11:00 PM");
 //        Monday monday = new Monday("09:00 AM", "12:00 AM");
@@ -137,6 +139,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //        myRef.setValue(user);
 
 
+        getCurrentUser();
+
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users/tutors");
 
@@ -155,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.d("error", "something went wrong when retrieving data");
             }
         };
         databaseReference.addValueEventListener(tutorListener);
@@ -177,8 +181,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //        studentNodeEmail.setValue(student1);
 
 
-
-
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_container, new Welcome())
                 .commit();
@@ -186,6 +188,46 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
+
+
+
+    //get the data of our current user
+    private void getCurrentUser()
+    {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID);
+
+        //get our data from the database
+        ValueEventListener tutorListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Log.d("__INSIDE_FUNCTION__", "_____________");
+
+                currentUserInfo = dataSnapshot.getValue(Student.class);
+
+                displayUserInfo();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("error", "something went wrong when retrieving data");
+            }
+        };
+        databaseReference.addValueEventListener(tutorListener);
+    }
+
+    //sanity check
+    private void displayUserInfo()
+    {
+        Log.d("__INSIDE_FUNCTION__", "_______DISPLAY______");
+        Log.d("__FIRST__", currentUserInfo.getFirstName());
+        Log.d("__LAST__", currentUserInfo.getLastName());
+        Log.d("__EMAIL__", currentUserInfo.getEmail());
+        Log.d("__ABOUTME__", currentUserInfo.getAboutMe());
+        Log.d("__ZIPCODE__", currentUserInfo.getZipcode());
+    }
+
+
 
     public void logOut()
     {
@@ -214,4 +256,5 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     {
         return tutor;
     }
+
 }
