@@ -26,6 +26,7 @@ import com.example.tingc6190.tutorfinder.Profile.Profile;
 import com.example.tingc6190.tutorfinder.Profile.Review;
 import com.example.tingc6190.tutorfinder.Search.Search;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
+import com.example.tingc6190.tutorfinder.TutorForm.TutorFormInitial;
 import com.example.tingc6190.tutorfinder.Welcome.Welcome;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -38,7 +39,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class HomeActivity extends AppCompatActivity implements Search.TutorListener {
+public class HomeActivity extends AppCompatActivity implements Search.TutorListener, TutorFormInitial.TutorFormListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase myDatabase;
@@ -247,6 +248,17 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 .commit();
     }
 
+    @Override
+    public void getTutorToUpdate(Tutor tutor) {
+
+        DatabaseReference createTutor = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + currentUserUID);
+
+        createTutor.setValue(tutor);
+
+    }
+
+
+
     public ArrayList<Tutor> getTutors()
     {
         return tutors;
@@ -256,5 +268,4 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     {
         return tutor;
     }
-
 }

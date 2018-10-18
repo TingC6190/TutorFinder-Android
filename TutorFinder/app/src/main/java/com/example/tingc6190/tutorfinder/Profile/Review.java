@@ -1,6 +1,8 @@
 package com.example.tingc6190.tutorfinder.Profile;
 
-public class Review {
+import java.util.ArrayList;
+
+public class Review extends ArrayList<Review> {
 
     private String date;
     private String review;
@@ -19,5 +21,13 @@ public class Review {
 
     public String getReview() {
         return review;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
     }
 }
