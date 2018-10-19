@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.tingc6190.tutorfinder.DataObject.Location;
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Friday;
@@ -60,6 +62,8 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
     Tutor tutor;
     TutorFormListener tutorFormListener;
     Integer price;
+    Tutor currentTutor;
+    HomeActivity homeActivity;
 
     public TutorFormInitial() {
     }
@@ -86,6 +90,10 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        homeActivity = (HomeActivity) getActivity();
+        currentTutor = new Tutor();
+        currentTutor = homeActivity.getCurrentTutor();
 
         tutor = new Tutor();
         //schedule = new Schedule(new Sunday(), new Monday(), new Tuesday(), new Wednesday(), new Thursday(), new Friday(), new Saturday());
@@ -128,6 +136,11 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
             saturdayStart_tv = getView().findViewById(R.id.saturday_start);
             saturdayEnd_tv =   getView().findViewById(R.id.saturday_end);
 
+//            if (!currentTutor.getAboutMe().toString().trim().equals(""))
+//            {
+//                aboutMe_tutorForm.setText(currentTutor.getAboutMe());
+//            }
+
 
             ArrayAdapter<CharSequence> subjectAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_subject, android.R.layout.simple_spinner_item);
             subjectAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -147,6 +160,8 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
                 }
             });
 
+
+            //select the price
             pricePicker_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -182,7 +197,7 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
 
                     final NumberPicker numberPicker3 = dialog.findViewById(R.id.num_picker3);
                     numberPicker3.setMaxValue(9);
-                    numberPicker3.setMinValue(0);
+                    numberPicker3.setMinValue(1);
                     numberPicker3.setWrapSelectorWheel(false);
                     numberPicker3.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                         @Override
@@ -238,35 +253,59 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
 
                     aboutMe = aboutMe_tutorForm.getText().toString().trim();
 
-                    tutor.setFirstName("");
-                    tutor.setLastName("");
-                    tutor.setLocation(new Location("", "", ""));
-                    tutor.setPrice(price);
-                    tutor.setRating(0.0);
-                    tutor.setDateVerified("");
-                    tutor.setEmail("");
-                    tutor.setLicenseNumber("");
+                    if (TextUtils.isEmpty(aboutMe))
+                    {
+                        Toast.makeText(getContext(), "Please write a short bio about yourself.", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+//                        if (price > 0)
+//                        {
+//
+//                        }
+//                        else
+//                        {
+//                            Toast.makeText(getContext(), "Please set a price.", Toast.LENGTH_SHORT).show();
+//                        }
 
-                    //Review review = new Review("", "");
+                        if (price != null)
+                        {
+                            tutor.setFirstName("");
+                            tutor.setLastName("");
+                            tutor.setLocation(new Location("", "", ""));
+                            tutor.setPrice(price);
+                            tutor.setRating(0.0);
+                            tutor.setDateVerified("");
+                            tutor.setEmail("");
+                            tutor.setLicenseNumber("");
 
-                    ArrayList<Review> reviews = new ArrayList<>();
-                    reviews.add(new Review("", ""));
-                    tutor.setReviews(reviews);
+                            //Review review = new Review("", "");
 
-                    tutor.setDateVerified("12/15/2017");
-                    tutor.setVerified(true);
-                    tutor.setAboutMe(aboutMe);
-                    tutor.setSubject(subject);
-                    tutor.setSchedule(schedule);
-                    tutor.setLicenseNumber("");
+                            ArrayList<Review> reviews = new ArrayList<>();
+                            reviews.add(new Review("", ""));
+                            tutor.setReviews(reviews);
 
-                    tutorFormListener.getTutorToUpdate(tutor);
+                            tutor.setDateVerified("12/15/2017");
+                            tutor.setVerified(true);
+                            tutor.setAboutMe(aboutMe);
+                            tutor.setSubject(subject);
+                            tutor.setSchedule(schedule);
+                            tutor.setLicenseNumber("");
 
-                    //move to background check form
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.content_container, new TutorFormBackground())
-                            .addToBackStack("background form")
-                            .commit();
+                            tutorFormListener.getTutorToUpdate(tutor);
+
+                            //move to background check form
+                            getFragmentManager().beginTransaction()
+                                    .replace(R.id.content_container, new TutorFormBackground())
+                                    .addToBackStack("background form")
+                                    .commit();
+                        }
+                        else
+                        {
+                            Toast.makeText(getContext(), "Please set a price.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
                 }
             });
         }

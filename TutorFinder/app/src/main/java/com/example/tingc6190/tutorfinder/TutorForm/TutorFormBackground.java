@@ -74,23 +74,32 @@ public class TutorFormBackground extends Fragment {
             license_et = getView().findViewById(R.id.tutor_form_license);
             applyButton = getView().findViewById(R.id.background_form_apply_button);
 
-            if(TextUtils.isEmpty(city) || TextUtils.isEmpty(state) || TextUtils.isEmpty(zipcode)
-                    || TextUtils.isEmpty(license))
-            {
-                //make toast
-            }
-
             applyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
 
                     city = city_et.getText().toString().trim();
                     state = state_et.getText().toString().trim();
                     zipcode = zipcode_et.getText().toString().trim();
                     license = license_et.getText().toString().trim();
 
-                    backgroundFormListener.getBackgroundFormListener(city, state, zipcode, license);
+                    //make sure no fields are empty
+                    if (TextUtils.isEmpty(city) || TextUtils.isEmpty(state) || TextUtils.isEmpty(zipcode) || TextUtils.isEmpty(license))
+                    {
+                        Toast.makeText(getContext(), "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        //make sure zipcode field has 5 digits
+                        if (zipcode.length() != 5)
+                        {
+                            Toast.makeText(getContext(), "Please make sure the zipcode is correct.", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            backgroundFormListener.getBackgroundFormListener(city, state, zipcode, license);
+                        }
+                    }
                 }
             });
 

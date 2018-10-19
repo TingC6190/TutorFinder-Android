@@ -302,4 +302,9 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 .commit();
     }
 
+    public Tutor getCurrentTutor()
+    {
+        return tutorFromInitialSetup;
+    }
+
 }
