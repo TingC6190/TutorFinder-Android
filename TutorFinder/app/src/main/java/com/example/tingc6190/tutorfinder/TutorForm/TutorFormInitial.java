@@ -259,15 +259,6 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
                     }
                     else
                     {
-//                        if (price > 0)
-//                        {
-//
-//                        }
-//                        else
-//                        {
-//                            Toast.makeText(getContext(), "Please set a price.", Toast.LENGTH_SHORT).show();
-//                        }
-
                         if (price != null)
                         {
                             tutor.setFirstName("");

@@ -8,13 +8,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Schedule;
 import com.example.tingc6190.tutorfinder.HomeActivity;
+import com.example.tingc6190.tutorfinder.Payment.Payment;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Search;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
+import com.example.tingc6190.tutorfinder.TutorForm.TutorFormBackground;
 
 import org.w3c.dom.Text;
 
@@ -58,6 +61,7 @@ public class Profile extends Fragment {
                 final View favorite_checked_v;
                 final View favorite_unchecked_v;
                 final View email_v;
+                Button hireButton;
 
                 name_tv = getView().findViewById(R.id.profile_name);
                 price_tv = getView().findViewById(R.id.profile_price);
@@ -73,6 +77,7 @@ public class Profile extends Fragment {
                 timeSaturday_tv = getView().findViewById(R.id.profile_time_sat);
                 email_v = getView().findViewById(R.id.profile_email_button);
                 email_textview = getView().findViewById(R.id.profile_email);
+                hireButton = getView().findViewById(R.id.hire_button);
 
                 String fullName = tutor.getFirstName() + " " + tutor.getLastName();
                 String price = "$" + tutor.getPrice() + "/hr";
@@ -132,6 +137,18 @@ public class Profile extends Fragment {
                         intent.putExtra(Intent.EXTRA_EMAIL, "tingc6190@gmail.com");
 
                         startActivity(intent);
+                    }
+                });
+
+                hireButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        //move to payment screen
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.content_container, new Payment())
+                                .addToBackStack("payment")
+                                .commit();
                     }
                 });
 

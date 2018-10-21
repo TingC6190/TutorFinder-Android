@@ -47,6 +47,7 @@
     <string name="zipcode">Zipcode</string>
     <string name="state">State</string>
     <string name="apply">Apply</string>
+    <string name="session_form">Session Form</string>
 
 
     <string-array name="spinner_subject">

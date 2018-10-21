@@ -210,7 +210,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                 currentUserInfo = dataSnapshot.getValue(Student.class);
 
-                displayUserInfo();
+                //displayUserInfo();
             }
 
             @Override
