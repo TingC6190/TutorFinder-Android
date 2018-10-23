@@ -20,13 +20,14 @@ public class Tutor {
     private String licenseNumber;
     private String email;
     private String aboutMe;
+    private String picture;
 
     public Tutor() {
     }
 
     public Tutor(String firstName, String lastName, Double rating,
                  Integer price, ArrayList<Review> reviews, Schedule schedule, Location location, Boolean isVerified,
-                 String dateVerified, String licenseNumber, String email, String aboutMe, String subject) {
+                 String dateVerified, String licenseNumber, String email, String aboutMe, String picture, String subject) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.rating = rating;
@@ -39,6 +40,7 @@ public class Tutor {
         this.licenseNumber = licenseNumber;
         this.email = email;
         this.aboutMe = aboutMe;
+        this.picture = picture;
         this.subject = subject;
     }
 
@@ -144,5 +146,13 @@ public class Tutor {
 
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }

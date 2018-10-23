@@ -1,14 +1,19 @@
 package com.example.tingc6190.tutorfinder.Search;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tingc6190.tutorfinder.DataObject.Location;
 import com.example.tingc6190.tutorfinder.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -83,6 +88,16 @@ public class TutorAdapter extends BaseAdapter {
             vh.subjects.setText(subject);
             vh.location.setText(tutorLocation);
 
+
+            if (tutor.getPicture() != null)
+            {
+                if (!tutor.getPicture().equals(""))
+                {
+                    Picasso.get().load(tutor.getPicture()).into(vh.profilePicture);
+                }
+            }
+
+            Log.d("___________", tutor.getFirstName() + " " + tutor.getLastName());
         }
 
 
@@ -96,6 +111,7 @@ public class TutorAdapter extends BaseAdapter {
         final TextView price;
         final TextView subjects;
         final TextView location;
+        final ImageView profilePicture;
 
         ViewHolder(View _view)
         {
@@ -104,6 +120,7 @@ public class TutorAdapter extends BaseAdapter {
             price = _view.findViewById(R.id.tutor_price);
             subjects = _view.findViewById(R.id.tutor_subject);
             location = _view.findViewById(R.id.tutor_location);
+            profilePicture = _view.findViewById(R.id.cell_profile_picture);
         }
     }
 }

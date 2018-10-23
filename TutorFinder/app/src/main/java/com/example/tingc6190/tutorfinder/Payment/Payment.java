@@ -43,6 +43,7 @@ public class Payment extends Fragment {
 
     final String API_GET_TOKEN = "http://10.0.2.2/braintree/main.php";
     final String API_CHECK_OUT = "http://10.0.2.2/braintree/checkout.php";
+
     Tutor tutor;
     HomeActivity homeActivity;
 

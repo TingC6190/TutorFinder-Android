@@ -40,7 +40,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class HomeActivity extends AppCompatActivity implements Search.TutorListener, TutorFormInitial.TutorFormListener, TutorFormBackground.BackgroundFormListener {
+public class HomeActivity extends AppCompatActivity implements Search.TutorListener, TutorFormInitial.TutorFormListener, TutorFormBackground.BackgroundFormListener, Account.AccountListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase myDatabase;
@@ -158,6 +158,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 {
                     Tutor tutor = postSnapshot.getValue(Tutor.class);
 
+                    //tutors = new ArrayList<>();
                     tutors.add(tutor);
                 }
             }
@@ -280,6 +281,16 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     }
 
 
+    @Override
+    public void getAccountListener(String imageUrl) {
+        //push image to the current tutor
+        //tutorFromInitialSetup = tutor;
+
+        tutorFromInitialSetup.setPicture(imageUrl);
+
+        pushTutorToDatabase();
+    }
+
 
     public ArrayList<Tutor> getTutors()
     {
@@ -306,5 +317,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     {
         return tutorFromInitialSetup;
     }
+
 
 }

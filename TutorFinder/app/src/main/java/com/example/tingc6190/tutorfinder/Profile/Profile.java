@@ -58,6 +58,7 @@ public class Profile extends Fragment {
                 TextView timeFriday_tv;
                 TextView timeSaturday_tv;
                 TextView email_textview;
+                TextView aboutMe_tv;
                 final View favorite_checked_v;
                 final View favorite_unchecked_v;
                 final View email_v;
@@ -78,11 +79,13 @@ public class Profile extends Fragment {
                 email_v = getView().findViewById(R.id.profile_email_button);
                 email_textview = getView().findViewById(R.id.profile_email);
                 hireButton = getView().findViewById(R.id.hire_button);
+                aboutMe_tv =getView().findViewById(R.id.profile_aboutme);
 
                 String fullName = tutor.getFirstName() + " " + tutor.getLastName();
                 String price = "$" + tutor.getPrice() + "/hr";
                 String subject = tutor.getSubject();
                 String email = tutor.getEmail();
+                String aboutMe = tutor.getAboutMe();
 
                 //tutor schedule
                 Schedule schedule = tutor.getSchedule();
@@ -106,6 +109,7 @@ public class Profile extends Fragment {
                 timeFriday_tv.setText(timeFriday);
                 timeSaturday_tv.setText(timeSaturday);
                 email_textview.setText(email);
+                aboutMe_tv.setText(aboutMe);
 
                 //checking for favorites
                 favorite_checked_v.setOnClickListener(new View.OnClickListener() {
