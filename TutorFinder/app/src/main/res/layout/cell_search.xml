@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
-    
-    <ImageView
+
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/cell_profile_picture"
-        android:contentDescription="@string/tutor_image"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@mipmap/ic_launcher_round"/>
+        android:src="@mipmap/ic_launcher_round"
+        app:riv_corner_radius="30dip"
+        app:riv_oval="true"
+        android:background="@mipmap/ic_launcher_round"
+        />
+    
+    <!--<ImageView-->
+        <!--android:id="@+id/cell_profile_picture"-->
+        <!--android:contentDescription="@string/tutor_image"-->
+        <!--android:layout_width="70dp"-->
+        <!--android:layout_height="70dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:background="@mipmap/ic_launcher_round"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"

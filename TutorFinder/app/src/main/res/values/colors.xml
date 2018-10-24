@@ -9,4 +9,5 @@
     <color name="darkGray">#9B9A9B</color>
     <color name="lightBlue">#6982FF</color>
     <color name="numPickerDarkGray">#282828</color>
+    <color name="backgroundWhite">#FAFAFA</color>
 </resources>

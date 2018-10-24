@@ -15,12 +15,15 @@ import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tingc6190.tutorfinder.DataObject.AccountPicture;
+import com.example.tingc6190.tutorfinder.DataObject.Student;
 import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.Profile.Profile;
 import com.example.tingc6190.tutorfinder.R;
+import com.example.tingc6190.tutorfinder.Search.Tutor;
 import com.example.tingc6190.tutorfinder.TutorForm.TutorFormInitial;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,15 +32,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 public class Account extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private HomeActivity homeActivity;
-    private ImageView accountImage;
+    private RoundedImageView accountImage;
     private Uri imageUri;
+    private Student student;
+    private String email;
 
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
@@ -74,6 +82,12 @@ public class Account extends Fragment {
 
         homeActivity = (HomeActivity) getActivity();
 
+        student = homeActivity.getCurrentStudent();
+        email = homeActivity.getStudentEmail();
+
+
+
+
         return inflater.inflate(R.layout.content_account_screen, container, false);
     }
 
@@ -83,37 +97,77 @@ public class Account extends Fragment {
 
         if (getView() != null)
         {
-            Button logoutButton = getView().findViewById(R.id.logout_button);
-            Button applyTutorButton = getView().findViewById(R.id.apply_tutor_button);
+            if (student != null)
+            {
+                Button logoutButton = getView().findViewById(R.id.logout_button);
+                Button applyTutorButton = getView().findViewById(R.id.apply_tutor_button);
+                TextView email_tv = getView().findViewById(R.id.account_email);
+                TextView name_tv = getView().findViewById(R.id.account_name);
+                TextView aboutMe_tv = getView().findViewById(R.id.account_aboutme);
+                View cameraButton = getView().findViewById(R.id.account_camera_button);
+                accountImage = getView().findViewById(R.id.account_image);
 
-            accountImage = getView().findViewById(R.id.account_image);
+                String name = student.getFirstName() + " " + student.getLastName();
+                String newEmail = "Email: " + email;
+                String aboutMe = student.getAboutMe();
 
+                name_tv.setText(name);
+                email_tv.setText(newEmail);
+                //aboutMe_tv.setText(aboutMe);
 
-
-            logoutButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    homeActivity.logOut();
+                if (aboutMe.trim().equals(""))
+                {
+                    String newAboutMe = "Please write a short bio about yourself.";
+                    aboutMe_tv.setText(newAboutMe);
                 }
-            });
-
-            applyTutorButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //launch initial tutor form
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.content_container, new TutorFormInitial())
-                            .addToBackStack("initial form")
-                            .commit();
+                else
+                {
+                    aboutMe_tv.setText(aboutMe);
                 }
-            });
 
-            accountImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectImage();
+
+//                if (tutor.getPicture() != null)
+//                {
+//                    if (!tutor.getPicture().equals(""))
+//                    {
+//                        Picasso.get().load(tutor.getPicture()).into(vh.profilePicture);
+//                    }
+//                }
+
+                if (student.getPicture() != null)
+                {
+                    if (!student.getPicture().equals(""))
+                    {
+                        Picasso.get().load(student.getPicture()).into(accountImage);
+                    }
                 }
-            });
+
+
+                logoutButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        homeActivity.logOut();
+                    }
+                });
+
+                applyTutorButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //launch initial tutor form
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.content_container, new TutorFormInitial())
+                                .addToBackStack("initial form")
+                                .commit();
+                    }
+                });
+
+                cameraButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        selectImage();
+                    }
+                });
+            }
         }
     }
 

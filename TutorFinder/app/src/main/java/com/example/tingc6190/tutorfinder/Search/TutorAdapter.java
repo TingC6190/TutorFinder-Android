@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.tingc6190.tutorfinder.DataObject.Location;
 import com.example.tingc6190.tutorfinder.R;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -111,7 +112,7 @@ public class TutorAdapter extends BaseAdapter {
         final TextView price;
         final TextView subjects;
         final TextView location;
-        final ImageView profilePicture;
+        final RoundedImageView profilePicture;
 
         ViewHolder(View _view)
         {

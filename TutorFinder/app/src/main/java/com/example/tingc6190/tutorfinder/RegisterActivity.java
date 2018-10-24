@@ -100,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 //create student user in the database
                                 DatabaseReference studentUserRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + firebaseAuth.getUid());
 
-                                Student studentUser = new Student(firstName, lastName, email, " ", " ");
+                                Student studentUser = new Student(firstName, lastName, email, " ", " ", "");
                                 studentUserRef.setValue(studentUser);
 
 

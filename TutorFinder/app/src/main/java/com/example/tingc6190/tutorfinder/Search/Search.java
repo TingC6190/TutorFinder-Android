@@ -104,6 +104,8 @@ public class Search extends Fragment {
                 TutorAdapter tutorAdapter = new TutorAdapter(getContext(), tutors);
                 listView.setAdapter(tutorAdapter);
 
+                tutorAdapter.notifyDataSetChanged();
+
                 //get the selected tutor's profile
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

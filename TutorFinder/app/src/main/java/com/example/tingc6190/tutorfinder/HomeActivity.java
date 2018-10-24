@@ -55,6 +55,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private String currentUserUID;
     private Student currentUserInfo;
     private Tutor tutorFromInitialSetup;
+    private String email;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -103,6 +104,12 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         firebaseAuth = FirebaseAuth.getInstance();
 
         currentUserUID = firebaseAuth.getUid();
+
+        email = firebaseAuth.getCurrentUser().getEmail();
+
+
+
+        //Log.d("__CURRENT_UID__", firebaseAuth.get);
 
         tutorFromInitialSetup = new Tutor();
 
@@ -154,13 +161,18 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                ArrayList<Tutor> getAllTutors = new ArrayList<>();
+
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
                 {
-                    Tutor tutor = postSnapshot.getValue(Tutor.class);
+                    Tutor mTutor = postSnapshot.getValue(Tutor.class);
 
                     //tutors = new ArrayList<>();
-                    tutors.add(tutor);
+                    //tutors.add(tutor);
+
+                    getAllTutors.add(mTutor);
                 }
+                tutors = getAllTutors;
             }
 
             @Override
@@ -212,6 +224,9 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 currentUserInfo = dataSnapshot.getValue(Student.class);
 
                 //displayUserInfo();
+
+//                Log.d("__FIRST__", currentUserInfo.getFirstName());
+//                Log.d("__LAST__", currentUserInfo.getLastName());
             }
 
             @Override
@@ -286,9 +301,10 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         //push image to the current tutor
         //tutorFromInitialSetup = tutor;
 
-        tutorFromInitialSetup.setPicture(imageUrl);
+        //tutorFromInitialSetup.setPicture(imageUrl);
 
-        pushTutorToDatabase();
+        updateStudentPicture(imageUrl);
+        //updateTutorPicture(imageUrl);
     }
 
 
@@ -313,10 +329,33 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 .commit();
     }
 
+    private void updateTutorPicture(String url)
+    {
+        DatabaseReference tutorPictureRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + currentUserUID + "/picture");
+
+        tutorPictureRef.setValue(url);
+    }
+
+    private void updateStudentPicture(String url)
+    {
+        DatabaseReference studentPictureRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/picture");
+
+        studentPictureRef.setValue(url);
+    }
+
     public Tutor getCurrentTutor()
     {
         return tutorFromInitialSetup;
     }
 
+    public Student getCurrentStudent()
+    {
+        return currentUserInfo;
+    }
+
+    public String getStudentEmail()
+    {
+        return email;
+    }
 
 }
