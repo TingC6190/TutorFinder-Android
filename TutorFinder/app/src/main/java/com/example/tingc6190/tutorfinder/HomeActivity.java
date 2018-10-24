@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.tingc6190.tutorfinder.Account.Account;
 import com.example.tingc6190.tutorfinder.DataObject.Location;
@@ -26,9 +27,12 @@ import com.example.tingc6190.tutorfinder.Profile.Profile;
 import com.example.tingc6190.tutorfinder.Profile.Review;
 import com.example.tingc6190.tutorfinder.Search.Search;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
+import com.example.tingc6190.tutorfinder.Setting.Setting;
 import com.example.tingc6190.tutorfinder.TutorForm.TutorFormBackground;
 import com.example.tingc6190.tutorfinder.TutorForm.TutorFormInitial;
 import com.example.tingc6190.tutorfinder.Welcome.Welcome;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,7 +44,9 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class HomeActivity extends AppCompatActivity implements Search.TutorListener, TutorFormInitial.TutorFormListener, TutorFormBackground.BackgroundFormListener, Account.AccountListener {
+public class HomeActivity extends AppCompatActivity implements Search.TutorListener,
+        TutorFormInitial.TutorFormListener, TutorFormBackground.BackgroundFormListener,
+        Account.AccountListener, Setting.SettingListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase myDatabase;
@@ -107,7 +113,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         email = firebaseAuth.getCurrentUser().getEmail();
 
-
+        //sendPasswordChange();
 
         //Log.d("__CURRENT_UID__", firebaseAuth.get);
 
@@ -219,7 +225,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                Log.d("__INSIDE_FUNCTION__", "_____________");
+                Log.d("__INSIDE_FUNCTION__", "STUDENT DATA CHANGED");
 
                 currentUserInfo = dataSnapshot.getValue(Student.class);
 
@@ -308,6 +314,30 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     }
 
 
+
+    @Override
+    public void getUpdateStudent(String first, String last, String aboutMe) {
+        currentUserInfo.setFirstName(first);
+        currentUserInfo.setLastName(last);
+        currentUserInfo.setAboutMe(aboutMe);
+
+//        Student newStudent = currentUserInfo;
+//        Log.d("__FIRSTNAME__", currentUserInfo.getFirstName());
+//        Log.d("__LASTNAME__", currentUserInfo.getLastName());
+//        Log.d("__ABOUTME__", currentUserInfo.getAboutMe());
+//        Log.d("__ZIPCODE__", currentUserInfo.getZipcode());
+//        Log.d("__PICTURE__", currentUserInfo.getPicture());
+//        Log.d("__EMAIL__", currentUserInfo.getEmail());
+
+        DatabaseReference studentDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID);
+
+        studentDatabaseRef.setValue(currentUserInfo);
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.content_container, new Account())
+                .commit();
+    }
+
     public ArrayList<Tutor> getTutors()
     {
         return tutors;
@@ -356,6 +386,20 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     public String getStudentEmail()
     {
         return email;
+    }
+
+    public void sendPasswordResetEmail()
+    {
+        firebaseAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful())
+                        {
+                            Toast.makeText(HomeActivity.this, "Email has been sent.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
 }

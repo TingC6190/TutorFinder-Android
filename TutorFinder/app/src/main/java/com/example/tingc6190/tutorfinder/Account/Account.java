@@ -24,6 +24,7 @@ import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.Profile.Profile;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
+import com.example.tingc6190.tutorfinder.Setting.Setting;
 import com.example.tingc6190.tutorfinder.TutorForm.TutorFormInitial;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -46,6 +47,7 @@ public class Account extends Fragment {
     private Uri imageUri;
     private Student student;
     private String email;
+    private View settingButton;
 
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
@@ -106,6 +108,7 @@ public class Account extends Fragment {
                 TextView aboutMe_tv = getView().findViewById(R.id.account_aboutme);
                 View cameraButton = getView().findViewById(R.id.account_camera_button);
                 accountImage = getView().findViewById(R.id.account_image);
+                settingButton = getView().findViewById(R.id.setting_button);
 
                 String name = student.getFirstName() + " " + student.getLastName();
                 String newEmail = "Email: " + email;
@@ -165,6 +168,16 @@ public class Account extends Fragment {
                     @Override
                     public void onClick(View v) {
                         selectImage();
+                    }
+                });
+
+                settingButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.content_container, new Setting())
+                                .addToBackStack("setting form")
+                                .commit();
                     }
                 });
             }
