@@ -46,7 +46,7 @@ import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity implements Search.TutorListener,
         TutorFormInitial.TutorFormListener, TutorFormBackground.BackgroundFormListener,
-        Account.AccountListener, Setting.SettingListener {
+        Account.AccountListener, Setting.SettingListener, Profile.ProfileListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase myDatabase;
@@ -64,6 +64,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private String email;
     private boolean isTutor;
     private ArrayList<String> allTutorUID = new ArrayList<>();
+    private ArrayList<Tutor> favoriteTutors = new ArrayList<>();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -363,6 +364,16 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 .commit();
     }
 
+    @Override
+    public void addTutorToFavorite(Tutor tutorToAdd)
+    {
+        favoriteTutors.add(tutorToAdd);
+
+        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/favorites");
+
+        favoriteRef.setValue(favoriteTutors);
+    }
+
     public ArrayList<Tutor> getTutors()
     {
         return tutors;
@@ -413,6 +424,11 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         return email;
     }
 
+    public ArrayList<Tutor> getFavoriteTutors()
+    {
+        return favoriteTutors;
+    }
+
     public void sendPasswordResetEmail()
     {
         firebaseAuth.sendPasswordResetEmail(email)
@@ -446,4 +462,5 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
            }
        }
     }
+
 }

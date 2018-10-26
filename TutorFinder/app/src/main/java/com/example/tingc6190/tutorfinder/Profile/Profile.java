@@ -1,6 +1,7 @@
 package com.example.tingc6190.tutorfinder.Profile;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,6 +29,7 @@ public class Profile extends Fragment {
 
     private Tutor tutor;
     private HomeActivity homeActivity;
+    private ProfileListener profileListener;
 
     public Profile() {
     }
@@ -40,6 +42,25 @@ public class Profile extends Fragment {
         tutor = homeActivity.getTutor();
 
         return inflater.inflate(R.layout.content_profile_screen, container, false);
+    }
+
+    public interface ProfileListener
+    {
+        void addTutorToFavorite(Tutor tutorToAdd);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof ProfileListener)
+        {
+            profileListener = (ProfileListener) context;
+        }
+        else
+        {
+            Log.d("error", "must implement ProfileListener");
+        }
     }
 
     @Override
@@ -122,22 +143,27 @@ public class Profile extends Fragment {
                     Picasso.get().load(profileImage).into(profileImage_riv);
                 }
 
-                //checking for favorites
+                //remove current tutor from our favorites
                 favorite_checked_v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                         favorite_checked_v.setVisibility(View.INVISIBLE);
                         favorite_unchecked_v.setVisibility(View.VISIBLE);
+
                     }
                 });
 
+                //add current tutor to our favorites
                 favorite_unchecked_v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                         favorite_checked_v.setVisibility(View.VISIBLE);
                         favorite_unchecked_v.setVisibility(View.INVISIBLE);
+
+
+                        profileListener.addTutorToFavorite(tutor);
 
                     }
                 });
