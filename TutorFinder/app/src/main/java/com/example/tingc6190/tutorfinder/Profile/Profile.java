@@ -47,6 +47,7 @@ public class Profile extends Fragment {
     public interface ProfileListener
     {
         void addTutorToFavorite(Tutor tutorToAdd);
+        void removeTutorFromFavorite(Tutor tutorToRemove);
     }
 
     @Override
@@ -151,6 +152,7 @@ public class Profile extends Fragment {
                         favorite_checked_v.setVisibility(View.INVISIBLE);
                         favorite_unchecked_v.setVisibility(View.VISIBLE);
 
+                        profileListener.removeTutorFromFavorite(tutor);
                     }
                 });
 

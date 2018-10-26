@@ -46,7 +46,7 @@ import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity implements Search.TutorListener,
         TutorFormInitial.TutorFormListener, TutorFormBackground.BackgroundFormListener,
-        Account.AccountListener, Setting.SettingListener, Profile.ProfileListener {
+        Account.AccountListener, Setting.SettingListener, Profile.ProfileListener, Favorite.FavoriteListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase myDatabase;
@@ -248,6 +248,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                 currentUserInfo = dataSnapshot.getValue(Student.class);
 
+                favoriteTutors = currentUserInfo.getFavorites();
+
                 //displayUserInfo();
 
 //                Log.d("__FIRST__", currentUserInfo.getFirstName());
@@ -372,6 +374,36 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/favorites");
 
         favoriteRef.setValue(favoriteTutors);
+    }
+
+    @Override
+    public void removeTutorFromFavorite(Tutor tutorToRemove) {
+
+        String tutorEmail = tutorToRemove.getEmail();
+
+        for (int i = 0; i < favoriteTutors.size(); i++)
+        {
+            //remove tutor at position if emails match
+            if (favoriteTutors.get(i).getEmail().equals(tutorEmail))
+            {
+                favoriteTutors.remove(i);
+            }
+        }
+
+        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/favorites");
+
+        favoriteRef.setValue(favoriteTutors);
+    }
+
+    @Override
+    public void getFavoriteTutor(Tutor mTutor) {
+
+        tutor = mTutor;
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.content_container, new Profile())
+                .addToBackStack("favorite")
+                .commit();
     }
 
     public ArrayList<Tutor> getTutors()
