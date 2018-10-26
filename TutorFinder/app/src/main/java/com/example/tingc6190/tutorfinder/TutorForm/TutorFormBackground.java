@@ -97,6 +97,7 @@ public class TutorFormBackground extends Fragment {
                         }
                         else
                         {
+                            //student user becomes a tutor user
                             backgroundFormListener.getBackgroundFormListener(city, state, zipcode, license);
                         }
                     }

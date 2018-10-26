@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Search;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
 import com.example.tingc6190.tutorfinder.TutorForm.TutorFormBackground;
+import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -63,6 +66,7 @@ public class Profile extends Fragment {
                 final View favorite_unchecked_v;
                 final View email_v;
                 Button hireButton;
+                RoundedImageView profileImage_riv;
 
                 name_tv = getView().findViewById(R.id.profile_name);
                 price_tv = getView().findViewById(R.id.profile_price);
@@ -79,13 +83,15 @@ public class Profile extends Fragment {
                 email_v = getView().findViewById(R.id.profile_email_button);
                 email_textview = getView().findViewById(R.id.profile_email);
                 hireButton = getView().findViewById(R.id.hire_button);
-                aboutMe_tv =getView().findViewById(R.id.profile_aboutme);
+                aboutMe_tv = getView().findViewById(R.id.profile_aboutme);
+                profileImage_riv = getView().findViewById(R.id.tutor_profile_image);
 
                 String fullName = tutor.getFirstName() + " " + tutor.getLastName();
                 String price = "$" + tutor.getPrice() + "/hr";
                 String subject = tutor.getSubject();
                 String email = tutor.getEmail();
                 String aboutMe = tutor.getAboutMe();
+                String profileImage = tutor.getPicture().trim();
 
                 //tutor schedule
                 Schedule schedule = tutor.getSchedule();
@@ -110,6 +116,11 @@ public class Profile extends Fragment {
                 timeSaturday_tv.setText(timeSaturday);
                 email_textview.setText(email);
                 aboutMe_tv.setText(aboutMe);
+
+                if (!TextUtils.isEmpty(profileImage))
+                {
+                    Picasso.get().load(profileImage).into(profileImage_riv);
+                }
 
                 //checking for favorites
                 favorite_checked_v.setOnClickListener(new View.OnClickListener() {

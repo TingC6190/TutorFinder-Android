@@ -62,6 +62,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private Student currentUserInfo;
     private Tutor tutorFromInitialSetup;
     private String email;
+    private boolean isTutor;
+    private ArrayList<String> allTutorUID = new ArrayList<>();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -112,6 +114,12 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         currentUserUID = firebaseAuth.getUid();
 
         email = firebaseAuth.getCurrentUser().getEmail();
+
+
+        Log.d("__NEWACTIVITYCREATED__", "_________");
+
+       //checkIfUserIsTutor();
+
 
         //sendPasswordChange();
 
@@ -168,17 +176,28 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 ArrayList<Tutor> getAllTutors = new ArrayList<>();
+                ArrayList<String> tutorsUID = new ArrayList<>();
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
                 {
                     Tutor mTutor = postSnapshot.getValue(Tutor.class);
+                    String tutorUID = postSnapshot.getKey();
+
+
+                    //allTutorUID.ad
 
                     //tutors = new ArrayList<>();
                     //tutors.add(tutor);
 
                     getAllTutors.add(mTutor);
+                    tutorsUID.add(tutorUID);
+
                 }
                 tutors = getAllTutors;
+                allTutorUID = tutorsUID;
+                checkIfUserIsTutor();
+
+                //Log.d("_______test______", String.valueOf(tutors.get(0).toString()));
             }
 
             @Override
@@ -187,7 +206,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
             }
         };
         databaseReference.addValueEventListener(tutorListener);
-
 
         String accountUID = firebaseAuth.getUid();
 
@@ -309,7 +327,14 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         //tutorFromInitialSetup.setPicture(imageUrl);
 
-        updateStudentPicture(imageUrl);
+        if (isTutor)
+        {
+            updateTutorPicture(imageUrl);
+        }
+        else
+        {
+            updateStudentPicture(imageUrl);
+        }
         //updateTutorPicture(imageUrl);
     }
 
@@ -402,4 +427,23 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 });
     }
 
+    private void checkIfUserIsTutor()
+    {
+       for (int i = 0; i < allTutorUID.size(); i++)
+       {
+           String uid = allTutorUID.get(i);
+
+           if (currentUserUID.equals(uid))
+           {
+               isTutor = true;
+               Log.d("__ISTUTOR__", currentUserUID + " == " + uid + " " + isTutor);
+               break;
+           }
+           else
+           {
+               isTutor = false;
+               Log.d("__ISTUTOR__", currentUserUID + " != " + uid + " " + isTutor);
+           }
+       }
+    }
 }

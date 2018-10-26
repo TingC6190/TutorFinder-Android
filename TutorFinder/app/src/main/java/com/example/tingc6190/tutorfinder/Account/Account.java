@@ -111,7 +111,7 @@ public class Account extends Fragment {
                 settingButton = getView().findViewById(R.id.setting_button);
 
                 String name = student.getFirstName() + " " + student.getLastName();
-                String newEmail = "Email: " + email;
+                String newEmail = email;
                 String aboutMe = student.getAboutMe();
 
                 name_tv.setText(name);
