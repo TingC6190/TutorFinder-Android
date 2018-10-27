@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.tingc6190.tutorfinder.DataObject.Student;
+import com.example.tingc6190.tutorfinder.DataObject.Transaction;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
 import com.example.tingc6190.tutorfinder.Welcome.Welcome;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +25,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -104,8 +106,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 DatabaseReference studentUserRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + firebaseAuth.getUid());
 
                                 ArrayList<Tutor> favorites = new ArrayList<>();
+                                ArrayList<Transaction> transactions = new ArrayList<>();
 
-                                Student studentUser = new Student(firstName, lastName, email, " ", " ", "", favorites);
+                                Student studentUser = new Student(firstName, lastName, email, " ", " ", "", favorites, transactions);
                                 studentUserRef.setValue(studentUser);
 
 

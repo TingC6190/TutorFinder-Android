@@ -25,11 +25,14 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 public class Profile extends Fragment {
 
     private Tutor tutor;
     private HomeActivity homeActivity;
     private ProfileListener profileListener;
+    private ArrayList<Tutor> favoriteTutors;
 
     public Profile() {
     }
@@ -40,6 +43,7 @@ public class Profile extends Fragment {
 
         homeActivity = (HomeActivity) getActivity();
         tutor = homeActivity.getTutor();
+        favoriteTutors = homeActivity.getFavoriteTutors();
 
         return inflater.inflate(R.layout.content_profile_screen, container, false);
     }
@@ -107,6 +111,20 @@ public class Profile extends Fragment {
                 hireButton = getView().findViewById(R.id.hire_button);
                 aboutMe_tv = getView().findViewById(R.id.profile_aboutme);
                 profileImage_riv = getView().findViewById(R.id.tutor_profile_image);
+
+                //check to see if the current tutor already belongs in favorites
+
+                if (favoriteTutors != null)
+                {
+                    for (int i = 0; i < favoriteTutors.size(); i++)
+                    {
+                        if (favoriteTutors.get(i).getEmail().equals(tutor.getEmail()))
+                        {
+                            favorite_checked_v.setVisibility(View.VISIBLE);
+                            favorite_unchecked_v.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }
 
                 String fullName = tutor.getFirstName() + " " + tutor.getLastName();
                 String price = "$" + tutor.getPrice() + "/hr";

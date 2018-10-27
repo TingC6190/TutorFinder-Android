@@ -20,9 +20,11 @@ import com.example.tingc6190.tutorfinder.DataObject.Schedule.Thursday;
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Tuesday;
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Wednesday;
 import com.example.tingc6190.tutorfinder.DataObject.Student;
+import com.example.tingc6190.tutorfinder.DataObject.Transaction;
 import com.example.tingc6190.tutorfinder.DataObject.User;
 import com.example.tingc6190.tutorfinder.Favorite.Favorite;
 import com.example.tingc6190.tutorfinder.Message.Message;
+import com.example.tingc6190.tutorfinder.Payment.Payment;
 import com.example.tingc6190.tutorfinder.Profile.Profile;
 import com.example.tingc6190.tutorfinder.Profile.Review;
 import com.example.tingc6190.tutorfinder.Search.Search;
@@ -46,7 +48,7 @@ import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity implements Search.TutorListener,
         TutorFormInitial.TutorFormListener, TutorFormBackground.BackgroundFormListener,
-        Account.AccountListener, Setting.SettingListener, Profile.ProfileListener, Favorite.FavoriteListener {
+        Account.AccountListener, Setting.SettingListener, Profile.ProfileListener, Favorite.FavoriteListener, Payment.PaymentListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase myDatabase;
@@ -65,6 +67,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private boolean isTutor;
     private ArrayList<String> allTutorUID = new ArrayList<>();
     private ArrayList<Tutor> favoriteTutors = new ArrayList<>();
+    private ArrayList<Transaction> userTransactions = new ArrayList<>();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -75,6 +78,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                 case R.id.navbar_search:
                     //launch search fragment
+                    getFragmentManager().popBackStack();
                     getFragmentManager().beginTransaction()
                             .replace(R.id.content_container, new Search())
                             .commit();
@@ -82,6 +86,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                 case R.id.navbar_messages:
                     //launch messages fragment
+                    getFragmentManager().popBackStack();
                     getFragmentManager().beginTransaction()
                             .replace(R.id.content_container, new Message())
                             .commit();
@@ -89,6 +94,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                 case R.id.navbar_favorites:
                     //launch favorites fragment
+                    getFragmentManager().popBackStack();
                     getFragmentManager().beginTransaction()
                             .replace(R.id.content_container, new Favorite())
                             .commit();
@@ -96,6 +102,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                 case R.id.navbar_account:
                     //launch account fragment
+                    getFragmentManager().popBackStack();
                     getFragmentManager().beginTransaction()
                             .replace(R.id.content_container, new Account())
                             .commit();
@@ -249,6 +256,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 currentUserInfo = dataSnapshot.getValue(Student.class);
 
                 favoriteTutors = currentUserInfo.getFavorites();
+                userTransactions = currentUserInfo.getTransactions();
 
                 //displayUserInfo();
 
@@ -369,6 +377,13 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     @Override
     public void addTutorToFavorite(Tutor tutorToAdd)
     {
+        ArrayList<Tutor> tempFav = new ArrayList<>();
+
+        if (favoriteTutors == null)
+        {
+            favoriteTutors = tempFav;
+        }
+
         favoriteTutors.add(tutorToAdd);
 
         DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/favorites");
@@ -404,6 +419,24 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 .replace(R.id.content_container, new Profile())
                 .addToBackStack("favorite")
                 .commit();
+    }
+
+    @Override
+    public void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl)
+    {
+        ArrayList<Transaction> tempTransaction = new ArrayList<>();
+
+        if (userTransactions == null)
+        {
+            userTransactions = tempTransaction;
+        }
+
+        userTransactions.add(new Transaction(firstName, lastName, price, pictureUrl));
+
+        //upload to db
+        DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/transactions");
+
+        transactionRef.setValue(userTransactions);
     }
 
     public ArrayList<Tutor> getTutors()
@@ -461,6 +494,11 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         return favoriteTutors;
     }
 
+    public ArrayList<Transaction> getAllTransactions()
+    {
+        return userTransactions;
+    }
+
     public void sendPasswordResetEmail()
     {
         firebaseAuth.sendPasswordResetEmail(email)
@@ -494,5 +532,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
            }
        }
     }
+
 
 }

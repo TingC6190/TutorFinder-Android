@@ -13,11 +13,13 @@ public class Student {
     private String aboutMe;
     private String picture;
     private ArrayList<Tutor> favorites;
+    private ArrayList<Transaction> transactions;
 
     public Student() {
     }
 
-    public Student(String firstName, String lastName, String email, String zipcode, String aboutMe, String picture, ArrayList<Tutor> favorites) {
+    public Student(String firstName, String lastName, String email, String zipcode, String aboutMe,
+                   String picture, ArrayList<Tutor> favorites, ArrayList<Transaction> transactions) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -25,6 +27,7 @@ public class Student {
         this.aboutMe = aboutMe;
         this.picture = picture;
         this.favorites = favorites;
+        this.transactions = transactions;
     }
 
     public String getFirstName() {
@@ -81,5 +84,13 @@ public class Student {
 
     public void setFavorites(ArrayList<Tutor> favorites) {
         this.favorites = favorites;
+    }
+
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

@@ -48,6 +48,7 @@ public class Account extends Fragment {
     private Student student;
     private String email;
     private View settingButton;
+    private TextView transaction_tv;
 
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
@@ -109,6 +110,7 @@ public class Account extends Fragment {
                 View cameraButton = getView().findViewById(R.id.account_camera_button);
                 accountImage = getView().findViewById(R.id.account_image);
                 settingButton = getView().findViewById(R.id.setting_button);
+                transaction_tv = getView().findViewById(R.id.account_transactions);
 
                 String name = student.getFirstName() + " " + student.getLastName();
                 String newEmail = email;
@@ -177,6 +179,16 @@ public class Account extends Fragment {
                         getFragmentManager().beginTransaction()
                                 .replace(R.id.content_container, new Setting())
                                 .addToBackStack("setting form")
+                                .commit();
+                    }
+                });
+
+                transaction_tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.content_container, new Transactions())
+                                .addToBackStack("account")
                                 .commit();
                     }
                 });

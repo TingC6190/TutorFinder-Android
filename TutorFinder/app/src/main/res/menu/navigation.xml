@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/navbar_favorites"
-        android:icon="@drawable/ic_star_black_24dp"
+        android:icon="@drawable/ic_favorite_black_24dp"
         android:title="@string/favorites" />
 
     <item

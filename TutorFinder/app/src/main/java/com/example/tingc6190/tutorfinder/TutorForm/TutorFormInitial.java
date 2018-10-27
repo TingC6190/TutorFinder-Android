@@ -142,7 +142,8 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
 //            }
 
 
-            ArrayAdapter<CharSequence> subjectAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_subject, android.R.layout.simple_spinner_item);
+            ArrayAdapter<CharSequence> subjectAdapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.spinner_subject, android.R.layout.simple_spinner_item);
             subjectAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
             subjectSpinner.setAdapter(subjectAdapter);
 

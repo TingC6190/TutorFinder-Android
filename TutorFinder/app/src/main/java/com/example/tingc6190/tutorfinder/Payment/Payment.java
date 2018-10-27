@@ -3,10 +3,12 @@ package com.example.tingc6190.tutorfinder.Payment;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,8 +58,28 @@ public class Payment extends Fragment {
     TextView pricePerHour_tv;
     Integer hourSelected;
     Integer totalPrice;
+    PaymentListener paymentListener;
 
     public Payment() {
+    }
+
+    public interface PaymentListener
+    {
+        void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof PaymentListener)
+        {
+            paymentListener = (PaymentListener) context;
+        }
+        else
+        {
+            Log.d("error", "must implement PaymentListener");
+        }
     }
 
     @Nullable
@@ -197,8 +219,8 @@ public class Payment extends Fragment {
             }
             else
             {
-                Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
-                Log.d("error", error.toString());
+                //Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
+                Log.d("error", "__");
             }
         }
     }
@@ -215,6 +237,20 @@ public class Payment extends Fragment {
 
                         if (response.contains("Successful"))
                         {
+                            Log.d("__NAME__", tutor.getFirstName() + " " + tutor.getLastName());
+                            Log.d("__PRICE__", String.valueOf(totalPrice));
+                            Log.d("__IMAGE__", tutor.getPicture());
+
+                            if (!TextUtils.isEmpty(tutor.getPicture().trim()))
+                            {
+                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture());
+
+                            }
+                            else
+                            {
+                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ");
+
+                            }
                             Toast.makeText(getContext(), "Payment Successful", Toast.LENGTH_SHORT).show();
                         }
                         else

@@ -21,6 +21,8 @@
         android:layout_height="0dp"
         android:layout_weight="0.1"
         android:background="?android:attr/windowBackground"
+        app:itemIconTint="@color/icon_selector"
+        app:itemTextColor="@color/icon_selector"
         app:menu="@menu/navigation"/>
 
 </LinearLayout>
