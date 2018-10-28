@@ -48,7 +48,8 @@ import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity implements Search.TutorListener,
         TutorFormInitial.TutorFormListener, TutorFormBackground.BackgroundFormListener,
-        Account.AccountListener, Setting.SettingListener, Profile.ProfileListener, Favorite.FavoriteListener, Payment.PaymentListener {
+        Account.AccountListener, Setting.SettingListener, Profile.ProfileListener,
+        Favorite.FavoriteListener, Payment.PaymentListener, Welcome.WelcomeListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase myDatabase;
@@ -68,6 +69,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private ArrayList<String> allTutorUID = new ArrayList<>();
     private ArrayList<Tutor> favoriteTutors = new ArrayList<>();
     private ArrayList<Transaction> userTransactions = new ArrayList<>();
+    private ArrayList<Tutor> tutors_duplicate = new ArrayList<>();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -202,8 +204,11 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                 }
                 tutors = getAllTutors;
+                tutors_duplicate = getAllTutors;
                 allTutorUID = tutorsUID;
                 checkIfUserIsTutor();
+
+                Log.d("__DATABASE__", "__HAS_UPDATED__");
 
                 //Log.d("_______test______", String.valueOf(tutors.get(0).toString()));
             }
@@ -439,15 +444,29 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         transactionRef.setValue(userTransactions);
     }
 
-    public ArrayList<Tutor> getTutors()
-    {
-        return tutors;
+    @Override
+    public void getSearchSettings(String subject, String zipcode) {
+
+        ArrayList<Tutor> filteredTutors = new ArrayList<>();
+
+        //filteredTutors = tutors_duplicate;
+
+        for (int i = 0; i < tutors_duplicate.size(); i++)
+        {
+            if (tutors_duplicate.get(i).getSubject().equals(subject))
+            {
+                filteredTutors.add(tutors_duplicate.get(i));
+            }
+        }
+
+        tutors = filteredTutors;
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.content_container, new Search())
+                .commit();
+
     }
 
-    public Tutor getTutor()
-    {
-        return tutor;
-    }
 
     public void pushTutorToDatabase()
     {
@@ -472,31 +491,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         DatabaseReference studentPictureRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/picture");
 
         studentPictureRef.setValue(url);
-    }
-
-    public Tutor getCurrentTutor()
-    {
-        return tutorFromInitialSetup;
-    }
-
-    public Student getCurrentStudent()
-    {
-        return currentUserInfo;
-    }
-
-    public String getStudentEmail()
-    {
-        return email;
-    }
-
-    public ArrayList<Tutor> getFavoriteTutors()
-    {
-        return favoriteTutors;
-    }
-
-    public ArrayList<Transaction> getAllTransactions()
-    {
-        return userTransactions;
     }
 
     public void sendPasswordResetEmail()
@@ -534,4 +528,38 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     }
 
 
+    public Tutor getCurrentTutor()
+    {
+        return tutorFromInitialSetup;
+    }
+
+    public Student getCurrentStudent()
+    {
+        return currentUserInfo;
+    }
+
+    public String getStudentEmail()
+    {
+        return email;
+    }
+
+    public ArrayList<Tutor> getFavoriteTutors()
+    {
+        return favoriteTutors;
+    }
+
+    public ArrayList<Transaction> getAllTransactions()
+    {
+        return userTransactions;
+    }
+
+    public ArrayList<Tutor> getTutors()
+    {
+        return tutors;
+    }
+
+    public Tutor getTutor()
+    {
+        return tutor;
+    }
 }

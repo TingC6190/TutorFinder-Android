@@ -10,12 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.tingc6190.tutorfinder.DataObject.Location;
 import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.Profile.Profile;
 import com.example.tingc6190.tutorfinder.R;
+import com.example.tingc6190.tutorfinder.Welcome.Welcome;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +27,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Search extends Fragment {
 
@@ -30,6 +37,10 @@ public class Search extends Fragment {
     ArrayList<Tutor> tutors = new ArrayList<>();
     private TutorListener tutorListener;
     private DatabaseReference databaseReference;
+    Spinner leftSpinner;
+    Spinner rightSpinner;
+    String leftSpinnerString;
+    String rightSpinnerString;
 
     public Search() {
     }
@@ -85,9 +96,6 @@ public class Search extends Fragment {
 //            Log.d(" ", " ");
 //        }
 
-
-
-
         return inflater.inflate(R.layout.content_search_screen, container, false);
     }
 
@@ -97,11 +105,13 @@ public class Search extends Fragment {
 
         if (getView() != null)
         {
+            TextView filterText_tv = getView().findViewById(R.id.filter_text);
+
             if (tutors.size() != 0)
             {
                 //display our list
                 ListView listView = getView().findViewById(R.id.list_search);
-                TutorAdapter tutorAdapter = new TutorAdapter(getContext(), tutors);
+                final TutorAdapter tutorAdapter = new TutorAdapter(getContext(), tutors);
                 listView.setAdapter(tutorAdapter);
 
                 tutorAdapter.notifyDataSetChanged();
@@ -115,7 +125,78 @@ public class Search extends Fragment {
                         tutorListener.getTutor(tutors.get(position));
                     }
                 });
+
+                Collections.sort(tutors, new Comparator<Tutor>() {
+                    @Override
+                    public int compare(Tutor o1, Tutor o2) {
+                        return o1.getPrice().compareTo(o2.getPrice());
+                    }
+                });
+
+
+                //spinners
+                leftSpinner = getView().findViewById(R.id.setting_spinner_left);
+                rightSpinner = getView().findViewById(R.id.setting_spinner_right);
+
+                leftSpinnerString = "Price";
+                rightSpinnerString = "Ascending";
+
+                ArrayAdapter<CharSequence> leftAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_items_left,
+                        android.R.layout.simple_spinner_item);
+                leftAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                leftSpinner.setAdapter(leftAdapter);
+
+                ArrayAdapter<CharSequence> rightAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_items_right, android.R.layout.simple_spinner_item);
+                rightAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                rightSpinner.setAdapter(rightAdapter);
+
+                rightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        rightSpinnerString = parent.getItemAtPosition(position).toString();
+
+                        if (rightSpinnerString.equals("Ascending") && leftSpinnerString.equals("Price"))
+                        {
+                            Collections.sort(tutors, new Comparator<Tutor>() {
+                                @Override
+                                public int compare(Tutor o1, Tutor o2) {
+                                    return o1.getPrice().compareTo(o2.getPrice());
+                                }
+                            });
+                        }
+
+                        if (rightSpinnerString.equals("Descending") && leftSpinnerString.equals("Price"))
+                        {
+                            Collections.sort(tutors, new Comparator<Tutor>() {
+                                @Override
+                                public int compare(Tutor o1, Tutor o2) {
+                                    return o2.getPrice().compareTo(o1.getPrice());
+                                }
+                            });
+                        }
+
+                        tutorAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+
             }
+
+            filterText_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.content_container, new Welcome())
+                            .commit();
+                }
+            });
         }
     }
 }

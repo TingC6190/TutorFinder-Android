@@ -32,7 +32,7 @@
     <string name="fri">FRI</string>
     <string name="sat">SAT</string>
     <string name="welcome">Welcome</string>
-    <string name="welcome_question">What Subject Do You need Help With?</string>
+    <string name="welcome_question">What subject do you need help with?</string>
     <string name="account">Account</string>
     <string name="location">location</string>
     <string name="last_name">Last Name</string>
@@ -57,6 +57,16 @@
         <item>Biology</item>
         <item>Physics</item>
         <item>History</item>
+    </string-array>
+
+
+    <string-array name="spinner_items_left">
+        <item>Price</item>
+    </string-array>
+
+    <string-array name="spinner_items_right">
+        <item>Ascending</item>
+        <item>Descending</item>
     </string-array>
 
 </resources>

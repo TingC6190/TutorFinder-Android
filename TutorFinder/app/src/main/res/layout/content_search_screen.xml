@@ -28,21 +28,50 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp"/>
 
-    <TextView
-        android:id="@+id/filter_text"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/filter"
-        android:textAlignment="textEnd"
-        android:textColor="@color/royalBlue"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:orientation="horizontal"
         android:layout_marginTop="8dp"
-        android:visibility="invisible"
-        tools:ignore="RtlCompat" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
+
+
+        <Spinner
+            android:id="@+id/setting_spinner_left"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.4"
+            android:layout_marginTop="8dp">
+
+        </Spinner>
+
+        <Spinner
+            android:id="@+id/setting_spinner_right"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.4"
+            android:layout_marginTop="8dp">
+
+        </Spinner>
+
+        <TextView
+            android:id="@+id/filter_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_gravity="center"
+            android:text="@string/filter"
+            android:textAlignment="textEnd"
+            android:textColor="@color/royalBlue"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            tools:ignore="RtlCompat" />
+
+    </LinearLayout>
+
+
 
     <ListView
         android:id="@+id/list_search"
