@@ -66,6 +66,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private Tutor tutorFromInitialSetup;
     private String email;
     private boolean isTutor;
+    //private MainActivity mainActivity;
     private ArrayList<String> allTutorUID = new ArrayList<>();
     private ArrayList<Tutor> favoriteTutors = new ArrayList<>();
     private ArrayList<Transaction> userTransactions = new ArrayList<>();
@@ -447,19 +448,25 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     @Override
     public void getSearchSettings(String subject, String zipcode) {
 
-        ArrayList<Tutor> filteredTutors = new ArrayList<>();
 
-        //filteredTutors = tutors_duplicate;
-
-        for (int i = 0; i < tutors_duplicate.size(); i++)
+        if (subject.equals("Any"))
         {
-            if (tutors_duplicate.get(i).getSubject().equals(subject))
-            {
-                filteredTutors.add(tutors_duplicate.get(i));
-            }
+            tutors = tutors_duplicate;
         }
+        else
+        {
+            ArrayList<Tutor> filteredTutors = new ArrayList<>();
 
-        tutors = filteredTutors;
+            for (int i = 0; i < tutors_duplicate.size(); i++)
+            {
+                if (tutors_duplicate.get(i).getSubject().equals(subject))
+                {
+                    filteredTutors.add(tutors_duplicate.get(i));
+                }
+            }
+
+            tutors = filteredTutors;
+        }
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_container, new Search())
@@ -527,6 +534,22 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
        }
     }
 
+    public Tutor getTutorToEdit()
+    {
+        Tutor newTutor = new Tutor();
+
+        for (int i = 0; i < tutors_duplicate.size(); i++)
+        {
+            String email = tutors_duplicate.get(i).getEmail();
+
+            if (email.equals(getStudentEmail()))
+            {
+                newTutor = tutors_duplicate.get(i);
+            }
+        }
+
+        return newTutor;
+    }
 
     public Tutor getCurrentTutor()
     {
@@ -561,5 +584,9 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     public Tutor getTutor()
     {
         return tutor;
+    }
+
+    public boolean isTutor() {
+        return isTutor;
     }
 }

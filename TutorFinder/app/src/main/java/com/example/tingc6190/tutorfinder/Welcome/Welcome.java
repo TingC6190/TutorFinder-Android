@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.example.tingc6190.tutorfinder.MainActivity;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Search;
 
@@ -62,7 +63,7 @@ public class Welcome extends Fragment {
 
 
             ArrayAdapter<CharSequence> subjectAdapter = ArrayAdapter.createFromResource(getContext(),
-                    R.array.spinner_subject, android.R.layout.simple_spinner_item);
+                    R.array.spinner_subject_any, android.R.layout.simple_spinner_item);
             subjectAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
             subjectSpinner.setAdapter(subjectAdapter);
 

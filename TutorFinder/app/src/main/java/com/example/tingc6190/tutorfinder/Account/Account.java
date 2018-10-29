@@ -49,6 +49,7 @@ public class Account extends Fragment {
     private String email;
     private View settingButton;
     private TextView transaction_tv;
+    private Boolean isTutor;
 
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
@@ -88,7 +89,7 @@ public class Account extends Fragment {
         student = homeActivity.getCurrentStudent();
         email = homeActivity.getStudentEmail();
 
-
+        isTutor = homeActivity.isTutor();
 
 
         return inflater.inflate(R.layout.content_account_screen, container, false);
@@ -115,6 +116,12 @@ public class Account extends Fragment {
                 String name = student.getFirstName() + " " + student.getLastName();
                 String newEmail = email;
                 String aboutMe = student.getAboutMe();
+
+                if (isTutor)
+                {
+                    String editTutor = "Edit Tutor";
+                    applyTutorButton.setText(editTutor);
+                }
 
                 name_tv.setText(name);
                 email_tv.setText(newEmail);

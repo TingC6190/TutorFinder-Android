@@ -120,8 +120,25 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.60"
+            android:layout_weight="0.37"
             android:text="SUN"/>
+
+        <TextView
+            android:id="@+id/reset_sunday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.18"
+            android:text="@string/reset"
+            android:textAlignment="center"
+            android:background="@drawable/rounded_corner_white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/royalBlue"/>
 
         <TextView
             android:id="@+id/sunday_start"
@@ -173,8 +190,25 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
+            android:layout_weight="0.37"
             android:text="MON"/>
+
+        <TextView
+            android:id="@+id/reset_monday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.18"
+            android:text="@string/reset"
+            android:textAlignment="center"
+            android:background="@drawable/rounded_corner_white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/royalBlue"/>
 
         <TextView
             android:id="@+id/monday_start"
@@ -226,8 +260,25 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
+            android:layout_weight="0.37"
             android:text="TUE"/>
+
+        <TextView
+            android:id="@+id/reset_tuesday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.18"
+            android:text="@string/reset"
+            android:textAlignment="center"
+            android:background="@drawable/rounded_corner_white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/royalBlue"/>
 
         <TextView
             android:id="@+id/tuesday_start"
@@ -280,8 +331,25 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
+            android:layout_weight="0.37"
             android:text="WED"/>
+
+        <TextView
+            android:id="@+id/reset_wednesday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.18"
+            android:text="@string/reset"
+            android:textAlignment="center"
+            android:background="@drawable/rounded_corner_white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/royalBlue"/>
 
         <TextView
             android:id="@+id/wednesday_start"
@@ -333,8 +401,25 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
+            android:layout_weight="0.37"
             android:text="THU"/>
+
+        <TextView
+            android:id="@+id/reset_thursday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.18"
+            android:text="@string/reset"
+            android:textAlignment="center"
+            android:background="@drawable/rounded_corner_white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/royalBlue"/>
 
         <TextView
             android:id="@+id/thursday_start"
@@ -386,8 +471,25 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
+            android:layout_weight="0.37"
             android:text="FRI"/>
+
+        <TextView
+            android:id="@+id/reset_friday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.18"
+            android:text="@string/reset"
+            android:textAlignment="center"
+            android:background="@drawable/rounded_corner_white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/royalBlue"/>
 
         <TextView
             android:id="@+id/friday_start"
@@ -439,8 +541,25 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
+            android:layout_weight="0.37"
             android:text="SAT"/>
+
+        <TextView
+            android:id="@+id/reset_saturday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.18"
+            android:text="@string/reset"
+            android:textAlignment="center"
+            android:background="@drawable/rounded_corner_white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/royalBlue"/>
 
         <TextView
             android:id="@+id/saturday_start"

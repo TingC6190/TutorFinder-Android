@@ -43,11 +43,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             //launch register screen
             startActivity(new Intent(this, RegisterActivity.class));
+            finish();
         }
         if (v == loginButton)
         {
             //launch login screen
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
+    }
+
+    public void closeActivity()
+    {
+        finish();
     }
 }

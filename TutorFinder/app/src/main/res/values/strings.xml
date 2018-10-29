@@ -48,9 +48,20 @@
     <string name="state">State</string>
     <string name="apply">Apply</string>
     <string name="session_form">Session Form</string>
+    <string name="reset">Reset</string>
 
 
     <string-array name="spinner_subject">
+        <item>English</item>
+        <item>Math</item>
+        <item>Chemistry</item>
+        <item>Biology</item>
+        <item>Physics</item>
+        <item>History</item>
+    </string-array>
+
+    <string-array name="spinner_subject_any">
+        <item>Any</item>
         <item>English</item>
         <item>Math</item>
         <item>Chemistry</item>

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.tingc6190.tutorfinder.DataObject.Location;
 import com.example.tingc6190.tutorfinder.HomeActivity;
+import com.example.tingc6190.tutorfinder.MainActivity;
 import com.example.tingc6190.tutorfinder.Profile.Profile;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Welcome.Welcome;
@@ -67,7 +68,6 @@ public class Search extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
 
         homeActivity = (HomeActivity) getActivity();
 

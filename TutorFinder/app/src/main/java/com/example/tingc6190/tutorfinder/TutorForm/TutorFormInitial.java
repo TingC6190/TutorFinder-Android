@@ -36,6 +36,8 @@ import com.example.tingc6190.tutorfinder.Profile.Review;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -56,6 +58,15 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
     TextView saturdayStart_tv;
     TextView saturdayEnd_tv;
 
+    TextView resetSunday;
+    TextView resetMonday;
+    TextView resetTuesday;
+    TextView resetWednesday;
+    TextView resetThursday;
+    TextView resetFriday;
+    TextView resetSaturday;
+
+
     String subject;
     String aboutMe;
     Schedule schedule;
@@ -64,6 +75,9 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
     Integer price;
     Tutor currentTutor;
     HomeActivity homeActivity;
+    Boolean isTutor;
+    TimePickerDialog timePickerDialog;
+    Tutor tutorToEdit;
 
     public TutorFormInitial() {
     }
@@ -92,8 +106,15 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         homeActivity = (HomeActivity) getActivity();
+        isTutor = homeActivity.isTutor();
+        tutorToEdit = new Tutor();
         currentTutor = new Tutor();
         currentTutor = homeActivity.getCurrentTutor();
+
+        if (isTutor)
+        {
+            tutorToEdit = homeActivity.getTutorToEdit();
+        }
 
         tutor = new Tutor();
         //schedule = new Schedule(new Sunday(), new Monday(), new Tuesday(), new Wednesday(), new Thursday(), new Friday(), new Saturday());
@@ -115,7 +136,6 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
 
         if (getView() != null)
         {
-
             final EditText aboutMe_tutorForm = getView().findViewById(R.id.tutor_form_about_me);
             Spinner subjectSpinner = getView().findViewById(R.id.subject_spinner);
             Button nextButton = getView().findViewById(R.id.tutor_form_next_button);
@@ -136,10 +156,49 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
             saturdayStart_tv = getView().findViewById(R.id.saturday_start);
             saturdayEnd_tv =   getView().findViewById(R.id.saturday_end);
 
+            resetSunday = getView().findViewById(R.id.reset_sunday);
+            resetMonday = getView().findViewById(R.id.reset_monday);
+            resetTuesday = getView().findViewById(R.id.reset_tuesday);
+            resetWednesday = getView().findViewById(R.id.reset_wednesday);
+            resetThursday = getView().findViewById(R.id.reset_thursday);
+            resetFriday = getView().findViewById(R.id.reset_friday);
+            resetSaturday = getView().findViewById(R.id.reset_saturday);
+
 //            if (!currentTutor.getAboutMe().toString().trim().equals(""))
 //            {
 //                aboutMe_tutorForm.setText(currentTutor.getAboutMe());
 //            }
+
+            if (isTutor)
+            {
+                Schedule tutorSchedule = tutorToEdit.getSchedule();
+                price = tutorToEdit.getPrice();
+                String priceString = "$" + String.valueOf(tutorToEdit.getPrice());
+
+                aboutMe_tutorForm.setText(tutorToEdit.getAboutMe());
+                pricePicker_tv.setText(priceString);
+
+                sundayStart_tv.setText(tutorSchedule.getSunday().getStartTime());
+                sundayEnd_tv  .setText(tutorSchedule.getSunday().getEndTime());
+
+                mondayStart_tv.setText(tutorSchedule.getMonday().getStartTime());
+                mondayEnd_tv  .setText(tutorSchedule.getMonday().getEndTime());
+
+                tuesdayStart_tv.setText(tutorSchedule.getTuesday().getStartTime());
+                tuesdayEnd_tv  .setText(tutorSchedule.getTuesday().getEndTime());
+
+                wednesdayStart_tv.setText(tutorSchedule.getWednesday().getStartTime());
+                wednesdayEnd_tv  .setText(tutorSchedule.getWednesday().getEndTime());
+
+                thursdayStart_tv.setText(tutorSchedule.getThursday().getStartTime());
+                thursdayEnd_tv  .setText(tutorSchedule.getThursday().getEndTime());
+
+                fridayStart_tv.setText(tutorSchedule.getFriday().getStartTime());
+                fridayEnd_tv  .setText(tutorSchedule.getFriday().getEndTime());
+
+                saturdayStart_tv.setText(tutorSchedule.getSaturday().getStartTime());
+                saturdayEnd_tv  .setText(tutorSchedule.getSaturday().getEndTime());
+            }
 
             ArrayAdapter<CharSequence> subjectAdapter = ArrayAdapter.createFromResource(getContext(),
                     R.array.spinner_subject, android.R.layout.simple_spinner_item);
@@ -246,6 +305,14 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
             saturdayStart_tv.setOnClickListener(this);
             saturdayEnd_tv.setOnClickListener(this);
 
+            resetSunday.setOnClickListener(this);
+            resetMonday.setOnClickListener(this);
+            resetTuesday.setOnClickListener(this);
+            resetWednesday.setOnClickListener(this);
+            resetThursday.setOnClickListener(this);
+            resetFriday.setOnClickListener(this);
+            resetSaturday.setOnClickListener(this);
+
             // move to next form for background check
             nextButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -261,36 +328,39 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
                     {
                         if (price != null)
                         {
-                            tutor.setFirstName("");
-                            tutor.setLastName("");
-                            tutor.setLocation(new Location("", "", ""));
-                            tutor.setPrice(price);
-                            tutor.setRating(0.0);
-                            tutor.setDateVerified("");
-                            tutor.setEmail("");
-                            tutor.setLicenseNumber("");
-                            tutor.setPicture("");
+                            if (checkTimeFields())
+                            {
+                                tutor.setFirstName("");
+                                tutor.setLastName("");
+                                tutor.setLocation(new Location("", "", ""));
+                                tutor.setPrice(price);
+                                tutor.setRating(0.0);
+                                tutor.setDateVerified("");
+                                tutor.setEmail("");
+                                tutor.setLicenseNumber("");
+                                tutor.setPicture("");
 
-                            //Review review = new Review("", "");
+                                //Review review = new Review("", "");
 
-                            ArrayList<Review> reviews = new ArrayList<>();
-                            reviews.add(new Review("", ""));
-                            tutor.setReviews(reviews);
+                                ArrayList<Review> reviews = new ArrayList<>();
+                                reviews.add(new Review("", ""));
+                                tutor.setReviews(reviews);
 
-                            tutor.setDateVerified("12/15/2017");
-                            tutor.setVerified(true);
-                            tutor.setAboutMe(aboutMe);
-                            tutor.setSubject(subject);
-                            tutor.setSchedule(schedule);
-                            tutor.setLicenseNumber("");
+                                tutor.setDateVerified("12/15/2017");
+                                tutor.setVerified(true);
+                                tutor.setAboutMe(aboutMe);
+                                tutor.setSubject(subject);
+                                tutor.setSchedule(schedule);
+                                tutor.setLicenseNumber("");
 
-                            tutorFormListener.getTutorToUpdate(tutor);
+                                tutorFormListener.getTutorToUpdate(tutor);
 
-                            //move to background check form
-                            getFragmentManager().beginTransaction()
-                                    .replace(R.id.content_container, new TutorFormBackground())
-                                    .addToBackStack("background form")
-                                    .commit();
+                                //move to background check form
+                                getFragmentManager().beginTransaction()
+                                        .replace(R.id.content_container, new TutorFormBackground())
+                                        .addToBackStack("background form")
+                                        .commit();
+                            }
                         }
                         else
                         {
@@ -357,15 +427,48 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
            getTime(saturdayEnd_tv);
        }
 
+       String notAvailable = "N/A";
+
+       if (v == resetSunday) {
+           sundayStart_tv.setText(notAvailable);
+           sundayEnd_tv.setText(notAvailable);
+       }
+       else if (v == resetMonday) {
+           mondayStart_tv.setText(notAvailable);
+           mondayEnd_tv.setText(notAvailable);
+       }
+       else if (v == resetTuesday) {
+           tuesdayStart_tv.setText(notAvailable);
+           tuesdayEnd_tv.setText(notAvailable);
+       }
+       else if (v == resetWednesday) {
+           wednesdayStart_tv.setText(notAvailable);
+           wednesdayEnd_tv.setText(notAvailable);
+       }
+       else if (v == resetThursday) {
+           thursdayStart_tv.setText(notAvailable);
+           thursdayEnd_tv.setText(notAvailable);
+       }
+       else if (v == resetFriday) {
+           fridayStart_tv.setText(notAvailable);
+           fridayEnd_tv.setText(notAvailable);
+       }
+       else if (v == resetSaturday) {
+           saturdayStart_tv.setText(notAvailable);
+           saturdayEnd_tv.setText(notAvailable);
+       }
 
     }
 
 
     private void getTime(final TextView tv)
     {
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), 2,  new TimePickerDialog.OnTimeSetListener() {
+        timePickerDialog = new TimePickerDialog(getContext(), 2,  new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                Log.d("__HOUROFDAY__", String.valueOf(hourOfDay));
+                Log.d("__MINUTE__", String.valueOf(minute));
 
                 int hour;
                 String amOrPm;
@@ -429,6 +532,45 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
 
             }
         }, 12, 0, false);
+
+        if (!tv.getText().toString().equals("N/A"))
+        {
+            String time = tv.getText().toString();
+
+            String[] splitTime = time.split(" ");
+
+            String[] splitHourAndMinute = splitTime[0].split(":");
+
+            int hour = Integer.parseInt(splitHourAndMinute[0]);
+            int minute = Integer.parseInt(splitHourAndMinute[1]);
+            String amOrPm = splitTime[1];
+
+            //11:59 PM == 23:59
+            //12:00 PM == 24:00
+            //12:00 AM == 00:00
+            //11:59 AM == 11:59
+            if (amOrPm.equals("PM"))
+            {
+                hour = hour + 12;
+                if (hour == 24 && minute > 0)
+                {
+                    hour = hour - 12;
+                }
+            }
+            if (amOrPm.equals("PM") && hour == 24 && minute == 0)
+            {
+                hour = 12;
+            }
+            if (amOrPm.equals("AM") && hour == 12 && minute == 0)
+            {
+                hour = 0;
+            }
+
+            Log.d("__WHATTIME__", hour + "    :    " + minute + "    " + amOrPm);
+            timePickerDialog.updateTime(hour, minute);
+        }
+
+
         timePickerDialog.show();
     }
 
@@ -484,5 +626,111 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
         else if (tv == saturdayEnd_tv) {
             schedule.getSaturday().setEndTime(time);
         }
+    }
+
+    //make sure start or end time for the selected days are not "N/A"
+    private boolean checkTimeFields()
+    {
+        String sunStart = sundayStart_tv.getText().toString();
+        String sunEnd   = sundayEnd_tv.getText().toString();
+        String monStart = mondayStart_tv.getText().toString();
+        String monEnd   = mondayEnd_tv.getText().toString();
+        String tueStart = tuesdayStart_tv.getText().toString();
+        String tueEnd   = tuesdayEnd_tv.getText().toString();
+        String wedStart = wednesdayStart_tv.getText().toString();
+        String wedEnd   = wednesdayEnd_tv.getText().toString();
+        String thuStart = thursdayStart_tv.getText().toString();
+        String thuEnd   = thursdayEnd_tv.getText().toString();
+        String friStart = fridayStart_tv.getText().toString();
+        String friEnd   = fridayEnd_tv.getText().toString();
+        String satStart = saturdayStart_tv.getText().toString();
+        String satEnd   = saturdayEnd_tv.getText().toString();
+
+        if (sunStart.equals("N/A") && !sunEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Sunday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__SUNSTART__", "__EMPTY__");
+            return false;
+        }
+        else if (!sunStart.equals("N/A") && sunEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Sunday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__SUNEND__", "__EMPTY__");
+            return false;
+        }
+        else if (monStart.equals("N/A") && !monEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Monday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__MONSTART__", "__EMPTY__");
+            return false;
+        }
+        else if (!monStart.equals("N/A") && monEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Monday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__MONEND__", "__EMPTY__");
+            return false;
+        }
+        else if (tueStart.equals("N/A") && !tueEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Tuesday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__TUESTART__", "__EMPTY__");
+            return false;
+        }
+        else if (!tueStart.equals("N/A") && tueEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Tuesday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__TUEEND__", "__EMPTY__");
+            return false;
+        }
+        else if (wedStart.equals("N/A") && !wedEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Wednesday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__WEDSTART__", "__EMPTY__");
+            return false;
+        }
+        else if (!wedStart.equals("N/A") && wedEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Wednesday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__WEDEND__", "__EMPTY__");
+            return false;
+        }
+        else if (thuStart.equals("N/A") && !thuEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Thursday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__THUSTART__", "__EMPTY__");
+            return false;
+        }
+        else if (!thuStart.equals("N/A") && thuEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Thursday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__THUEND__", "__EMPTY__");
+            return false;
+        }
+        else if (friStart.equals("N/A") && !friEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Friday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__FRISTART__", "__EMPTY__");
+            return false;
+        }
+        else if (!friStart.equals("N/A") && friEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Friday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__FRIEND__", "__EMPTY__");
+            return false;
+        }
+        else if (satStart.equals("N/A") && !satEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Saturday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__SATSTART__", "__EMPTY__");
+            return false;
+        }
+        else if (!satStart.equals("N/A") && satEnd.equals("N/A"))
+        {
+            Toast.makeText(getContext(), "Please make sure both fields for Saturday are filled.", Toast.LENGTH_LONG).show();
+            Log.d("__SATEND__", "__EMPTY__");
+            return false;
+        }
+
+        return true;
     }
 }
