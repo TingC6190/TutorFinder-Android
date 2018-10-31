@@ -32,7 +32,6 @@ import com.example.tingc6190.tutorfinder.DataObject.Schedule.Thursday;
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Tuesday;
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Wednesday;
 import com.example.tingc6190.tutorfinder.HomeActivity;
-import com.example.tingc6190.tutorfinder.Profile.Review;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
 
@@ -78,6 +77,7 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
     Boolean isTutor;
     TimePickerDialog timePickerDialog;
     Tutor tutorToEdit;
+    String userUID;
 
     public TutorFormInitial() {
     }
@@ -110,6 +110,7 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
         tutorToEdit = new Tutor();
         currentTutor = new Tutor();
         currentTutor = homeActivity.getCurrentTutor();
+        userUID = homeActivity.getCurrentUserUID();
 
         if (isTutor)
         {
@@ -177,6 +178,8 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
 
                 aboutMe_tutorForm.setText(tutorToEdit.getAboutMe());
                 pricePicker_tv.setText(priceString);
+
+                schedule = tutorSchedule;
 
                 sundayStart_tv.setText(tutorSchedule.getSunday().getStartTime());
                 sundayEnd_tv  .setText(tutorSchedule.getSunday().getEndTime());
@@ -342,9 +345,9 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
 
                                 //Review review = new Review("", "");
 
-                                ArrayList<Review> reviews = new ArrayList<>();
-                                reviews.add(new Review("", ""));
-                                tutor.setReviews(reviews);
+//                                ArrayList<Review> reviews = new ArrayList<>();
+//                                reviews.add(new Review("", ""));
+//                                tutor.setReviews(reviews);
 
                                 tutor.setDateVerified("12/15/2017");
                                 tutor.setVerified(true);
@@ -352,6 +355,8 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
                                 tutor.setSubject(subject);
                                 tutor.setSchedule(schedule);
                                 tutor.setLicenseNumber("");
+
+                                tutor.setTutorUID(userUID);
 
                                 tutorFormListener.getTutorToUpdate(tutor);
 
@@ -569,8 +574,6 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
             Log.d("__WHATTIME__", hour + "    :    " + minute + "    " + amOrPm);
             timePickerDialog.updateTime(hour, minute);
         }
-
-
         timePickerDialog.show();
     }
 

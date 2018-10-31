@@ -89,6 +89,7 @@ public class TutorAdapter extends BaseAdapter {
             vh.subjects.setText(subject);
             vh.location.setText(tutorLocation);
 
+            Log.d("__DEFAULT__", "______________");
 
             if (tutor.getPicture() != null)
             {
@@ -96,6 +97,17 @@ public class TutorAdapter extends BaseAdapter {
                 {
                     Picasso.get().load(tutor.getPicture()).into(vh.profilePicture);
                 }
+//                else
+//                {
+//                    String defaultImageString = vh.profilePicture.getBackground().toString();
+//
+//                    Log.d("__DEFAULT__", defaultImageString);
+//                }
+            }
+
+            if (tutor.getPicture().equals(""))
+            {
+                vh.profilePicture.setBackground(mContext.getResources().getDrawable(R.mipmap.ic_launcher_round));
             }
 
             Log.d("___________", tutor.getFirstName() + " " + tutor.getLastName());

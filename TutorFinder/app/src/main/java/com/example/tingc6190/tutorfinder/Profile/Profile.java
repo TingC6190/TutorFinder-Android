@@ -17,6 +17,7 @@ import com.example.tingc6190.tutorfinder.DataObject.Schedule.Schedule;
 import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.Payment.Payment;
 import com.example.tingc6190.tutorfinder.R;
+import com.example.tingc6190.tutorfinder.Review.Review;
 import com.example.tingc6190.tutorfinder.Search.Search;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
 import com.example.tingc6190.tutorfinder.TutorForm.TutorFormBackground;
@@ -92,6 +93,7 @@ public class Profile extends Fragment {
                 final View favorite_unchecked_v;
                 final View email_v;
                 Button hireButton;
+                Button reviewButton;
                 RoundedImageView profileImage_riv;
 
                 name_tv = getView().findViewById(R.id.profile_name);
@@ -109,6 +111,7 @@ public class Profile extends Fragment {
                 email_v = getView().findViewById(R.id.profile_email_button);
                 email_textview = getView().findViewById(R.id.profile_email);
                 hireButton = getView().findViewById(R.id.hire_button);
+                reviewButton = getView().findViewById(R.id.review_button);
                 aboutMe_tv = getView().findViewById(R.id.profile_aboutme);
                 profileImage_riv = getView().findViewById(R.id.tutor_profile_image);
 
@@ -209,6 +212,18 @@ public class Profile extends Fragment {
                         getFragmentManager().beginTransaction()
                                 .replace(R.id.content_container, new Payment())
                                 .addToBackStack("payment")
+                                .commit();
+                    }
+                });
+
+                reviewButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        //move to review screen
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.content_container, new Review())
+                                .addToBackStack("review")
                                 .commit();
                     }
                 });

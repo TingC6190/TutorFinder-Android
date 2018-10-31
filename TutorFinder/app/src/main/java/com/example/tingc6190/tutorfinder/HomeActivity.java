@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.tingc6190.tutorfinder.Account.Account;
 import com.example.tingc6190.tutorfinder.DataObject.Location;
+import com.example.tingc6190.tutorfinder.DataObject.ReviewInfo;
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Friday;
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Monday;
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Saturday;
@@ -26,7 +27,7 @@ import com.example.tingc6190.tutorfinder.Favorite.Favorite;
 import com.example.tingc6190.tutorfinder.Message.Message;
 import com.example.tingc6190.tutorfinder.Payment.Payment;
 import com.example.tingc6190.tutorfinder.Profile.Profile;
-import com.example.tingc6190.tutorfinder.Profile.Review;
+import com.example.tingc6190.tutorfinder.Review.Review;
 import com.example.tingc6190.tutorfinder.Search.Search;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
 import com.example.tingc6190.tutorfinder.Setting.Setting;
@@ -49,17 +50,18 @@ import java.util.Objects;
 public class HomeActivity extends AppCompatActivity implements Search.TutorListener,
         TutorFormInitial.TutorFormListener, TutorFormBackground.BackgroundFormListener,
         Account.AccountListener, Setting.SettingListener, Profile.ProfileListener,
-        Favorite.FavoriteListener, Payment.PaymentListener, Welcome.WelcomeListener {
+        Favorite.FavoriteListener, Payment.PaymentListener, Welcome.WelcomeListener,
+        Review.ReviewListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase myDatabase;
     private DatabaseReference databaseReference;
 
     private ArrayList<Tutor> tutors = new ArrayList<>();
-    private ArrayList<Review> reviews = new ArrayList<>();
+    //private ArrayList<Review> reviews = new ArrayList<>();
     private ArrayList<Student> students = new ArrayList<>();
     private Tutor tutor;
-    private Review review;
+    //private Review review;
     private User user;
     private String currentUserUID;
     private Student currentUserInfo;
@@ -71,6 +73,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private ArrayList<Tutor> favoriteTutors = new ArrayList<>();
     private ArrayList<Transaction> userTransactions = new ArrayList<>();
     private ArrayList<Tutor> tutors_duplicate = new ArrayList<>();
+    private ArrayList<ReviewInfo> reviews = new ArrayList<>();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -471,7 +474,29 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_container, new Search())
                 .commit();
+    }
 
+
+    @Override
+    public void getReview(String firstName, String lastName, String currentDate, String description, String tutorUID) {
+
+        getTutorReviews(tutorUID);
+
+        //ArrayList<ReviewInfo> reviews = new ArrayList<>();
+
+        ReviewInfo review = new ReviewInfo();
+        review.setFirstName(firstName);
+        review.setLastName(lastName);
+        review.setDate(currentDate);
+        review.setDescription(description);
+
+        Log.d("__REVIEW__", firstName + " " + lastName + " " + currentDate + " " + description + " // " + tutorUID );
+
+        reviews.add(review);
+
+        DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + tutorUID + "/reviews");
+
+        reviewRef.setValue(reviews);
     }
 
 
@@ -551,6 +576,58 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         return newTutor;
     }
 
+    private void getTutorReviews(final String tutorUID)
+    {
+        DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + tutorUID + "/reviews");
+
+        //get our data from the database
+        ValueEventListener reviewListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+//                ArrayList<Tutor> getAllTutors = new ArrayList<>();
+//                ArrayList<String> tutorsUID = new ArrayList<>();
+
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
+                {
+//                    Tutor mTutor = postSnapshot.getValue(Tutor.class);
+//                    String tutorUID = postSnapshot.getKey();
+//
+//
+//                    //allTutorUID.ad
+//
+//                    //tutors = new ArrayList<>();
+//                    //tutors.add(tutor);
+//
+//                    getAllTutors.add(mTutor);
+//                    tutorsUID.add(tutorUID);
+
+                    ReviewInfo review = postSnapshot.getValue(ReviewInfo.class);
+                    reviews.add(review);
+                }
+
+                Log.d("__REVIEW_DB__", "users/tutors/" + tutorUID + "/reviews");
+                //Log.d("__REVIEW_DB__", "DID NOT BREAK");
+//                tutors = getAllTutors;
+//                tutors_duplicate = getAllTutors;
+//                allTutorUID = tutorsUID;
+//                checkIfUserIsTutor();
+
+                //Log.d("__DATABASE__", "__HAS_UPDATED__");
+
+                //Log.d("_______test______", String.valueOf(tutors.get(0).toString()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("error", "something went wrong when retrieving data");
+            }
+        };
+        reviewRef.addValueEventListener(reviewListener);
+    }
+
+
     public Tutor getCurrentTutor()
     {
         return tutorFromInitialSetup;
@@ -588,5 +665,10 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
     public boolean isTutor() {
         return isTutor;
+    }
+
+    public String getCurrentUserUID()
+    {
+        return currentUserUID;
     }
 }

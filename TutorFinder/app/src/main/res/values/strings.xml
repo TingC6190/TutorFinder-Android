@@ -49,6 +49,7 @@
     <string name="apply">Apply</string>
     <string name="session_form">Session Form</string>
     <string name="reset">Reset</string>
+    <string name="reviews">Reviews</string>
 
 
     <string-array name="spinner_subject">

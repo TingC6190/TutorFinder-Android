@@ -1,8 +1,8 @@
 package com.example.tingc6190.tutorfinder.Search;
 
 import com.example.tingc6190.tutorfinder.DataObject.Location;
+import com.example.tingc6190.tutorfinder.DataObject.ReviewInfo;
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Schedule;
-import com.example.tingc6190.tutorfinder.Profile.Review;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ public class Tutor {
     private String lastName;
     private Double rating;
     private Integer price;
-    private ArrayList<Review> reviews;
+    private ArrayList<ReviewInfo> reviews;
     private String subject;
     private Location location;
     private Schedule schedule;
@@ -21,13 +21,15 @@ public class Tutor {
     private String email;
     private String aboutMe;
     private String picture;
+    private String tutorUID;
 
     public Tutor() {
     }
 
     public Tutor(String firstName, String lastName, Double rating,
-                 Integer price, ArrayList<Review> reviews, Schedule schedule, Location location, Boolean isVerified,
-                 String dateVerified, String licenseNumber, String email, String aboutMe, String picture, String subject) {
+                 Integer price, ArrayList<ReviewInfo> reviews, Schedule schedule, Location location,
+                 Boolean isVerified, String dateVerified, String licenseNumber, String email,
+                 String aboutMe, String picture, String subject, String tutorUID) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.rating = rating;
@@ -42,6 +44,7 @@ public class Tutor {
         this.aboutMe = aboutMe;
         this.picture = picture;
         this.subject = subject;
+        this.tutorUID = tutorUID;
     }
 
     public String getFirstName() {
@@ -64,7 +67,7 @@ public class Tutor {
         return subject;
     }
 
-    public ArrayList<Review> getReviews() {
+    public ArrayList<ReviewInfo> getReviews() {
         return reviews;
     }
 
@@ -92,7 +95,7 @@ public class Tutor {
         this.price = price;
     }
 
-    public void setReviews(ArrayList<Review> reviews) {
+    public void setReviews(ArrayList<ReviewInfo> reviews) {
         this.reviews = reviews;
     }
 
@@ -154,5 +157,13 @@ public class Tutor {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public String getTutorUID() {
+        return tutorUID;
+    }
+
+    public void setTutorUID(String tutorUID) {
+        this.tutorUID = tutorUID;
     }
 }
