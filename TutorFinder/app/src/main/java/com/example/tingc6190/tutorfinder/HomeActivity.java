@@ -419,6 +419,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         favoriteRef.setValue(favoriteTutors);
     }
 
+
     @Override
     public void getFavoriteTutor(Tutor mTutor) {
 
@@ -478,25 +479,63 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
 
     @Override
-    public void getReview(String firstName, String lastName, String currentDate, String description, String tutorUID) {
+    public void pushReview(final String firstName, final String lastName, final String currentDate, final String description, final String tutorUID) {
 
-        getTutorReviews(tutorUID);
+        //reviews = new ArrayList<>();
+
+        //getTutorReviews(tutorUID);
+
+
+
+        pushReviewToTutor(firstName, lastName, currentDate, description, tutorUID);
+//        pushReviewToTutor(firstName, lastName, currentDate, description, tutorUID);
 
         //ArrayList<ReviewInfo> reviews = new ArrayList<>();
 
-        ReviewInfo review = new ReviewInfo();
-        review.setFirstName(firstName);
-        review.setLastName(lastName);
-        review.setDate(currentDate);
-        review.setDescription(description);
+//        ReviewInfo review = new ReviewInfo();
+//        review.setFirstName(firstName);
+//        review.setLastName(lastName);
+//        review.setDate(currentDate);
+//        review.setDescription(description);
+//
+//        Log.d("__REVIEW__", firstName + " " + lastName + " " + currentDate + " " + description + " // " + tutorUID );
+//
+//        reviews.add(review);
+//
+//        DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + tutorUID + "/reviews");
+//
+//        reviewRef.setValue(reviews);
+//
+//        Log.d("___TEST____","UPLOAD");
+    }
 
-        Log.d("__REVIEW__", firstName + " " + lastName + " " + currentDate + " " + description + " // " + tutorUID );
+    @Override
+    public void pullReviewOfTutor(String tutorUID) {
 
-        reviews.add(review);
+        //getTutorReviews(tutorUID);
 
-        DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + tutorUID + "/reviews");
+        //ArrayList<ReviewInfo> reviewsDuplicate = new ArrayList<>();
 
-        reviewRef.setValue(reviews);
+        for (int i = 0; i < tutors.size(); i++)
+        {
+            if (tutors.get(i).getReviews() != null)
+            {
+                if (tutors.get(i).getTutorUID().equals(tutorUID))
+                {
+                    reviews = tutors.get(i).getReviews();
+                }
+            }
+//            else
+//            {
+//                reviews = new ArrayList<>();
+//                Log.d("________", "no review node");
+//            }
+        }
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.content_container, new Review())
+                .addToBackStack("review")
+                .commit();
     }
 
 
@@ -588,6 +627,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //                ArrayList<Tutor> getAllTutors = new ArrayList<>();
 //                ArrayList<String> tutorsUID = new ArrayList<>();
 
+                ArrayList<ReviewInfo> getAllReviews = new ArrayList<>();
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
                 {
@@ -604,10 +644,12 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //                    tutorsUID.add(tutorUID);
 
                     ReviewInfo review = postSnapshot.getValue(ReviewInfo.class);
-                    reviews.add(review);
+                    getAllReviews.add(review);
                 }
 
-                Log.d("__REVIEW_DB__", "users/tutors/" + tutorUID + "/reviews");
+                //Log.d("__REVIEW_DB__", String.valueOf(reviews.size()));
+                Log.d("___TEST____","DOWNLOAD");
+                reviews = getAllReviews;
                 //Log.d("__REVIEW_DB__", "DID NOT BREAK");
 //                tutors = getAllTutors;
 //                tutors_duplicate = getAllTutors;
@@ -625,6 +667,30 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
             }
         };
         reviewRef.addValueEventListener(reviewListener);
+    }
+
+    private void pushReviewToTutor(String firstName, String lastName, String currentDate, String description, String tutorUID)
+    {
+        ReviewInfo review = new ReviewInfo();
+        review.setFirstName(firstName);
+        review.setLastName(lastName);
+        review.setDate(currentDate);
+        review.setDescription(description);
+
+        Log.d("__REVIEW__", firstName + " " + lastName + " " + currentDate + " " + description + " // " + tutorUID );
+
+        reviews.add(review);
+
+        DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + tutorUID + "/reviews");
+
+        reviewRef.setValue(reviews);
+
+        Log.d("___TEST____","UPLOAD");
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.content_container, new Review())
+                .addToBackStack("review")
+                .commit();
     }
 
 
@@ -670,5 +736,10 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     public String getCurrentUserUID()
     {
         return currentUserUID;
+    }
+
+    public ArrayList<ReviewInfo> getReviews()
+    {
+        return reviews;
     }
 }

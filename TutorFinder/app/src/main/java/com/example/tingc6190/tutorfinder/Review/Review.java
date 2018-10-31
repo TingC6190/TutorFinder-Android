@@ -11,14 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tingc6190.tutorfinder.DataObject.ReviewInfo;
 import com.example.tingc6190.tutorfinder.DataObject.Student;
 import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Review extends Fragment {
@@ -27,13 +30,14 @@ public class Review extends Fragment {
     HomeActivity homeActivity;
     ReviewListener reviewListener;
     String tutorUID;
+    ArrayList<ReviewInfo> reviews;
 
     public Review() {
     }
 
     public interface ReviewListener
     {
-        void getReview(String firstName, String lastName, String currentDate, String description, String tutorUID);
+        void pushReview(String firstName, String lastName, String currentDate, String description, String tutorUID);
     }
 
     @Override
@@ -56,9 +60,11 @@ public class Review extends Fragment {
 
         homeActivity = (HomeActivity) getActivity();
         currentStudent = new Student();
+        reviews = new ArrayList<>();
 
         currentStudent = homeActivity.getCurrentStudent();
         tutorUID = homeActivity.getTutor().getTutorUID();
+        reviews = homeActivity.getReviews();
 
         Log.d("__REVIEW__", currentStudent.getEmail());
 
@@ -71,11 +77,26 @@ public class Review extends Fragment {
 
         if (getView() != null)
         {
+            Log.d("__CHECREVIEWSss__", String.valueOf(reviews.size()));
+
             final EditText writeReview_et;
             Button publishReviewButton;
 
             writeReview_et = getView().findViewById(R.id.write_review_et);
             publishReviewButton = getView().findViewById(R.id.publish_review_button);
+
+
+
+            if (reviews.size() != 0)
+            {
+                ListView listView = getView().findViewById(R.id.list_review);
+                ReviewAdapter reviewAdapter = new ReviewAdapter(getContext(), reviews);
+                listView.setAdapter(reviewAdapter);
+
+                reviewAdapter.notifyDataSetChanged();
+            }
+
+
 
 
             publishReviewButton.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +115,7 @@ public class Review extends Fragment {
 
                         Log.d("__REVIEW__", currentDate);
 
-                        reviewListener.getReview(firstName, lastName, currentDate, description, tutorUID);
+                        reviewListener.pushReview(firstName, lastName, currentDate, description, tutorUID);
                     }
                     else
                     {

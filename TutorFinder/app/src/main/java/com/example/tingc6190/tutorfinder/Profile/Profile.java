@@ -34,6 +34,7 @@ public class Profile extends Fragment {
     private HomeActivity homeActivity;
     private ProfileListener profileListener;
     private ArrayList<Tutor> favoriteTutors;
+    private String tutorUID;
 
     public Profile() {
     }
@@ -45,6 +46,7 @@ public class Profile extends Fragment {
         homeActivity = (HomeActivity) getActivity();
         tutor = homeActivity.getTutor();
         favoriteTutors = homeActivity.getFavoriteTutors();
+        tutorUID = homeActivity.getTutor().getTutorUID();
 
         return inflater.inflate(R.layout.content_profile_screen, container, false);
     }
@@ -53,6 +55,7 @@ public class Profile extends Fragment {
     {
         void addTutorToFavorite(Tutor tutorToAdd);
         void removeTutorFromFavorite(Tutor tutorToRemove);
+        void pullReviewOfTutor(String tutorUID);
     }
 
     @Override
@@ -216,17 +219,14 @@ public class Profile extends Fragment {
                     }
                 });
 
-                reviewButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        //move to review screen
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.content_container, new Review())
-                                .addToBackStack("review")
-                                .commit();
-                    }
-                });
+//                reviewButton.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        profileListener.pullReviewOfTutor(tutorUID);
+//
+//                    }
+//                });
 
             }
         }
