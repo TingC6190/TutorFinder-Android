@@ -73,9 +73,11 @@ public class TransactionAdapter extends BaseAdapter {
         {
             String name = transaction.getFirstName() + " " + transaction.getLastName();
             String price = "$" + transaction.getPrice();
+            String date = transaction.getDate();
 
             vh.transactionName_tv.setText(name);
             vh.transactionPrice_tv.setText(price);
+            vh.transactionDate_tv.setText(date);
 
             if (transaction.getPictureUrl() != null)
             {
@@ -102,12 +104,14 @@ public class TransactionAdapter extends BaseAdapter {
         final CircleImageView transactionPicture_riv;
         final TextView transactionName_tv;
         final TextView transactionPrice_tv;
+        final TextView transactionDate_tv;
 
         ViewHolder(View _view)
         {
             transactionPicture_riv = _view.findViewById(R.id.cell_transaction_picture);
             transactionName_tv = _view.findViewById(R.id.cell_transaction_name);
             transactionPrice_tv = _view.findViewById(R.id.cell_transaction_price);
+            transactionDate_tv = _view.findViewById(R.id.cell_transaction_date);
         }
     }
 }

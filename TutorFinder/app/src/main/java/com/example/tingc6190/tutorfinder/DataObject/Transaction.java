@@ -6,15 +6,17 @@ public class Transaction {
     private String lastName;
     private String price;
     private String pictureUrl;
+    private String date;
 
     public Transaction() {
     }
 
-    public Transaction(String firstName, String lastName, String price, String pictureUrl) {
+    public Transaction(String firstName, String lastName, String price, String pictureUrl, String date) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.price = price;
         this.pictureUrl = pictureUrl;
+        this.date = date;
     }
 
     public String getFirstName() {
@@ -47,5 +49,17 @@ public class Transaction {
 
     public void setImageUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

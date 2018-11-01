@@ -34,6 +34,8 @@ import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,7 +67,7 @@ public class Payment extends Fragment {
 
     public interface PaymentListener
     {
-        void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl);
+        void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl, String date);
     }
 
     @Override
@@ -241,14 +243,17 @@ public class Payment extends Fragment {
                             Log.d("__PRICE__", String.valueOf(totalPrice));
                             Log.d("__IMAGE__", tutor.getPicture());
 
+                            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                            String currentDate = sdf.format(new Date());
+
                             if (!TextUtils.isEmpty(tutor.getPicture().trim()))
                             {
-                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture());
+                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture(), currentDate);
 
                             }
                             else
                             {
-                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ");
+                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ", currentDate);
 
                             }
                             Toast.makeText(getContext(), "Payment Successful", Toast.LENGTH_SHORT).show();
