@@ -38,13 +38,21 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp">
 
-        <com.makeramen.roundedimageview.RoundedImageView
+        <!--<com.makeramen.roundedimageview.RoundedImageView-->
+            <!--android:id="@+id/account_image"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@mipmap/ic_launcher_round"-->
+            <!--app:riv_corner_radius="30dip"-->
+            <!--app:riv_oval="true" />-->
+
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/account_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@mipmap/ic_launcher_round"
-            app:riv_corner_radius="30dip"
-            app:riv_oval="true" />
+            app:civ_border_width="1.5dp"
+            app:civ_border_color="@color/darkGray"/>
 
         <!--<ImageView-->
             <!--android:id="@+id/account_image"-->
@@ -116,9 +124,6 @@
 
 
     </LinearLayout>
-
-
-
 
 
     <TextView

@@ -14,6 +14,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class FavoriteTutorAdapter extends BaseAdapter {
 
     private final Context mContext;
@@ -87,7 +89,7 @@ public class FavoriteTutorAdapter extends BaseAdapter {
 
     private class ViewHolder
     {
-        final RoundedImageView tutorPicture_riv;
+        final CircleImageView tutorPicture_riv;
         final TextView tutorName_tv;
 
         ViewHolder(View _view)

@@ -15,6 +15,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class TransactionAdapter extends BaseAdapter {
 
     private final Context mContext;
@@ -93,7 +95,7 @@ public class TransactionAdapter extends BaseAdapter {
 
     private class ViewHolder
     {
-        final RoundedImageView transactionPicture_riv;
+        final CircleImageView transactionPicture_riv;
         final TextView transactionName_tv;
         final TextView transactionPrice_tv;
 

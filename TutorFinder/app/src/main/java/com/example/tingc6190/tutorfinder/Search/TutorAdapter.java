@@ -18,6 +18,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class TutorAdapter extends BaseAdapter {
 
     private final Context mContext;
@@ -124,7 +126,7 @@ public class TutorAdapter extends BaseAdapter {
         final TextView price;
         final TextView subjects;
         final TextView location;
-        final RoundedImageView profilePicture;
+        final CircleImageView profilePicture;
 
         ViewHolder(View _view)
         {

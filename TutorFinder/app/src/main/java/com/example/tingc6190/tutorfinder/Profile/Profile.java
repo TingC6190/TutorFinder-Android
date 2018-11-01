@@ -28,6 +28,8 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class Profile extends Fragment {
 
     private Tutor tutor;
@@ -97,7 +99,7 @@ public class Profile extends Fragment {
                 final View email_v;
                 Button hireButton;
                 Button reviewButton;
-                RoundedImageView profileImage_riv;
+                CircleImageView profileImage_riv;
 
                 name_tv = getView().findViewById(R.id.profile_name);
                 price_tv = getView().findViewById(R.id.profile_price);

@@ -38,12 +38,15 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class Account extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private HomeActivity homeActivity;
-    private RoundedImageView accountImage;
+    //private RoundedImageView accountImage;
+    private CircleImageView accountImage;
     private Uri imageUri;
     private Student student;
     private String email;
