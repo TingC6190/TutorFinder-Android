@@ -99,6 +99,10 @@ public class TutorAdapter extends BaseAdapter {
                 {
                     Picasso.get().load(tutor.getPicture()).into(vh.profilePicture);
                 }
+                else
+                {
+                    vh.profilePicture.setImageResource(R.drawable.default_profile);
+                }
 //                else
 //                {
 //                    String defaultImageString = vh.profilePicture.getBackground().toString();
@@ -107,10 +111,10 @@ public class TutorAdapter extends BaseAdapter {
 //                }
             }
 
-            if (tutor.getPicture().equals(""))
-            {
-                vh.profilePicture.setBackground(mContext.getResources().getDrawable(R.mipmap.ic_launcher_round));
-            }
+//            if (tutor.getPicture().equals(""))
+//            {
+//                vh.profilePicture.setBackground(mContext.getResources().getDrawable(R.mipmap.ic_launcher_round));
+//            }
 
             Log.d("___________", tutor.getFirstName() + " " + tutor.getLastName());
         }

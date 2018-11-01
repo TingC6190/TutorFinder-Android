@@ -333,6 +333,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         tutorFromInitialSetup.setEmail(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail());
         tutorFromInitialSetup.setFirstName(currentUserInfo.getFirstName());
         tutorFromInitialSetup.setLastName(currentUserInfo.getLastName());
+        tutorFromInitialSetup.setPicture(currentUserInfo.getPicture());
 
         pushTutorToDatabase();
 //

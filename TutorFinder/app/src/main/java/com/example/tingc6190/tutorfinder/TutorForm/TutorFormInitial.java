@@ -341,7 +341,6 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
                                 tutor.setDateVerified("");
                                 tutor.setEmail("");
                                 tutor.setLicenseNumber("");
-                                tutor.setPicture("");
 
                                 //Review review = new Review("", "");
 
@@ -355,7 +354,6 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
                                 tutor.setSubject(subject);
                                 tutor.setSchedule(schedule);
                                 tutor.setLicenseNumber("");
-
                                 tutor.setTutorUID(userUID);
 
                                 tutorFormListener.getTutorToUpdate(tutor);
