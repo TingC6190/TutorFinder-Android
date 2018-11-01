@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/profile"
         android:textAlignment="textEnd"
@@ -23,11 +23,11 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@android:color/black"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/black" />
 
 
     <ScrollView
@@ -38,8 +38,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
 
             <LinearLayout
@@ -50,21 +50,21 @@
 
 
                 <!--<com.makeramen.roundedimageview.RoundedImageView-->
-                    <!--android:id="@+id/tutor_profile_image"-->
-                    <!--android:layout_width="120dp"-->
-                    <!--android:layout_height="120dp"-->
-                    <!--android:background="@mipmap/ic_launcher_round"-->
-                    <!--android:scaleType="fitCenter"-->
-                    <!--app:riv_corner_radius="30dip"-->
-                    <!--app:riv_oval="true" />-->
+                <!--android:id="@+id/tutor_profile_image"-->
+                <!--android:layout_width="120dp"-->
+                <!--android:layout_height="120dp"-->
+                <!--android:background="@mipmap/ic_launcher_round"-->
+                <!--android:scaleType="fitCenter"-->
+                <!--app:riv_corner_radius="30dip"-->
+                <!--app:riv_oval="true" />-->
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/tutor_profile_image"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:background="@mipmap/ic_launcher_round"
-                    app:civ_border_width="1.5dp"
-                    app:civ_border_color="@color/darkGray"/>
+                    app:civ_border_color="@color/darkGray"
+                    app:civ_border_width="1.5dp" />
 
             </LinearLayout>
 
@@ -72,8 +72,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:gravity="end"
                 android:layout_marginTop="-120dp"
+                android:gravity="end"
                 android:orientation="horizontal">
 
 
@@ -86,66 +86,79 @@
                         android:id="@+id/profile_favorite_button_checked"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:background="@drawable/heart_checked"
                         android:layout_gravity="end"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:visibility="invisible"/>
+                        android:background="@drawable/heart_checked"
+                        android:visibility="invisible" />
 
                     <View
                         android:id="@+id/profile_favorite_button_unchecked"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:background="@drawable/heart_unchecked"
                         android:layout_gravity="end"
                         android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginTop="-24dp"
-                        android:visibility="visible"/>
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/heart_unchecked"
+                        android:visibility="visible" />
 
                     <View
                         android:id="@+id/profile_email_button"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:background="@drawable/ic_email_black_24dp"
                         android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginTop="-24dp"
-                        android:visibility="visible"/>
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/ic_email_black_24dp"
+                        android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/profile_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAlignment="textEnd"
                         android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginTop="8dp"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
+                        android:layout_marginEnd="16dp"
+                        android:text="price"
+                        android:textAlignment="textEnd"
                         android:textColor="@android:color/black"
-                        android:text="price"/>
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/profile_not_verified_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="29dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="Not Verified"
+                        android:textAlignment="textEnd"
+                        android:textColor="@android:color/holo_red_light"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/profile_verified_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="-19dp"
+                        android:layout_marginEnd="16dp"
                         android:text="Verified"
                         android:textAlignment="textEnd"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginTop="8dp"
-                        android:textColor="@android:color/holo_green_light"/>
+                        android:textColor="@android:color/holo_green_light"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/profile_verified_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="date"
-                        android:textAlignment="textEnd"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/holo_green_light"/>
+                        android:text="date"
+                        android:textAlignment="textEnd"
+                        android:textColor="@android:color/holo_green_light" />
 
                 </LinearLayout>
 
@@ -153,59 +166,57 @@
             </LinearLayout>
 
 
-
-
             <TextView
                 android:id="@+id/profile_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
-                android:textSize="16sp"
+                android:layout_marginEnd="16dp"
+                android:text="name"
+                android:textAlignment="center"
                 android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:text="name"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:gravity="center"
                 android:orientation="horizontal"
-                android:visibility="visible"
-                android:gravity="center">
+                android:visibility="visible">
 
                 <View
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/star_rating"/>
+                    android:background="@drawable/star_rating" />
 
                 <View
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/star_rating"/>
+                    android:background="@drawable/star_rating" />
 
                 <View
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/star_rating"/>
+                    android:background="@drawable/star_rating" />
 
                 <View
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/star_rating"/>
+                    android:background="@drawable/star_rating" />
 
                 <View
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/star_rating"/>
+                    android:background="@drawable/star_rating" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="(2 Reviews)"
-                    android:textColor="@android:color/black"/>
+                    android:textColor="@android:color/black" />
 
             </LinearLayout>
 
@@ -214,56 +225,55 @@
                 android:id="@+id/profile_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
-                android:textSize="16sp"
+                android:layout_marginEnd="16dp"
+                android:text="email"
+                android:textAlignment="center"
                 android:textColor="@android:color/black"
-                android:text="email"/>
-
+                android:textSize="16sp" />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:visibility="visible"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="visible">
 
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="32dp"
-                    android:text="Message"
-                    android:textAllCaps="false"
-                    android:layout_weight="0.33"
                     android:layout_marginStart="40dp"
                     android:layout_marginEnd="40dp"
+                    android:layout_weight="0.33"
                     android:background="@drawable/rounded_corner"
+                    android:text="Message"
+                    android:textAllCaps="false"
                     android:textColor="@android:color/white"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/hire_button"
                     android:layout_width="0dp"
                     android:layout_height="32dp"
-                    android:text="Hire"
-                    android:textAllCaps="false"
                     android:layout_weight="0.33"
                     android:background="@drawable/rounded_corner"
+                    android:text="Hire"
+                    android:textAllCaps="false"
                     android:textColor="@android:color/white"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/review_button"
                     android:layout_width="0dp"
                     android:layout_height="32dp"
-                    android:text="Reviews"
-                    android:textAllCaps="false"
-                    android:layout_weight="0.33"
                     android:layout_marginStart="40dp"
                     android:layout_marginEnd="40dp"
+                    android:layout_weight="0.33"
                     android:background="@drawable/rounded_corner"
+                    android:text="Reviews"
+                    android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:textStyle="bold" />
 
@@ -272,92 +282,92 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@android:color/black"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/black" />
 
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="textStart"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
-                android:textSize="16sp"
+                android:layout_marginEnd="16dp"
+                android:text="About Me"
+                android:textAlignment="textStart"
                 android:textColor="@android:color/black"
-                android:text="About Me"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/profile_aboutme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="textStart"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
-                android:textSize="12sp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/about_me_fill_in"
+                android:textAlignment="textStart"
                 android:textColor="@android:color/black"
-                android:text="@string/about_me_fill_in"/>
+                android:textSize="12sp" />
 
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@android:color/black"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/black" />
 
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="textStart"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
-                android:textSize="16sp"
+                android:layout_marginEnd="16dp"
+                android:text="Tutoring Subjects"
+                android:textAlignment="textStart"
                 android:textColor="@android:color/black"
-                android:text="Tutoring Subjects"/>
+                android:textSize="16sp" />
 
 
             <TextView
                 android:id="@+id/profile_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="textStart"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
-                android:textSize="12sp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/subjects"
+                android:textAlignment="textStart"
                 android:textColor="@android:color/black"
-                android:text="@string/subjects"/>
+                android:textSize="12sp" />
 
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@android:color/black"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/black" />
 
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="textStart"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
-                android:textSize="16sp"
+                android:layout_marginEnd="16dp"
+                android:text="Schedule"
+                android:textAlignment="textStart"
                 android:textColor="@android:color/black"
-                android:text="Schedule"/>
+                android:textSize="16sp" />
 
 
             <LinearLayout
@@ -369,38 +379,38 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="@string/sun"/>
+                    android:text="@string/sun"
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/profile_time_sun"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textEnd"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="10:00 AM - 11:00 PM"/>
+                    android:text="10:00 AM - 11:00 PM"
+                    android:textAlignment="textEnd"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/darkGray"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/darkGray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -411,38 +421,38 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="@string/mon"/>
+                    android:text="@string/mon"
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/profile_time_mon"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textEnd"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="09:00 AM - 12:00 AM"/>
+                    android:text="09:00 AM - 12:00 AM"
+                    android:textAlignment="textEnd"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/darkGray"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/darkGray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -453,38 +463,38 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="@string/tue"/>
+                    android:text="@string/tue"
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/profile_time_tue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textEnd"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="09:00 AM - 12:00 AM"/>
+                    android:text="09:00 AM - 12:00 AM"
+                    android:textAlignment="textEnd"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/darkGray"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/darkGray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -495,38 +505,38 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="@string/wed"/>
+                    android:text="@string/wed"
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/profile_time_wed"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textEnd"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="09:00 AM - 12:00 AM"/>
+                    android:text="09:00 AM - 12:00 AM"
+                    android:textAlignment="textEnd"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/darkGray"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/darkGray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -537,38 +547,38 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="@string/thu"/>
+                    android:text="@string/thu"
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/profile_time_thu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textEnd"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="09:00 AM - 12:00 AM"/>
+                    android:text="09:00 AM - 12:00 AM"
+                    android:textAlignment="textEnd"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/darkGray"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/darkGray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -579,38 +589,38 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="@string/fri"/>
+                    android:text="@string/fri"
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/profile_time_fri"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textEnd"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="09:00 AM - 12:00 AM"/>
+                    android:text="09:00 AM - 12:00 AM"
+                    android:textAlignment="textEnd"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/darkGray"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/darkGray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -621,48 +631,38 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="@string/sat"/>
+                    android:text="@string/sat"
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/profile_time_sat"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textEnd"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="16dp"
                     android:layout_weight="0.5"
-                    android:text="10:00 AM - 12:21 AM"/>
+                    android:text="10:00 AM - 12:21 AM"
+                    android:textAlignment="textEnd"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="24dp"
-                />
+                android:layout_height="24dp" />
 
         </LinearLayout>
-
 
 
     </ScrollView>
 
 
-    
-
-
-
-
-
-
-    
 </LinearLayout>

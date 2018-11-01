@@ -94,6 +94,8 @@ public class Profile extends Fragment {
                 TextView timeSaturday_tv;
                 TextView email_textview;
                 TextView aboutMe_tv;
+                TextView verifiedText_tv;
+                TextView notVerifiedText_tv;
                 TextView verifiedDate_tv;
                 final View favorite_checked_v;
                 final View favorite_unchecked_v;
@@ -120,6 +122,8 @@ public class Profile extends Fragment {
                 reviewButton = getView().findViewById(R.id.review_button);
                 aboutMe_tv = getView().findViewById(R.id.profile_aboutme);
                 profileImage_riv = getView().findViewById(R.id.tutor_profile_image);
+                verifiedText_tv = getView().findViewById(R.id.profile_verified_text);
+                notVerifiedText_tv = getView().findViewById(R.id.profile_not_verified_text);
                 verifiedDate_tv = getView().findViewById(R.id.profile_verified_date);
 
                 //check to see if the current tutor already belongs in favorites
@@ -168,7 +172,21 @@ public class Profile extends Fragment {
                 email_textview.setText(email);
                 aboutMe_tv.setText(aboutMe);
 
-                //verifiedDate_tv.setText(verifiedDate);
+
+                if (tutor.getVerified())
+                {
+                    notVerifiedText_tv.setVisibility(View.INVISIBLE);
+                    verifiedText_tv.setVisibility(View.VISIBLE);
+                    verifiedDate_tv.setVisibility(View.VISIBLE);
+                    verifiedDate_tv.setText(verifiedDate);
+                }
+                else
+                {
+                    notVerifiedText_tv.setVisibility(View.VISIBLE);
+                    verifiedText_tv.setVisibility(View.INVISIBLE);
+                    verifiedDate_tv.setVisibility(View.INVISIBLE);
+                }
+
 
                 if (!TextUtils.isEmpty(profileImage))
                 {
