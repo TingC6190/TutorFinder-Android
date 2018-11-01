@@ -80,6 +80,10 @@ public class FavoriteTutorAdapter extends BaseAdapter {
                 {
                     Picasso.get().load(tutor.getPicture()).into(vh.tutorPicture_riv);
                 }
+                else
+                {
+                    vh.tutorPicture_riv.setImageResource(R.drawable.default_profile);
+                }
             }
         }
 

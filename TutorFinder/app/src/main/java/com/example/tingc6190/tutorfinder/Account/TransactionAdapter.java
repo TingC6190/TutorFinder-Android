@@ -83,6 +83,10 @@ public class TransactionAdapter extends BaseAdapter {
                 {
                     Picasso.get().load(transaction.getPictureUrl()).into(vh.transactionPicture_riv);
                 }
+                else
+                {
+                    vh.transactionPicture_riv.setImageResource(R.drawable.default_profile);
+                }
 
             }
 

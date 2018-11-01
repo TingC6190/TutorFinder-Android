@@ -94,6 +94,7 @@ public class Profile extends Fragment {
                 TextView timeSaturday_tv;
                 TextView email_textview;
                 TextView aboutMe_tv;
+                TextView verifiedDate_tv;
                 final View favorite_checked_v;
                 final View favorite_unchecked_v;
                 final View email_v;
@@ -119,6 +120,7 @@ public class Profile extends Fragment {
                 reviewButton = getView().findViewById(R.id.review_button);
                 aboutMe_tv = getView().findViewById(R.id.profile_aboutme);
                 profileImage_riv = getView().findViewById(R.id.tutor_profile_image);
+                verifiedDate_tv = getView().findViewById(R.id.profile_verified_date);
 
                 //check to see if the current tutor already belongs in favorites
 
@@ -140,6 +142,7 @@ public class Profile extends Fragment {
                 String email = tutor.getEmail();
                 String aboutMe = tutor.getAboutMe();
                 String profileImage = tutor.getPicture().trim();
+                String verifiedDate = tutor.getDateVerified();
 
                 //tutor schedule
                 Schedule schedule = tutor.getSchedule();
@@ -165,9 +168,15 @@ public class Profile extends Fragment {
                 email_textview.setText(email);
                 aboutMe_tv.setText(aboutMe);
 
+                //verifiedDate_tv.setText(verifiedDate);
+
                 if (!TextUtils.isEmpty(profileImage))
                 {
                     Picasso.get().load(profileImage).into(profileImage_riv);
+                }
+                else
+                {
+                    profileImage_riv.setImageResource(R.drawable.default_profile);
                 }
 
                 //remove current tutor from our favorites

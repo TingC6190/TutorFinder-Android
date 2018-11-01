@@ -136,6 +136,10 @@ public class Account extends Fragment {
                     {
                         Picasso.get().load(student.getPicture()).into(accountImage);
                     }
+                    else
+                    {
+                        accountImage.setImageResource(R.drawable.default_profile);
+                    }
                 }
 
                 name_tv.setText(name);

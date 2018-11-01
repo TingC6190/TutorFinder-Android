@@ -126,6 +126,27 @@
                         android:textColor="@android:color/black"
                         android:text="price"/>
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Verified"
+                        android:textAlignment="textEnd"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@android:color/holo_green_light"/>
+
+                    <TextView
+                        android:id="@+id/profile_verified_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="date"
+                        android:textAlignment="textEnd"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/holo_green_light"/>
+
                 </LinearLayout>
 
 
