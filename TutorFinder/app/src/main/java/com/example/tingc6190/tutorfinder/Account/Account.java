@@ -122,6 +122,18 @@ public class Account extends Fragment {
                     String editTutor = "Edit Tutor";
                     applyTutorButton.setText(editTutor);
                 }
+                else
+                {
+                    //if student account
+                }
+
+                if (student.getPicture() != null)
+                {
+                    if (!student.getPicture().equals(""))
+                    {
+                        Picasso.get().load(student.getPicture()).into(accountImage);
+                    }
+                }
 
                 name_tv.setText(name);
                 email_tv.setText(newEmail);
@@ -145,14 +157,6 @@ public class Account extends Fragment {
 //                        Picasso.get().load(tutor.getPicture()).into(vh.profilePicture);
 //                    }
 //                }
-
-                if (student.getPicture() != null)
-                {
-                    if (!student.getPicture().equals(""))
-                    {
-                        Picasso.get().load(student.getPicture()).into(accountImage);
-                    }
-                }
 
 
                 logoutButton.setOnClickListener(new View.OnClickListener() {

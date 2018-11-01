@@ -77,10 +77,11 @@ public class TransactionAdapter extends BaseAdapter {
 
             if (transaction.getPictureUrl() != null)
             {
-                if (!transaction.getPictureUrl().equals(""))
+                if (!transaction.getPictureUrl().trim().equals(""))
                 {
                     Picasso.get().load(transaction.getPictureUrl()).into(vh.transactionPicture_riv);
                 }
+
             }
 
 

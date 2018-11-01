@@ -110,7 +110,7 @@
                 android:layout_marginTop="-30dp"
                 android:textColor="@color/royalBlue"
                 android:textStyle="bold"
-                android:text="Transctions"/>
+                android:text="Transactions"/>
 
         </LinearLayout>
 

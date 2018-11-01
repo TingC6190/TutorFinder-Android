@@ -350,6 +350,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         if (isTutor)
         {
             updateTutorPicture(imageUrl);
+            updateStudentPicture(imageUrl);
         }
         else
         {
@@ -374,9 +375,23 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //        Log.d("__PICTURE__", currentUserInfo.getPicture());
 //        Log.d("__EMAIL__", currentUserInfo.getEmail());
 
+        Tutor tempTutor = getTutorToEdit();
+
+        tempTutor.setFirstName(first);
+        tempTutor.setLastName(last);
+        tempTutor.setAboutMe(aboutMe);
+
+
+
+        DatabaseReference tutorDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + currentUserUID);
+
+        tutorDatabaseRef.setValue(tempTutor);
+
+
         DatabaseReference studentDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID);
 
         studentDatabaseRef.setValue(currentUserInfo);
+
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_container, new Account())
@@ -692,6 +707,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 .addToBackStack("review")
                 .commit();
     }
+
 
 
     public Tutor getCurrentTutor()
