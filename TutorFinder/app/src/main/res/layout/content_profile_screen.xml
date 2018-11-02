@@ -62,7 +62,6 @@
                     android:id="@+id/tutor_profile_image"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:background="@mipmap/ic_launcher_round"
                     app:civ_border_color="@color/darkGray"
                     app:civ_border_width="1.5dp" />
 
@@ -147,7 +146,7 @@
                         android:layout_marginEnd="16dp"
                         android:text="Verified"
                         android:textAlignment="textEnd"
-                        android:textColor="@android:color/holo_green_light"
+                        android:textColor="@color/lightBlue"
                         android:textStyle="bold" />
 
                     <TextView
@@ -158,7 +157,7 @@
                         android:layout_marginEnd="16dp"
                         android:text="date"
                         android:textAlignment="textEnd"
-                        android:textColor="@android:color/holo_green_light" />
+                        android:textColor="@android:color/black" />
 
                 </LinearLayout>
 

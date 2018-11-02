@@ -50,7 +50,6 @@
             android:id="@+id/account_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@mipmap/ic_launcher_round"
             app:civ_border_width="1.5dp"
             app:civ_border_color="@color/darkGray"/>
 

@@ -1,9 +1,15 @@
 package com.example.tingc6190.tutorfinder;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -74,6 +80,11 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private ArrayList<Transaction> userTransactions = new ArrayList<>();
     private ArrayList<Tutor> tutors_duplicate = new ArrayList<>();
     private ArrayList<ReviewInfo> reviews = new ArrayList<>();
+
+    LocationManager locationManager;
+    Location lastKnown;
+    double longitude;
+    double latitude;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -710,6 +721,49 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     }
 
 
+    public void getLocationOfUser()
+    {
+        Log.d("_______", "getLocationOfUser");
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED)
+        {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            //lastKnown = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            LocationListener locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(android.location.Location location) {
+                    longitude = location.getLongitude();
+                    latitude = location.getLatitude();
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            };
+
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                    2000,
+                    10.0f,
+                    locationListener);
+
+
+            Log.d("__LATITUDE__", String.valueOf(latitude));
+            Log.d("__LONGITUDE__", String.valueOf(longitude));
+        }
+    }
 
     public Tutor getCurrentTutor()
     {

@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.MainActivity;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Search;
@@ -35,6 +36,7 @@ public class Welcome extends Fragment implements LocationListener {
     private LocationManager locationManager;
     public Double latitude;
     public Double longitude;
+    HomeActivity homeActivity;
 
 
     public Welcome() {
@@ -58,6 +60,8 @@ public class Welcome extends Fragment implements LocationListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        homeActivity = (HomeActivity) getActivity();
 
         requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
                 REQUEST_LOCATION_PERMISSIONS);
@@ -102,8 +106,10 @@ public class Welcome extends Fragment implements LocationListener {
 
                     Log.d("__SEARCH_TAPPED__", subject);
 
+                    homeActivity.getLocationOfUser();
+
                     //welcomeListener.getSearchSettings(subject, "");
-                    getLocation();
+                    //getLocation();
 
 //                    getFragmentManager().beginTransaction()
 //                            .replace(R.id.content_container, new Search())
@@ -170,6 +176,7 @@ public class Welcome extends Fragment implements LocationListener {
 
             //locationManager.requestLocationUpdates(Loca);
 
+
             assert locationManager != null;
             Location lastKnown = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (lastKnown != null)
@@ -177,6 +184,13 @@ public class Welcome extends Fragment implements LocationListener {
                 latitude = lastKnown.getLatitude();
                 longitude = lastKnown.getLongitude();
             }
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    2000,
+                    10.0f,
+                    (LocationListener) getContext());
+
+            //locationManager.requestLocationUpdates();
 
             Log.d("__LATITUDE___", String.valueOf(latitude));
             Log.d("__LONGITUDE__", String.valueOf(longitude));
