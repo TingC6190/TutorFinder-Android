@@ -235,31 +235,15 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
                     Button confirmButton = dialog.findViewById(R.id.num_picker_confirm);
                     Button cancelButton = dialog.findViewById(R.id.num_picker_cancel);
 
-                    final NumberPicker numberPicker1 = dialog.findViewById(R.id.num_picker1);
-                    numberPicker1.setMaxValue(9);
-                    numberPicker1.setMinValue(0);
-                    numberPicker1.setWrapSelectorWheel(false);
-                    numberPicker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                        @Override
-                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
-                        }
-                    });
-
-                    final NumberPicker numberPicker2 = dialog.findViewById(R.id.num_picker2);
-                    numberPicker2.setMaxValue(9);
-                    numberPicker2.setMinValue(0);
-                    numberPicker2.setWrapSelectorWheel(false);
-                    numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                        @Override
-                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
-                        }
-                    });
-
                     final NumberPicker numberPicker3 = dialog.findViewById(R.id.num_picker3);
-                    numberPicker3.setMaxValue(9);
-                    numberPicker3.setMinValue(1);
+
+                    final String[] priceArray = {"5", "10", "15", "20", "25", "30", "35", "40", "45", "50",
+                            "55", "60", "65", "70", "75", "80", "85", "90", "95", "100"};
+
+                    int priceArrayCount = priceArray.length - 1;
+
+                    numberPicker3.setMaxValue(priceArrayCount);
+                    numberPicker3.setDisplayedValues(priceArray);
                     numberPicker3.setWrapSelectorWheel(false);
                     numberPicker3.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                         @Override
@@ -272,7 +256,10 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
                         @Override
                         public void onClick(View v) {
 
-                            price = Integer.valueOf(String.valueOf(numberPicker1.getValue()) + numberPicker2.getValue() + numberPicker3.getValue());
+                            int indexValue = numberPicker3.getValue();
+                            String getPriceFromArray = priceArray[indexValue];
+
+                            price = Integer.valueOf(getPriceFromArray);
 
                             //Log.d("__CHECK_FOR_PRICE__", price);
 

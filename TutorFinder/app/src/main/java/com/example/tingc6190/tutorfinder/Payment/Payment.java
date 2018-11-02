@@ -121,7 +121,7 @@ public class Payment extends Fragment {
 
                     final Dialog dialog = new Dialog(getContext());
                     dialog.setTitle("NumberPicker");
-                    dialog.setContentView(R.layout.number_picker_dialog);
+                    dialog.setContentView(R.layout.hour_picker_dialog);
 
                     Button confirmButton = dialog.findViewById(R.id.num_picker_confirm);
                     Button cancelButton = dialog.findViewById(R.id.num_picker_cancel);
@@ -148,9 +148,12 @@ public class Payment extends Fragment {
 //                        }
 //                    });
 
+
+
                     final NumberPicker numberPicker3 = dialog.findViewById(R.id.num_picker3);
                     numberPicker3.setMaxValue(3);
                     numberPicker3.setMinValue(1);
+                    //numberPicker3.setDisplayedValues(values);
                     numberPicker3.setWrapSelectorWheel(false);
                     numberPicker3.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                         @Override
@@ -163,7 +166,7 @@ public class Payment extends Fragment {
                         @Override
                         public void onClick(View v) {
 
-                            hourSelected = Integer.valueOf(String.valueOf(numberPicker3.getValue());
+                            hourSelected = Integer.valueOf(String.valueOf(numberPicker3.getValue()));
 
                             totalPrice = hourSelected * tutor.getPrice();
 
