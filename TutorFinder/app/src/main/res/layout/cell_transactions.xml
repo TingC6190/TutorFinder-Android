@@ -79,7 +79,7 @@
             android:layout_gravity="end"
             android:layout_marginStart="16dp"
             android:background="@drawable/heart_checked"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
         <View
             android:id="@+id/transaction_favorite_button_unchecked"

@@ -448,7 +448,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     }
 
     @Override
-    public void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl, String date)
+    public void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl, String date, String email)
     {
         ArrayList<Transaction> tempTransaction = new ArrayList<>();
 
@@ -457,7 +457,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
             userTransactions = tempTransaction;
         }
 
-        userTransactions.add(new Transaction(firstName, lastName, price, pictureUrl, date));
+        userTransactions.add(new Transaction(firstName, lastName, price, pictureUrl, date, email));
 
         //upload to db
         DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/transactions");

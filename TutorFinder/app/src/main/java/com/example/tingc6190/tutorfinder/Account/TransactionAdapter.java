@@ -1,6 +1,7 @@
 package com.example.tingc6190.tutorfinder.Account;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.tingc6190.tutorfinder.DataObject.Transaction;
+import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -21,10 +23,12 @@ public class TransactionAdapter extends BaseAdapter {
 
     private final Context mContext;
     private final ArrayList<Transaction> mTransactions;
+    private final ArrayList<Tutor> mFavoriteTutors;
 
-    public TransactionAdapter(Context mContext, ArrayList<Transaction> mTransactions) {
+    public TransactionAdapter(Context mContext, ArrayList<Transaction> mTransactions, ArrayList<Tutor> mFavoriteTutors) {
         this.mContext = mContext;
         this.mTransactions = mTransactions;
+        this.mFavoriteTutors = mFavoriteTutors;
     }
 
     @Override
@@ -74,10 +78,28 @@ public class TransactionAdapter extends BaseAdapter {
             String name = transaction.getFirstName() + " " + transaction.getLastName();
             String price = "$" + transaction.getPrice();
             String date = transaction.getDate();
+            String email = transaction.getEmail();
 
             vh.transactionName_tv.setText(name);
             vh.transactionPrice_tv.setText(price);
             vh.transactionDate_tv.setText(date);
+
+            vh.isFavorite.setVisibility(View.INVISIBLE);
+            vh.isNotFavorite.setVisibility(View.VISIBLE);
+
+            //check to see if tutor is a favorite or not
+            for (int i = 0; i < mFavoriteTutors.size(); i++)
+            {
+                if (mFavoriteTutors.get(i).getEmail().equals(email))
+                {
+                    vh.isFavorite.setVisibility(View.VISIBLE);
+                    vh.isNotFavorite.setVisibility(View.INVISIBLE);
+                    Log.d("________", "IS FAVORITE");
+                }
+            }
+
+
+
 
             if (transaction.getPictureUrl() != null)
             {
@@ -105,6 +127,9 @@ public class TransactionAdapter extends BaseAdapter {
         final TextView transactionName_tv;
         final TextView transactionPrice_tv;
         final TextView transactionDate_tv;
+        final View isFavorite;
+        final View isNotFavorite;
+
 
         ViewHolder(View _view)
         {
@@ -112,6 +137,8 @@ public class TransactionAdapter extends BaseAdapter {
             transactionName_tv = _view.findViewById(R.id.cell_transaction_name);
             transactionPrice_tv = _view.findViewById(R.id.cell_transaction_price);
             transactionDate_tv = _view.findViewById(R.id.cell_transaction_date);
+            isFavorite = _view.findViewById(R.id.transaction_favorite_button_checked);
+            isNotFavorite = _view.findViewById(R.id.transaction_favorite_button_unchecked);
         }
     }
 }

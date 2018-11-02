@@ -7,16 +7,18 @@ public class Transaction {
     private String price;
     private String pictureUrl;
     private String date;
+    private String email;
 
     public Transaction() {
     }
 
-    public Transaction(String firstName, String lastName, String price, String pictureUrl, String date) {
+    public Transaction(String firstName, String lastName, String price, String pictureUrl, String date, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.price = price;
         this.pictureUrl = pictureUrl;
         this.date = date;
+        this.email = email;
     }
 
     public String getFirstName() {
@@ -61,5 +63,13 @@ public class Transaction {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

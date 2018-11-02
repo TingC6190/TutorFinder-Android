@@ -67,7 +67,7 @@ public class Payment extends Fragment {
 
     public interface PaymentListener
     {
-        void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl, String date);
+        void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl, String date, String email);
     }
 
     @Override
@@ -126,31 +126,31 @@ public class Payment extends Fragment {
                     Button confirmButton = dialog.findViewById(R.id.num_picker_confirm);
                     Button cancelButton = dialog.findViewById(R.id.num_picker_cancel);
 
-                    final NumberPicker numberPicker1 = dialog.findViewById(R.id.num_picker1);
-                    numberPicker1.setMaxValue(9);
-                    numberPicker1.setMinValue(0);
-                    numberPicker1.setWrapSelectorWheel(false);
-                    numberPicker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                        @Override
-                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
-                        }
-                    });
-
-                    final NumberPicker numberPicker2 = dialog.findViewById(R.id.num_picker2);
-                    numberPicker2.setMaxValue(9);
-                    numberPicker2.setMinValue(0);
-                    numberPicker2.setWrapSelectorWheel(false);
-                    numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                        @Override
-                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
-                        }
-                    });
+//                    final NumberPicker numberPicker1 = dialog.findViewById(R.id.num_picker1);
+//                    numberPicker1.setMaxValue(9);
+//                    numberPicker1.setMinValue(0);
+//                    numberPicker1.setWrapSelectorWheel(false);
+//                    numberPicker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//                        @Override
+//                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+//
+//                        }
+//                    });
+//
+//                    final NumberPicker numberPicker2 = dialog.findViewById(R.id.num_picker2);
+//                    numberPicker2.setMaxValue(9);
+//                    numberPicker2.setMinValue(0);
+//                    numberPicker2.setWrapSelectorWheel(false);
+//                    numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//                        @Override
+//                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+//
+//                        }
+//                    });
 
                     final NumberPicker numberPicker3 = dialog.findViewById(R.id.num_picker3);
-                    numberPicker3.setMaxValue(9);
-                    numberPicker3.setMinValue(0);
+                    numberPicker3.setMaxValue(3);
+                    numberPicker3.setMinValue(1);
                     numberPicker3.setWrapSelectorWheel(false);
                     numberPicker3.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                         @Override
@@ -163,7 +163,7 @@ public class Payment extends Fragment {
                         @Override
                         public void onClick(View v) {
 
-                            hourSelected = Integer.valueOf(String.valueOf(numberPicker1.getValue()) + numberPicker2.getValue() + numberPicker3.getValue());
+                            hourSelected = Integer.valueOf(String.valueOf(numberPicker3.getValue());
 
                             totalPrice = hourSelected * tutor.getPrice();
 
@@ -248,12 +248,12 @@ public class Payment extends Fragment {
 
                             if (!TextUtils.isEmpty(tutor.getPicture().trim()))
                             {
-                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture(), currentDate);
+                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture(), currentDate, tutor.getEmail());
 
                             }
                             else
                             {
-                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ", currentDate);
+                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ", currentDate, tutor.getEmail());
 
                             }
                             Toast.makeText(getContext(), "Payment Successful", Toast.LENGTH_SHORT).show();
