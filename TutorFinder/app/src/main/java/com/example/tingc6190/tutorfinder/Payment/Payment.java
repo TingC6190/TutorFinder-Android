@@ -1,19 +1,24 @@
 package com.example.tingc6190.tutorfinder.Payment;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,11 +61,16 @@ public class Payment extends Fragment {
 
     Button requestLessonButton;
     TextView selectDuration_tv;
+    TextView selectDay_tv;
     TextView totalAmount_tv;
     TextView pricePerHour_tv;
+    TextView tutorName_tv;
     Integer hourSelected;
     Integer totalPrice;
+    String selectedDay;
     PaymentListener paymentListener;
+    DatePickerDialog datePickerDialog;
+
 
     public Payment() {
     }
@@ -104,15 +114,30 @@ public class Payment extends Fragment {
         if (getView() != null)
         {
             selectDuration_tv = getView().findViewById(R.id.select_duration);
+            selectDay_tv = getView().findViewById(R.id.select_day);
             pricePerHour_tv = getView().findViewById(R.id.price_per_hour);
             totalAmount_tv = getView().findViewById(R.id.total_price);
-
+            tutorName_tv = getView().findViewById(R.id.tutor_name_payment_form);
             requestLessonButton = getView().findViewById(R.id.btn_pay);
 
             new getPaymentToken().execute();
 
-            String priceRate = String.valueOf(tutor.getPrice()) + "/hour";
+            String priceRate = "$" + String.valueOf(tutor.getPrice()) + "/hour";
+            String tutorName = tutor.getFirstName() + " " + tutor.getLastName();
+
             pricePerHour_tv.setText(priceRate);
+            tutorName_tv.setText(tutorName);
+
+
+            selectDay_tv.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onClick(View v) {
+                    Log.d("________", "SELECT DAY CLICKED");
+                    showDatePicker();
+                }
+            });
+
 
             //select how many hours to request lesson
             selectDuration_tv.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +190,19 @@ public class Payment extends Fragment {
                     confirmButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
+                            String duration;
+
+                            if (numberPicker3.getValue() == 1)
+                            {
+                                duration = String.valueOf(numberPicker3.getValue()) + " Hour";
+                            }
+                            else
+                            {
+                                duration = String.valueOf(numberPicker3.getValue()) + " Hours";
+                            }
+
+                            selectDuration_tv.setText(duration);
 
                             hourSelected = Integer.valueOf(String.valueOf(numberPicker3.getValue()));
 
@@ -330,5 +368,25 @@ public class Payment extends Fragment {
             });
             return null;
         }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private String showDatePicker()
+    {
+        datePickerDialog = new DatePickerDialog(getContext(), 0);
+        datePickerDialog.show();
+
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                selectedDay = String.valueOf(month + 1) + "/" + dayOfMonth + "/" + year;
+                Log.d("_________", selectedDay);
+
+                selectDay_tv.setText(selectedDay);
+            }
+        });
+        return selectedDay;
     }
 }
