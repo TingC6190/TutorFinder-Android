@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -62,6 +64,7 @@ public class Payment extends Fragment {
     Button requestLessonButton;
     TextView selectDuration_tv;
     TextView selectDay_tv;
+    TextView selectTime_tv;
     TextView totalAmount_tv;
     TextView pricePerHour_tv;
     TextView tutorName_tv;
@@ -70,6 +73,7 @@ public class Payment extends Fragment {
     String selectedDay;
     PaymentListener paymentListener;
     DatePickerDialog datePickerDialog;
+    TimePickerDialog timePickerDialog;
 
 
     public Payment() {
@@ -115,6 +119,7 @@ public class Payment extends Fragment {
         {
             selectDuration_tv = getView().findViewById(R.id.select_duration);
             selectDay_tv = getView().findViewById(R.id.select_day);
+            selectTime_tv = getView().findViewById(R.id.select_time);
             pricePerHour_tv = getView().findViewById(R.id.price_per_hour);
             totalAmount_tv = getView().findViewById(R.id.total_price);
             tutorName_tv = getView().findViewById(R.id.tutor_name_payment_form);
@@ -135,6 +140,13 @@ public class Payment extends Fragment {
                 public void onClick(View v) {
                     Log.d("________", "SELECT DAY CLICKED");
                     showDatePicker();
+                }
+            });
+
+            selectTime_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showTimePicker();
                 }
             });
 
@@ -388,5 +400,77 @@ public class Payment extends Fragment {
             }
         });
         return selectedDay;
+    }
+
+    private void showTimePicker()
+    {
+        timePickerDialog = new TimePickerDialog(getContext(), 2, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                int hour;
+                String amOrPm;
+                String hourToDisplay;
+                String minuteToDisplay;
+
+                if (hourOfDay > 12)
+                {
+                    hour = hourOfDay - 12;
+                    amOrPm = "PM";
+                }
+                else
+                {
+                    hour = hourOfDay;
+                    amOrPm = "AM";
+                }
+
+                if (hour < 10)
+                {
+                    hourToDisplay = "0" + hour;
+                }
+                else
+                {
+                    hourToDisplay = String.valueOf(hour);
+                }
+
+                if (minute < 10)
+                {
+                    minuteToDisplay = "0" + minute;
+                }
+                else
+                {
+                    minuteToDisplay = String.valueOf(minute);
+                }
+
+                if (hourToDisplay.equals("12") && minuteToDisplay.equals("00"))
+                {
+                    amOrPm = "PM";
+                }
+
+                if (hourToDisplay.equals("00") && minuteToDisplay.equals("00"))
+                {
+                    hourToDisplay = "12";
+                    amOrPm = "AM";
+                }
+
+                if (hourOfDay == 12 && minute < 60)
+                {
+                    amOrPm = "PM";
+                }
+
+                if (hourToDisplay.equals("00"))
+                {
+                    hourToDisplay = "12";
+                }
+
+                String time = hourToDisplay + ":" + minuteToDisplay + " " + amOrPm;
+
+                selectTime_tv.setText(time);
+                //saveSchedule(tv, time);
+
+            }
+        }, 12, 0, false);
+
+        timePickerDialog.show();
     }
 }
