@@ -243,9 +243,14 @@ public class Payment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
+                    //********************************* REAL PAYMENT *********************************//
                     //request our payment
-                    DropInRequest dropInRequest = new DropInRequest().clientToken(token);
-                    startActivityForResult(dropInRequest.getIntent(getContext()), REQUEST_CODE);
+                    //DropInRequest dropInRequest = new DropInRequest().clientToken(token);
+                    //startActivityForResult(dropInRequest.getIntent(getContext()), REQUEST_CODE);
+
+
+                    //********************************* MIMIC FOR USER TESTING *********************************//
+                    requestLesson();
 
                 }
             });
@@ -472,5 +477,27 @@ public class Payment extends Fragment {
         }, 12, 0, false);
 
         timePickerDialog.show();
+    }
+
+    private void requestLesson()
+    {
+        Log.d("__NAME__", tutor.getFirstName() + " " + tutor.getLastName());
+        Log.d("__PRICE__", String.valueOf(totalPrice));
+        Log.d("__IMAGE__", tutor.getPicture());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        String currentDate = sdf.format(new Date());
+
+        if (!TextUtils.isEmpty(tutor.getPicture().trim()))
+        {
+            paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture(), currentDate, tutor.getEmail());
+
+        }
+        else
+        {
+            paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ", currentDate, tutor.getEmail());
+
+        }
+        Toast.makeText(getContext(), "Payment Successful", Toast.LENGTH_SHORT).show();
     }
 }

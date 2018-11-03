@@ -63,8 +63,8 @@ public class Welcome extends Fragment implements LocationListener {
 
         homeActivity = (HomeActivity) getActivity();
 
-        requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_LOCATION_PERMISSIONS);
+//        requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+//                REQUEST_LOCATION_PERMISSIONS);
 
         return inflater.inflate(R.layout.content_welcome_screen, container, false);
     }
@@ -106,9 +106,9 @@ public class Welcome extends Fragment implements LocationListener {
 
                     Log.d("__SEARCH_TAPPED__", subject);
 
-                    homeActivity.getLocationOfUser();
+                    //homeActivity.getLocationOfUser();
 
-                    //welcomeListener.getSearchSettings(subject, "");
+                    welcomeListener.getSearchSettings(subject, "");
                     //getLocation();
 
 //                    getFragmentManager().beginTransaction()

@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -49,8 +51,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity implements Search.TutorListener,
@@ -754,14 +759,54 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 }
             };
 
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     2000,
                     10.0f,
                     locationListener);
 
+//            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//            List<Address> addressList = null;
+//            try {
+//                addressList = geocoder.getFromLocation(latitude, longitude, 1);
+//
+//                if (addressList.get(0) != null)
+//                {
+//                    String zipcode = addressList.get(0).getPostalCode();
+//
+//                    Log.d("______POSTAL_____", zipcode);
+//                }
+//
+////                Log.d("__ADDRESS__", addressList.toString());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+
 
             Log.d("__LATITUDE__", String.valueOf(latitude));
             Log.d("__LONGITUDE__", String.valueOf(longitude));
+
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+            try
+            {
+                List<Address> addressList = geocoder.getFromLocation(40.514658, -74.393104, 1);
+
+                if (addressList.size() > 0)
+                {
+                    Log.d("_______", "HAS ADDRESS");
+                }
+                else
+                {
+                    Log.d("_______", "no ADDRESS");
+                }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+
+
+
         }
     }
 
