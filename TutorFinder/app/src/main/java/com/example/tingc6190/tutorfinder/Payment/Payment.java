@@ -42,7 +42,11 @@ import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,6 +82,7 @@ public class Payment extends Fragment {
     PaymentListener paymentListener;
     DatePickerDialog datePickerDialog;
     TimePickerDialog timePickerDialog;
+    String dayOfWeek;
 
 
     public Payment() {
@@ -401,6 +406,51 @@ public class Payment extends Fragment {
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                //get the day of the week
+                Date date = new Date(year - 1900, month, dayOfMonth);
+                String dayOfWeekFull = DateFormat.getDateInstance(DateFormat.FULL).format(date);
+                String day = dayOfWeekFull.split(",")[0];
+
+                switch (day)
+                {
+                    case "Monday": {
+                        dayOfWeek = "MON";
+                        break;
+                    }
+                    case "Tuesday": {
+                        dayOfWeek = "TUE";
+                        break;
+                    }
+                    case "Wednesday": {
+                        dayOfWeek = "WED";
+                        break;
+                    }
+                    case "Thursday": {
+                        dayOfWeek = "THU";
+                        break;
+                    }
+                    case "Friday": {
+                        dayOfWeek = "FRI";
+                        break;
+                    }
+                    case "Saturday": {
+                        dayOfWeek = "SAT";
+                        break;
+                    }
+                    case "Sunday": {
+                        dayOfWeek = "SUN";
+                        break;
+                    }
+                    default: {
+                        Log.d("error", "dayOfWeek not correct");
+                    }
+                }
+                Log.d("__DAYOFWEEK__", dayOfWeek);
+
+                //Log.d("CHECK_FOR_DAY", dayOfWeek);
+
+
 
                 selectedDay = String.valueOf(month + 1) + "/" + dayOfMonth + "/" + year;
                 Log.d("_________", selectedDay);
