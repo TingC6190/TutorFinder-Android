@@ -214,7 +214,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="(2 Reviews)"
+                    android:text="(0 Reviews)"
                     android:textColor="@android:color/black" />
 
             </LinearLayout>

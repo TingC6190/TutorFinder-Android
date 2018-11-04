@@ -1,5 +1,6 @@
 package com.example.tingc6190.tutorfinder;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,18 +44,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             //launch register screen
             startActivity(new Intent(this, RegisterActivity.class));
-            finish();
+            //finish();
         }
         if (v == loginButton)
         {
             //launch login screen
             startActivity(new Intent(this, LoginActivity.class));
-            finish();
+            //finish();
         }
     }
 
-    public void closeActivity()
+    public void closeMainActivity()
     {
         finish();
     }
+
 }

@@ -73,7 +73,6 @@ public class Search extends Fragment {
 
         tutors = homeActivity.getTutors();
 
-
 //        for (int i = 0; i < tutors.size(); i++)
 //        {
 //            String name = tutors.get(i).getFirstName() + " " + tutors.get(i).getLastName();

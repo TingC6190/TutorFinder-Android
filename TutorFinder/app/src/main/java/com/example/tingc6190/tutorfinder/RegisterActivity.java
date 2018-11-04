@@ -29,7 +29,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
+public class RegisterActivity extends MainActivity implements View.OnClickListener{
 
     private Button registerButton;
     private EditText emailField;
@@ -101,7 +101,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             if(task.isSuccessful())
                             {
                                 finish();
-
                                 //create student user in the database
                                 DatabaseReference studentUserRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + firebaseAuth.getUid());
 

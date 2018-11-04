@@ -40,11 +40,14 @@ import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -68,6 +71,7 @@ public class Payment extends Fragment {
     TextView totalAmount_tv;
     TextView pricePerHour_tv;
     TextView tutorName_tv;
+    CircleImageView tutorImage_civ;
     Integer hourSelected;
     Integer totalPrice;
     String selectedDay;
@@ -124,14 +128,25 @@ public class Payment extends Fragment {
             totalAmount_tv = getView().findViewById(R.id.total_price);
             tutorName_tv = getView().findViewById(R.id.tutor_name_payment_form);
             requestLessonButton = getView().findViewById(R.id.btn_pay);
+            tutorImage_civ = getView().findViewById(R.id.tutor_payment_image);
 
             new getPaymentToken().execute();
 
             String priceRate = "$" + String.valueOf(tutor.getPrice()) + "/hour";
             String tutorName = tutor.getFirstName() + " " + tutor.getLastName();
+            String profileImage = tutor.getPicture().trim();
 
             pricePerHour_tv.setText(priceRate);
             tutorName_tv.setText(tutorName);
+
+            if (!TextUtils.isEmpty(profileImage))
+            {
+                Picasso.get().load(profileImage).into(tutorImage_civ);
+            }
+            else
+            {
+                tutorImage_civ.setImageResource(R.drawable.default_profile);
+            }
 
 
             selectDay_tv.setOnClickListener(new View.OnClickListener() {
