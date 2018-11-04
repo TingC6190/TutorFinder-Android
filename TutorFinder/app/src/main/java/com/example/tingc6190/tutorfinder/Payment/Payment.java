@@ -178,29 +178,6 @@ public class Payment extends Fragment {
                     Button confirmButton = dialog.findViewById(R.id.num_picker_confirm);
                     Button cancelButton = dialog.findViewById(R.id.num_picker_cancel);
 
-//                    final NumberPicker numberPicker1 = dialog.findViewById(R.id.num_picker1);
-//                    numberPicker1.setMaxValue(9);
-//                    numberPicker1.setMinValue(0);
-//                    numberPicker1.setWrapSelectorWheel(false);
-//                    numberPicker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-//                        @Override
-//                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-//
-//                        }
-//                    });
-//
-//                    final NumberPicker numberPicker2 = dialog.findViewById(R.id.num_picker2);
-//                    numberPicker2.setMaxValue(9);
-//                    numberPicker2.setMinValue(0);
-//                    numberPicker2.setWrapSelectorWheel(false);
-//                    numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-//                        @Override
-//                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-//
-//                        }
-//                    });
-
-
 
                     final NumberPicker numberPicker3 = dialog.findViewById(R.id.num_picker3);
                     numberPicker3.setMaxValue(3);
@@ -258,15 +235,26 @@ public class Payment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    //********************************* REAL PAYMENT *********************************//
-                    //request our payment
-                    //DropInRequest dropInRequest = new DropInRequest().clientToken(token);
-                    //startActivityForResult(dropInRequest.getIntent(getContext()), REQUEST_CODE);
+                    if (!String.valueOf(selectDay_tv.getText()).equals("Select Day")
+                            && !String.valueOf(selectTime_tv.getText()).equals("Select Start Time")
+                            && !String.valueOf(selectDuration_tv.getText()).equals("Select Lesson Duration"))
+                    {
+                        //make sure day is after current
 
 
-                    //********************************* MIMIC FOR USER TESTING *********************************//
-                    requestLesson();
+                        //********************************* REAL PAYMENT *********************************//
+                        //request our payment
+                        //DropInRequest dropInRequest = new DropInRequest().clientToken(token);
+                        //startActivityForResult(dropInRequest.getIntent(getContext()), REQUEST_CODE);
 
+
+                        //********************************* MIMIC FOR USER TESTING *********************************//
+                        requestLesson();
+                    }
+                    else
+                    {
+                        Toast.makeText(getContext(), "Please fill out all the fields.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
@@ -407,6 +395,7 @@ public class Payment extends Fragment {
     private String showDatePicker()
     {
         datePickerDialog = new DatePickerDialog(getContext(), 0);
+        datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
         datePickerDialog.show();
 
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
