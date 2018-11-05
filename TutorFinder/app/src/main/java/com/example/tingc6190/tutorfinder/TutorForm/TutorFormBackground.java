@@ -13,9 +13,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.tingc6190.tutorfinder.DataObject.Location;
+import com.example.tingc6190.tutorfinder.DataObject.Schedule.Schedule;
+import com.example.tingc6190.tutorfinder.DataObject.Student;
 import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Search;
+import com.example.tingc6190.tutorfinder.Search.Tutor;
+
+import java.util.Locale;
 
 public class TutorFormBackground extends Fragment {
 
@@ -30,6 +36,9 @@ public class TutorFormBackground extends Fragment {
     EditText state_et;
     EditText zipcode_et;
     EditText license_et;
+    Tutor tutor;
+    boolean isTutor;
+    Student student;
 
     public TutorFormBackground() {
     }
@@ -58,6 +67,9 @@ public class TutorFormBackground extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         homeActivity = (HomeActivity) getActivity();
+        isTutor = homeActivity.isTutor();
+
+        tutor = homeActivity.getTutorToEdit();
 
         return inflater.inflate(R.layout.content_tutor_form_bg_check, container, false);
     }
@@ -73,6 +85,16 @@ public class TutorFormBackground extends Fragment {
             zipcode_et = getView().findViewById(R.id.tutor_form_zipcode);
             license_et = getView().findViewById(R.id.tutor_form_license);
             applyButton = getView().findViewById(R.id.background_form_apply_button);
+
+            if (isTutor)
+            {
+                Location location = tutor.getLocation();
+
+                city_et.setText(location.getCity());
+                state_et.setText(location.getState());
+                zipcode_et.setText(location.getZipcode());
+                license_et.setText(tutor.getLicenseNumber());
+            }
 
             applyButton.setOnClickListener(new View.OnClickListener() {
                 @Override

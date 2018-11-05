@@ -547,10 +547,42 @@ public class Payment extends Fragment {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-                //timePickerDialog.getContext().setTheme(2);
+                // test selected time versus available time
+                int startTimeInMin;
+                int endTimeInMin;
+                int hourOfStart;
+                int minOfStart;
+                int hourOfEnd;
+                int minOfEnd;
 
-                //Log.d("__GETTHEME__", String.valueOf(timePickerDialog.getContext().getTheme()));
+                switch (dayOfWeek)
+                {
+                    case "MON":
+                    {
+                        if (!tutorAvailability_tv.getText().toString().contains("Not"))
+                        {
+                            String startTime = tutor.getSchedule().getMonday().getStartTime();
+                            hourOfStart = Integer.parseInt(startTime.split(":")[0]);
+                            minOfStart = Integer.parseInt(startTime.split(":")[1].split(" ")[0]);
 
+                            String endTime = tutor.getSchedule().getMonday().getEndTime();
+                            hourOfEnd = Integer.parseInt(startTime.split(":")[0]);
+                            minOfEnd = Integer.parseInt(startTime.split(":")[1].split(" ")[0]);
+
+
+                            Log.d("__CHECKFORTIMEEEEE__", hourOfStart + ":" + minOfStart + " - " + hourOfEnd + ":" + minOfEnd);
+                        }
+                        else
+                        {
+                            Log.d("__CHECKFORTIMEEEEE__", "error");
+                        }
+                        break;
+                    }
+                    default:
+                    {
+                        Log.d("error", "time not correct for current day of week");
+                    }
+                }
 
 
                 int hour;
