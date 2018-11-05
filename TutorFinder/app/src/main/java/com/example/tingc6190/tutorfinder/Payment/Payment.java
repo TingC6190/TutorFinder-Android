@@ -1,6 +1,7 @@
 package com.example.tingc6190.tutorfinder.Payment;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.Fragment;
@@ -13,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.annotation.StyleRes;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,10 +39,13 @@ import com.braintreepayments.api.dropin.DropInResult;
 import com.braintreepayments.api.interfaces.HttpResponseCallback;
 import com.braintreepayments.api.internal.HttpClient;
 import com.braintreepayments.api.models.PaymentMethodNonce;
+import com.example.tingc6190.tutorfinder.DataObject.Schedule.Schedule;
 import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.FieldPosition;
@@ -75,6 +80,7 @@ public class Payment extends Fragment {
     TextView totalAmount_tv;
     TextView pricePerHour_tv;
     TextView tutorName_tv;
+    TextView tutorAvailability_tv;
     CircleImageView tutorImage_civ;
     Integer hourSelected;
     Integer totalPrice;
@@ -134,6 +140,7 @@ public class Payment extends Fragment {
             tutorName_tv = getView().findViewById(R.id.tutor_name_payment_form);
             requestLessonButton = getView().findViewById(R.id.btn_pay);
             tutorImage_civ = getView().findViewById(R.id.tutor_payment_image);
+            tutorAvailability_tv = getView().findViewById(R.id.tutor_availability);
 
             new getPaymentToken().execute();
 
@@ -167,6 +174,7 @@ public class Payment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     showTimePicker();
+                    //testCustomTimePicker();
                 }
             });
 
@@ -412,34 +420,106 @@ public class Payment extends Fragment {
                 String dayOfWeekFull = DateFormat.getDateInstance(DateFormat.FULL).format(date);
                 String day = dayOfWeekFull.split(",")[0];
 
+                String availability;
+
                 switch (day)
                 {
                     case "Monday": {
                         dayOfWeek = "MON";
+                        if (!tutor.getSchedule().getMonday().getStartTime().equals("N/A"))
+                        {
+                            availability = "MON: " + tutor.getSchedule().getMonday().getStartTime() + " - " + tutor.getSchedule().getMonday().getEndTime();
+                            tutorAvailability_tv.setText(availability);
+                        }
+                        else
+                        {
+                            availability = "MON: Not Available";
+                            tutorAvailability_tv.setText(availability);
+                        }
                         break;
                     }
                     case "Tuesday": {
                         dayOfWeek = "TUE";
+                        if (!tutor.getSchedule().getTuesday().getStartTime().equals("N/A"))
+                        {
+                            availability = "TUE: " + tutor.getSchedule().getTuesday().getStartTime() + " - " + tutor.getSchedule().getTuesday().getEndTime();
+                            tutorAvailability_tv.setText(availability);
+                        }
+                        else
+                        {
+                            availability = "TUE: Not Available";
+                            tutorAvailability_tv.setText(availability);
+                        }
                         break;
                     }
                     case "Wednesday": {
                         dayOfWeek = "WED";
+                        if (!tutor.getSchedule().getWednesday().getStartTime().equals("N/A"))
+                        {
+                            availability = "WED: " + tutor.getSchedule().getWednesday().getStartTime() + " - " + tutor.getSchedule().getWednesday().getEndTime();
+                            tutorAvailability_tv.setText(availability);
+                        }
+                        else
+                        {
+                            availability = "WED: Not Available";
+                            tutorAvailability_tv.setText(availability);
+                        }
                         break;
                     }
                     case "Thursday": {
                         dayOfWeek = "THU";
+                        if (!tutor.getSchedule().getThursday().getStartTime().equals("N/A"))
+                        {
+                            availability = "THU: " + tutor.getSchedule().getThursday().getStartTime() + " - " + tutor.getSchedule().getThursday().getEndTime();
+                            tutorAvailability_tv.setText(availability);
+                        }
+                        else
+                        {
+                            availability = "THU: Not Available";
+                            tutorAvailability_tv.setText(availability);
+                        }
                         break;
                     }
                     case "Friday": {
                         dayOfWeek = "FRI";
+                        if (!tutor.getSchedule().getFriday().getStartTime().equals("N/A"))
+                        {
+                            availability = "FRI: " + tutor.getSchedule().getFriday().getStartTime() + " - " + tutor.getSchedule().getFriday().getEndTime();
+                            tutorAvailability_tv.setText(availability);
+                        }
+                        else
+                        {
+                            availability = "FRI: Not Available";
+                            tutorAvailability_tv.setText(availability);
+                        }
                         break;
                     }
                     case "Saturday": {
                         dayOfWeek = "SAT";
+                        if (!tutor.getSchedule().getSaturday().getStartTime().equals("N/A"))
+                        {
+                            availability = "SAT: " + tutor.getSchedule().getSaturday().getStartTime() + " - " + tutor.getSchedule().getSaturday().getEndTime();
+                            tutorAvailability_tv.setText(availability);
+                        }
+                        else
+                        {
+                            availability = "SAT: Not Available";
+                            tutorAvailability_tv.setText(availability);
+                        }
                         break;
                     }
                     case "Sunday": {
                         dayOfWeek = "SUN";
+                        if (!tutor.getSchedule().getSunday().getStartTime().equals("N/A"))
+                        {
+                            availability = "SUN: " + tutor.getSchedule().getSunday().getStartTime() + " - " + tutor.getSchedule().getSunday().getEndTime();
+                            tutorAvailability_tv.setText(availability);
+                        }
+                        else
+                        {
+                            availability = "SUN: Not Available";
+                            tutorAvailability_tv.setText(availability);
+                        }
                         break;
                     }
                     default: {
@@ -466,6 +546,12 @@ public class Payment extends Fragment {
         timePickerDialog = new TimePickerDialog(getContext(), 2, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                //timePickerDialog.getContext().setTheme(2);
+
+                //Log.d("__GETTHEME__", String.valueOf(timePickerDialog.getContext().getTheme()));
+
+
 
                 int hour;
                 String amOrPm;

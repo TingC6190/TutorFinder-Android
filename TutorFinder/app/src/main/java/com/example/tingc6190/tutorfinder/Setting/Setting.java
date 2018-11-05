@@ -82,10 +82,6 @@ public class Setting extends Fragment {
             {
                 aboutMe_et.setText(student.getAboutMe());
             }
-            else
-            {
-                aboutMe_et.setHint("About Me");
-            }
 
             applyButton.setOnClickListener(new View.OnClickListener() {
                 @Override

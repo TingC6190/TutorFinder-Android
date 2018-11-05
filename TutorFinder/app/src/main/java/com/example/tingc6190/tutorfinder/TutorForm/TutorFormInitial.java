@@ -174,7 +174,7 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
             {
                 Schedule tutorSchedule = tutorToEdit.getSchedule();
                 price = tutorToEdit.getPrice();
-                String priceString = "$" + String.valueOf(tutorToEdit.getPrice());
+                String priceString = "$" + String.valueOf(tutorToEdit.getPrice() + "/hr");
 
                 aboutMe_tutorForm.setText(tutorToEdit.getAboutMe());
                 pricePicker_tv.setText(priceString);
@@ -263,7 +263,7 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
 
                             //Log.d("__CHECK_FOR_PRICE__", price);
 
-                            pricePicker_tv.setText("$" + price);
+                            pricePicker_tv.setText("$" + price + "/hr");
 
                             dialog.dismiss();
                         }

@@ -392,18 +392,20 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //        Log.d("__PICTURE__", currentUserInfo.getPicture());
 //        Log.d("__EMAIL__", currentUserInfo.getEmail());
 
-        Tutor tempTutor = getTutorToEdit();
+        if (isTutor)
+        {
+            Tutor tempTutor = getTutorToEdit();
 
-        tempTutor.setFirstName(first);
-        tempTutor.setLastName(last);
-        tempTutor.setAboutMe(aboutMe);
+            tempTutor.setFirstName(first);
+            tempTutor.setLastName(last);
+            tempTutor.setAboutMe(aboutMe);
 
 
 
-        DatabaseReference tutorDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + currentUserUID);
+            DatabaseReference tutorDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + currentUserUID);
 
-        tutorDatabaseRef.setValue(tempTutor);
-
+            tutorDatabaseRef.setValue(tempTutor);
+        }
 
         DatabaseReference studentDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID);
 
