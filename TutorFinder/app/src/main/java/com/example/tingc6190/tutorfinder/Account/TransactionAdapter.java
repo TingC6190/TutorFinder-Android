@@ -88,15 +88,20 @@ public class TransactionAdapter extends BaseAdapter {
             vh.isNotFavorite.setVisibility(View.VISIBLE);
 
             //check to see if tutor is a favorite or not
-            for (int i = 0; i < mFavoriteTutors.size(); i++)
+            if (mFavoriteTutors != null)
             {
-                if (mFavoriteTutors.get(i).getEmail().equals(email))
+                for (int i = 0; i < mFavoriteTutors.size(); i++)
                 {
-                    vh.isFavorite.setVisibility(View.VISIBLE);
-                    vh.isNotFavorite.setVisibility(View.INVISIBLE);
-                    Log.d("________", "IS FAVORITE");
+                    if (mFavoriteTutors.get(i).getEmail().equals(email))
+                    {
+                        vh.isFavorite.setVisibility(View.VISIBLE);
+                        vh.isNotFavorite.setVisibility(View.INVISIBLE);
+                        Log.d("________", "IS FAVORITE");
+                    }
                 }
             }
+
+
 
 
 

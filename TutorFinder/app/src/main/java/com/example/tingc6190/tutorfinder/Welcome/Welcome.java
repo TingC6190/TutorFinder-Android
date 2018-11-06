@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,12 +20,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.MainActivity;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Search;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -36,6 +43,7 @@ public class Welcome extends Fragment implements LocationListener {
     private LocationManager locationManager;
     public Double latitude;
     public Double longitude;
+    EditText filterZip_et;
     HomeActivity homeActivity;
 
 
@@ -78,6 +86,7 @@ public class Welcome extends Fragment implements LocationListener {
             Button searchButton = getView().findViewById(R.id.search_welcome);
             Spinner subjectSpinner = getView().findViewById(R.id.setting_subject_spinner);
 
+            filterZip_et = getView().findViewById(R.id.filter_zip);
 
 
             ArrayAdapter<CharSequence> subjectAdapter = ArrayAdapter.createFromResource(getContext(),
@@ -108,8 +117,8 @@ public class Welcome extends Fragment implements LocationListener {
 
                     //homeActivity.getLocationOfUser();
 
-                    welcomeListener.getSearchSettings(subject, "");
-                    //getLocation();
+                    //welcomeListener.getSearchSettings(subject, "");
+                    getLocation();
 
 //                    getFragmentManager().beginTransaction()
 //                            .replace(R.id.content_container, new Search())
@@ -178,22 +187,37 @@ public class Welcome extends Fragment implements LocationListener {
 
 
             assert locationManager != null;
-            Location lastKnown = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location lastKnown = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (lastKnown != null)
             {
                 latitude = lastKnown.getLatitude();
                 longitude = lastKnown.getLongitude();
             }
 
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    2000,
-                    10.0f,
-                    (LocationListener) getContext());
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+//                    2000,
+//                    10.0f,
+//                    (LocationListener) getContext());
 
             //locationManager.requestLocationUpdates();
 
-            Log.d("__LATITUDE___", String.valueOf(latitude));
-            Log.d("__LONGITUDE__", String.valueOf(longitude));
+            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+            try {
+                List<Address> addresses = geocoder.getFromLocation(latitude, longitude,1);
+
+                Log.d("__ADDRESS__", addresses.get(0).getPostalCode());
+                Log.d("__ADDRESS__", addresses.get(0).getLocality());
+                Log.d("__ADDRESS__", addresses.get(0).getAdminArea());
+
+                filterZip_et.setText(addresses.get(0).getPostalCode());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Log.d("__ADDRESS__", String.valueOf(latitude));
+            Log.d("__ADDRESS__", String.valueOf(longitude));
         }
     }
 }

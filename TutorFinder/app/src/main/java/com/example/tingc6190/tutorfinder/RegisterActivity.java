@@ -104,10 +104,10 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
                                 //create student user in the database
                                 DatabaseReference studentUserRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + firebaseAuth.getUid());
 
-                                ArrayList<Tutor> favorites = new ArrayList<>();
+                                //ArrayList<Tutor> favorites = new ArrayList<>();
                                 ArrayList<Transaction> transactions = new ArrayList<>();
 
-                                Student studentUser = new Student(firstName, lastName, email, " ", " ", "", favorites, transactions);
+                                Student studentUser = new Student(firstName, lastName, email, " ", " ", "");
                                 studentUserRef.setValue(studentUser);
 
 

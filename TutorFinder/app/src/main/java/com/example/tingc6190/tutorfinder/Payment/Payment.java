@@ -88,7 +88,7 @@ public class Payment extends Fragment {
     PaymentListener paymentListener;
     DatePickerDialog datePickerDialog;
     TimePickerDialog timePickerDialog;
-    String dayOfWeek;
+    String dayOfWeek = "";
 
 
     public Payment() {
@@ -96,7 +96,7 @@ public class Payment extends Fragment {
 
     public interface PaymentListener
     {
-        void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl, String date, String email);
+        void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl, String date, String email, String tutorUID);
     }
 
     @Override
@@ -322,12 +322,12 @@ public class Payment extends Fragment {
 
                             if (!TextUtils.isEmpty(tutor.getPicture().trim()))
                             {
-                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture(), currentDate, tutor.getEmail());
+                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture(), currentDate, tutor.getEmail(), tutor.getTutorUID());
 
                             }
                             else
                             {
-                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ", currentDate, tutor.getEmail());
+                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ", currentDate, tutor.getEmail(), tutor.getTutorUID());
 
                             }
                             Toast.makeText(getContext(), "Payment Successful", Toast.LENGTH_SHORT).show();
@@ -559,6 +559,8 @@ public class Payment extends Fragment {
                 {
                     case "MON":
                     {
+                        Log.d("MON", dayOfWeek);
+
                         if (!tutorAvailability_tv.getText().toString().contains("Not"))
                         {
                             String startTime = tutor.getSchedule().getMonday().getStartTime();
@@ -566,8 +568,19 @@ public class Payment extends Fragment {
                             minOfStart = Integer.parseInt(startTime.split(":")[1].split(" ")[0]);
 
                             String endTime = tutor.getSchedule().getMonday().getEndTime();
-                            hourOfEnd = Integer.parseInt(startTime.split(":")[0]);
-                            minOfEnd = Integer.parseInt(startTime.split(":")[1].split(" ")[0]);
+                            hourOfEnd = Integer.parseInt(endTime.split(":")[0]);
+                            minOfEnd = Integer.parseInt(endTime.split(":")[1].split(" ")[0]);
+
+                            int trueStartTime = (hourOfStart * 60) + minOfStart;
+                            int trueEndTime = (hourOfEnd * 60) + minOfEnd;
+
+                            if (trueEndTime < trueStartTime)
+                            {
+                                trueEndTime = trueEndTime * 100;
+                            }
+
+                            Log.d("__CHECKFORTIMEEEEE__", trueStartTime + " > " + trueEndTime);
+
 
 
                             Log.d("__CHECKFORTIMEEEEE__", hourOfStart + ":" + minOfStart + " - " + hourOfEnd + ":" + minOfEnd);
@@ -662,12 +675,12 @@ public class Payment extends Fragment {
 
         if (!TextUtils.isEmpty(tutor.getPicture().trim()))
         {
-            paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture(), currentDate, tutor.getEmail());
+            paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture(), currentDate, tutor.getEmail(), tutor.getTutorUID());
 
         }
         else
         {
-            paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ", currentDate, tutor.getEmail());
+            paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ", currentDate, tutor.getEmail(), tutor.getTutorUID());
 
         }
         Toast.makeText(getContext(), "Payment Successful", Toast.LENGTH_SHORT).show();

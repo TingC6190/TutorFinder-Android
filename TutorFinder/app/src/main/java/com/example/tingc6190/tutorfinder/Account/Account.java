@@ -204,8 +204,11 @@ public class Account extends Fragment {
                 transaction_tv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        homeActivity.getTransactions();
+
                         getFragmentManager().beginTransaction()
-                                .replace(R.id.content_container, new Transactions())
+                                .replace(R.id.content_container, new Transactions(), "transactionsFragment")
                                 .addToBackStack("account")
                                 .commit();
                     }

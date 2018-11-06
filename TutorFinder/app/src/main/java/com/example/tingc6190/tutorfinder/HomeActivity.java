@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.tingc6190.tutorfinder.Account.Account;
+import com.example.tingc6190.tutorfinder.Account.Transactions;
 import com.example.tingc6190.tutorfinder.DataObject.Location;
 import com.example.tingc6190.tutorfinder.DataObject.ReviewInfo;
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Friday;
@@ -102,7 +103,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                     //launch search fragment
                     getFragmentManager().popBackStack();
                     getFragmentManager().beginTransaction()
-                            .replace(R.id.content_container, new Search())
+                            .replace(R.id.content_container, new Search(), "tutorListFragment")
                             .commit();
                     return true;
 
@@ -116,9 +117,12 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                 case R.id.navbar_favorites:
                     //launch favorites fragment
+
+                    getFavorites();
+
                     getFragmentManager().popBackStack();
                     getFragmentManager().beginTransaction()
-                            .replace(R.id.content_container, new Favorite())
+                            .replace(R.id.content_container, new Favorite(), "favoriteFragment")
                             .commit();
                     return true;
 
@@ -228,6 +232,16 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 allTutorUID = tutorsUID;
                 checkIfUserIsTutor();
 
+
+                if (getFragmentManager().findFragmentByTag("tutorListFragment") != null &&
+                        getFragmentManager().findFragmentByTag("tutorListFragment").isVisible())
+                {
+                    getFragmentManager().popBackStack();
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.content_container, new Search(), "tutorListFragment")
+                            .commit();
+                }
+
                 Log.d("__DATABASE__", "__HAS_UPDATED__");
 
                 //Log.d("_______test______", String.valueOf(tutors.get(0).toString()));
@@ -280,8 +294,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                 currentUserInfo = dataSnapshot.getValue(Student.class);
 
-                favoriteTutors = currentUserInfo.getFavorites();
-                userTransactions = currentUserInfo.getTransactions();
+                //favoriteTutors = currentUserInfo.getFavorites();
+                //userTransactions = currentUserInfo.getTransactions();
 
                 //displayUserInfo();
 
@@ -420,37 +434,39 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     @Override
     public void addTutorToFavorite(Tutor tutorToAdd)
     {
-        ArrayList<Tutor> tempFav = new ArrayList<>();
+        String tutorUID = tutorToAdd.getTutorUID();
 
-        if (favoriteTutors == null)
-        {
-            favoriteTutors = tempFav;
-        }
+//        ArrayList<Tutor> tempFav = new ArrayList<>();
+//
+//        if (favoriteTutors == null)
+//        {
+//            favoriteTutors = tempFav;
+//        }
+//
+//        favoriteTutors.add(tutorToAdd);
 
-        favoriteTutors.add(tutorToAdd);
+        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/favorites/" + tutorUID);
 
-        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/favorites");
-
-        favoriteRef.setValue(favoriteTutors);
+        favoriteRef.setValue(tutorToAdd);
     }
 
     @Override
     public void removeTutorFromFavorite(Tutor tutorToRemove) {
 
-        String tutorEmail = tutorToRemove.getEmail();
+        String tutorUID = tutorToRemove.getTutorUID();
 
-        for (int i = 0; i < favoriteTutors.size(); i++)
-        {
-            //remove tutor at position if emails match
-            if (favoriteTutors.get(i).getEmail().equals(tutorEmail))
-            {
-                favoriteTutors.remove(i);
-            }
-        }
+//        for (int i = 0; i < favoriteTutors.size(); i++)
+//        {
+//            //remove tutor at position if emails match
+//            if (favoriteTutors.get(i).getEmail().equals(tutorEmail))
+//            {
+//                favoriteTutors.remove(i);
+//            }
+//        }
 
-        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/favorites");
+        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/favorites/" + tutorUID);
 
-        favoriteRef.setValue(favoriteTutors);
+        favoriteRef.removeValue();
     }
 
 
@@ -466,21 +482,24 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     }
 
     @Override
-    public void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl, String date, String email)
+    public void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl, String date, String email, String tutorUID)
     {
-        ArrayList<Transaction> tempTransaction = new ArrayList<>();
+//        ArrayList<Transaction> tempTransaction = new ArrayList<>();
+//
+//        if (userTransactions == null)
+//        {
+//            userTransactions = tempTransaction;
+//        }
 
-        if (userTransactions == null)
-        {
-            userTransactions = tempTransaction;
-        }
+//        userTransactions.add(new Transaction(firstName, lastName, price, pictureUrl, date, email));
 
-        userTransactions.add(new Transaction(firstName, lastName, price, pictureUrl, date, email));
+        Transaction transaction = new Transaction(firstName, lastName, price, pictureUrl, date, email);
+
 
         //upload to db
-        DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/transactions");
+        DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/transactions/" + tutorUID);
 
-        transactionRef.setValue(userTransactions);
+        transactionRef.setValue(transaction);
     }
 
     @Override
@@ -806,10 +825,116 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
             {
                 e.printStackTrace();
             }
-
-
-
         }
+    }
+
+    private void getFavorites()
+    {
+        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/favorites");
+
+        //get our data from the database
+        ValueEventListener favListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Log.d("__INSIDE_FUNCTION__", "FAVORITE DATA CHANGED");
+
+                ArrayList<Tutor> favTutor = new ArrayList<>();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
+                {
+                    Tutor tutor = postSnapshot.getValue(Tutor.class);
+
+                    favTutor.add(tutor);
+                }
+
+                favoriteTutors = favTutor;
+
+                //currentUserInfo = dataSnapshot.getValue(Student.class);
+                //favoriteTutors = currentUserInfo.getFavorites();
+                //userTransactions = currentUserInfo.getTransactions();
+
+                //displayUserInfo();
+
+//                Log.d("__FIRST__", currentUserInfo.getFirstName());
+//                Log.d("__LAST__", currentUserInfo.getLastName());
+
+                if (getFragmentManager().findFragmentByTag("favoriteFragment") != null &&
+                        getFragmentManager().findFragmentByTag("favoriteFragment").isVisible())
+                {
+                    getFragmentManager().popBackStack();
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.content_container, new Favorite(), "favoriteFragment")
+                            .commit();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("error", "something went wrong when retrieving data");
+            }
+        };
+        favoriteRef.addValueEventListener(favListener);
+    }
+
+
+    public void getTransactions()
+    {
+        DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/transactions");
+
+
+        ValueEventListener transactionListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Log.d("__INSIDE_FUNCTION__", "TRANSACTION DATA CHANGED");
+
+                ArrayList<Transaction> transactions = new ArrayList<>();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
+                {
+                    Transaction transaction = postSnapshot.getValue(Transaction.class);
+
+                    transactions.add(transaction);
+                }
+
+                userTransactions = transactions;
+
+                if (getFragmentManager().findFragmentByTag("transactionsFragment") != null &&
+                        getFragmentManager().findFragmentByTag("transactionsFragment").isVisible())
+                {
+                    getFragmentManager().popBackStack();
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.content_container, new Transactions(), "transactionsFragment")
+                            .commit();
+                }
+
+                //currentUserInfo = dataSnapshot.getValue(Student.class);
+                //favoriteTutors = currentUserInfo.getFavorites();
+                //userTransactions = currentUserInfo.getTransactions();
+
+                //displayUserInfo();
+
+//                Log.d("__FIRST__", currentUserInfo.getFirstName());
+//                Log.d("__LAST__", currentUserInfo.getLastName());
+
+//                if (getFragmentManager().findFragmentByTag("favoriteFragment") != null &&
+//                        getFragmentManager().findFragmentByTag("favoriteFragment").isVisible())
+//                {
+//                    getFragmentManager().popBackStack();
+//                    getFragmentManager().beginTransaction()
+//                            .replace(R.id.content_container, new Favorite(), "favoriteFragment")
+//                            .commit();
+//                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("error", "something went wrong when retrieving data");
+            }
+        };
+        transactionRef.addValueEventListener(transactionListener);
+
     }
 
     public Tutor getCurrentTutor()

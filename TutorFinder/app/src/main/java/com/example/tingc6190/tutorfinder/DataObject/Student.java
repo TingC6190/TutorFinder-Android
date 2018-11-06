@@ -12,22 +12,32 @@ public class Student {
     private String zipcode;
     private String aboutMe;
     private String picture;
-    private ArrayList<Tutor> favorites;
-    private ArrayList<Transaction> transactions;
+    //private ArrayList<Tutor> favorites;
+    //private ArrayList<Transaction> transactions;
 
     public Student() {
     }
 
+//    public Student(String firstName, String lastName, String email, String zipcode, String aboutMe,
+//                   String picture, ArrayList<Tutor> favorites, ArrayList<Transaction> transactions) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.email = email;
+//        this.zipcode = zipcode;
+//        this.aboutMe = aboutMe;
+//        this.picture = picture;
+//        this.favorites = favorites;
+//        this.transactions = transactions;
+//    }
+
     public Student(String firstName, String lastName, String email, String zipcode, String aboutMe,
-                   String picture, ArrayList<Tutor> favorites, ArrayList<Transaction> transactions) {
+                   String picture) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.zipcode = zipcode;
         this.aboutMe = aboutMe;
         this.picture = picture;
-        this.favorites = favorites;
-        this.transactions = transactions;
     }
 
     public String getFirstName() {
@@ -78,19 +88,19 @@ public class Student {
         this.picture = picture;
     }
 
-    public ArrayList<Tutor> getFavorites() {
-        return favorites;
-    }
+//    public ArrayList<Tutor> getFavorites() {
+//        return favorites;
+//    }
+//
+//    public void setFavorites(ArrayList<Tutor> favorites) {
+//        this.favorites = favorites;
+//    }
 
-    public void setFavorites(ArrayList<Tutor> favorites) {
-        this.favorites = favorites;
-    }
-
-    public ArrayList<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(ArrayList<Transaction> transactions) {
-        this.transactions = transactions;
-    }
+//    public ArrayList<Transaction> getTransactions() {
+//        return transactions;
+//    }
+//
+//    public void setTransactions(ArrayList<Transaction> transactions) {
+//        this.transactions = transactions;
+//    }
 }
