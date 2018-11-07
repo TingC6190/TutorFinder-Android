@@ -227,6 +227,15 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                     tutorsUID.add(tutorUID);
 
                 }
+
+                for (int i = 0; i < getAllTutors.size(); i++)
+                {
+                    if (getAllTutors.get(i).getTutorUID().equals(currentUserUID))
+                    {
+                        getAllTutors.remove(i);
+                    }
+                }
+
                 tutors = getAllTutors;
                 tutors_duplicate = getAllTutors;
                 allTutorUID = tutorsUID;
@@ -522,7 +531,17 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 }
             }
 
+
+
             tutors = filteredTutors;
+        }
+
+        for (int i = 0; i < tutors.size(); i++)
+        {
+            if (tutors.get(i).getTutorUID().equals(currentUserUID))
+            {
+                tutors.remove(i);
+            }
         }
 
         getFragmentManager().beginTransaction()
