@@ -6,15 +6,17 @@ public class ReviewInfo {
     String lastName;
     String date;
     String description;
+    String reviewerID;
 
     public ReviewInfo() {
     }
 
-    public ReviewInfo(String firstName, String lastName, String date, String description) {
+    public ReviewInfo(String firstName, String lastName, String date, String description, String reviewerID) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.date = date;
         this.description = description;
+        this.reviewerID = reviewerID;
     }
 
     public String getFirstName() {
@@ -47,5 +49,13 @@ public class ReviewInfo {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getReviewerID() {
+        return reviewerID;
+    }
+
+    public void setReviewerID(String reviewerID) {
+        this.reviewerID = reviewerID;
     }
 }

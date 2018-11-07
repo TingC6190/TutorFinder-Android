@@ -116,6 +116,8 @@ public class Review extends Fragment {
                         Log.d("__REVIEW__", currentDate);
 
                         reviewListener.pushReview(firstName, lastName, currentDate, description, tutorUID);
+
+                        writeReview_et.setText("");
                     }
                     else
                     {

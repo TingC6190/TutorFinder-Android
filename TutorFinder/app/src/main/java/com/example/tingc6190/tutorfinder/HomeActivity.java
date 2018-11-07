@@ -551,7 +551,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
 
     @Override
-    public void pushReview(final String firstName, final String lastName, final String currentDate, final String description, final String tutorUID) {
+    public void pushReview(String firstName, String lastName, String currentDate, String description, String tutorUID) {
 
         //reviews = new ArrayList<>();
 
@@ -559,7 +559,26 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
 
 
-        pushReviewToTutor(firstName, lastName, currentDate, description, tutorUID);
+//        ArrayList<Tutor> tempFav = new ArrayList<>();
+//
+//        if (favoriteTutors == null)
+//        {
+//            favoriteTutors = tempFav;
+//        }
+//
+//        favoriteTutors.add(tutorToAdd);
+
+        String reviewerID = currentUserUID + "_" + System.currentTimeMillis();
+        ReviewInfo review = new ReviewInfo(firstName, lastName, currentDate, description, currentUserUID);
+
+        DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + tutorUID + "/reviews/" + reviewerID);
+
+        reviewRef.setValue(review);
+
+
+
+
+        //pushReviewToTutor(firstName, lastName, currentDate, description, tutorUID);
 //        pushReviewToTutor(firstName, lastName, currentDate, description, tutorUID);
 
         //ArrayList<ReviewInfo> reviews = new ArrayList<>();
@@ -590,13 +609,13 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         for (int i = 0; i < tutors.size(); i++)
         {
-            if (tutors.get(i).getReviews() != null)
-            {
-                if (tutors.get(i).getTutorUID().equals(tutorUID))
-                {
-                    reviews = tutors.get(i).getReviews();
-                }
-            }
+//            if (tutors.get(i).getReviews() != null)
+//            {
+//                if (tutors.get(i).getTutorUID().equals(tutorUID))
+//                {
+//                    reviews = tutors.get(i).getReviews();
+//                }
+//            }
 //            else
 //            {
 //                reviews = new ArrayList<>();
@@ -953,6 +972,76 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
             }
         };
         transactionRef.addValueEventListener(transactionListener);
+
+    }
+
+    public void getTutorReviews()
+    {
+        DatabaseReference reviewsRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + tutor.getTutorUID() + "/reviews");
+
+        ValueEventListener reviewListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Log.d("__INSIDE_FUNCTION__", "REVIEWS DATA CHANGED");
+
+                //ArrayList<Transaction> transactions = new ArrayList<>();
+                ArrayList<ReviewInfo> tempReviews = new ArrayList<>();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
+                {
+                    //Transaction transaction = postSnapshot.getValue(Transaction.class);
+                    ReviewInfo review = postSnapshot.getValue(ReviewInfo.class);
+                    tempReviews.add(review);
+                }
+
+                reviews = tempReviews;
+
+
+                if (getFragmentManager().findFragmentByTag("reviewsFragment") != null &&
+                        getFragmentManager().findFragmentByTag("reviewsFragment").isVisible())
+                {
+                    getFragmentManager().popBackStack();
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.content_container, new Review(), "reviewsFragment")
+                            .addToBackStack("reviews")
+                            .commit();
+                }
+//                if (getFragmentManager().findFragmentByTag("transactionsFragment") != null &&
+//                        getFragmentManager().findFragmentByTag("transactionsFragment").isVisible())
+//                {
+//                    getFragmentManager().popBackStack();
+//                    getFragmentManager().beginTransaction()
+//                            .replace(R.id.content_container, new Transactions(), "transactionsFragment")
+//                            .commit();
+//                }
+
+                //currentUserInfo = dataSnapshot.getValue(Student.class);
+                //favoriteTutors = currentUserInfo.getFavorites();
+                //userTransactions = currentUserInfo.getTransactions();
+
+                //displayUserInfo();
+
+//                Log.d("__FIRST__", currentUserInfo.getFirstName());
+//                Log.d("__LAST__", currentUserInfo.getLastName());
+
+//                if (getFragmentManager().findFragmentByTag("favoriteFragment") != null &&
+//                        getFragmentManager().findFragmentByTag("favoriteFragment").isVisible())
+//                {
+//                    getFragmentManager().popBackStack();
+//                    getFragmentManager().beginTransaction()
+//                            .replace(R.id.content_container, new Favorite(), "favoriteFragment")
+//                            .commit();
+//                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("error", "something went wrong when retrieving data");
+            }
+        };
+        reviewsRef.addValueEventListener(reviewListener);
+
 
     }
 

@@ -11,7 +11,7 @@ public class Tutor {
     private String lastName;
     private Double rating;
     private Integer price;
-    private ArrayList<ReviewInfo> reviews;
+    //private ArrayList<ReviewInfo> reviews;
     private String subject;
     private Location location;
     private Schedule schedule;
@@ -26,15 +26,35 @@ public class Tutor {
     public Tutor() {
     }
 
+//    public Tutor(String firstName, String lastName, Double rating,
+//                 Integer price, ArrayList<ReviewInfo> reviews, Schedule schedule, Location location,
+//                 Boolean isVerified, String dateVerified, String licenseNumber, String email,
+//                 String aboutMe, String picture, String subject, String tutorUID) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.rating = rating;
+//        this.price = price;
+//        this.reviews = reviews;
+//        this.schedule = schedule;
+//        this.location = location;
+//        this.isVerified = isVerified;
+//        this.dateVerified = dateVerified;
+//        this.licenseNumber = licenseNumber;
+//        this.email = email;
+//        this.aboutMe = aboutMe;
+//        this.picture = picture;
+//        this.subject = subject;
+//        this.tutorUID = tutorUID;
+//    }
+
     public Tutor(String firstName, String lastName, Double rating,
-                 Integer price, ArrayList<ReviewInfo> reviews, Schedule schedule, Location location,
+                 Integer price, Schedule schedule, Location location,
                  Boolean isVerified, String dateVerified, String licenseNumber, String email,
                  String aboutMe, String picture, String subject, String tutorUID) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.rating = rating;
         this.price = price;
-        this.reviews = reviews;
         this.schedule = schedule;
         this.location = location;
         this.isVerified = isVerified;
@@ -67,10 +87,6 @@ public class Tutor {
         return subject;
     }
 
-    public ArrayList<ReviewInfo> getReviews() {
-        return reviews;
-    }
-
     public Schedule getSchedule() {
         return schedule;
     }
@@ -93,10 +109,6 @@ public class Tutor {
 
     public void setPrice(Integer price) {
         this.price = price;
-    }
-
-    public void setReviews(ArrayList<ReviewInfo> reviews) {
-        this.reviews = reviews;
     }
 
     public void setSubject(String subject) {

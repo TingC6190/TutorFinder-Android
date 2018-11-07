@@ -248,14 +248,21 @@ public class Profile extends Fragment {
                     }
                 });
 
-//                reviewButton.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                        profileListener.pullReviewOfTutor(tutorUID);
-//
-//                    }
-//                });
+                reviewButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        //profileListener.pullReviewOfTutor(tutorUID);
+
+                        homeActivity.getTutorReviews();
+
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.content_container, new Review(), "reviewsFragment")
+                                .addToBackStack("review")
+                                .commit();
+
+                    }
+                });
 
             }
         }
