@@ -9,6 +9,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -420,7 +421,7 @@ public class Payment extends Fragment {
                 String dayOfWeekFull = DateFormat.getDateInstance(DateFormat.FULL).format(date);
                 String day = dayOfWeekFull.split(",")[0];
 
-                String availability;
+                String availability = null;
 
                 switch (day)
                 {
@@ -536,6 +537,23 @@ public class Payment extends Fragment {
                 Log.d("_________", selectedDay);
 
                 selectDay_tv.setText(selectedDay);
+
+                String selectStartTime = "Select Start Time";
+
+                if (!availability.contains("Not"))
+                {
+                    selectTime_tv.setEnabled(true);
+                    selectTime_tv.setBackgroundResource(R.drawable.rounded_corner);
+                    selectTime_tv.setText(selectStartTime);
+                }
+                else
+                {
+                    selectTime_tv.setEnabled(false);
+                    selectTime_tv.setBackgroundResource(R.drawable.rounded_corner_gray);
+                    selectTime_tv.setText(selectStartTime);
+                }
+
+
             }
         });
         return selectedDay;

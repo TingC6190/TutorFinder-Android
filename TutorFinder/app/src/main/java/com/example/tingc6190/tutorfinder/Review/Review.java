@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -68,6 +69,9 @@ public class Review extends Fragment {
 
         Log.d("__REVIEW__", currentStudent.getEmail());
 
+        //homeActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        homeActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         return inflater.inflate(R.layout.content_review_screen, container, false);
     }
 
@@ -95,8 +99,6 @@ public class Review extends Fragment {
 
                 reviewAdapter.notifyDataSetChanged();
             }
-
-
 
 
             publishReviewButton.setOnClickListener(new View.OnClickListener() {
