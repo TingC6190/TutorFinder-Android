@@ -114,7 +114,8 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
 
         if (isTutor)
         {
-            tutorToEdit = homeActivity.getTutorToEdit();
+            //tutorToEdit = homeActivity.getTutorToEdit();
+            tutorToEdit = homeActivity.getCurrentTutorToEdit();
         }
 
         tutor = new Tutor();
@@ -181,11 +182,16 @@ public class TutorFormInitial extends Fragment implements View.OnClickListener {
 
                 schedule = tutorSchedule;
 
-                sundayStart_tv.setText(tutorSchedule.getSunday().getStartTime());
-                sundayEnd_tv  .setText(tutorSchedule.getSunday().getEndTime());
+                //Log.d("_____________", "BLAHBLAH__" + tutorSchedule.getSunday().getStartTime());
 
                 mondayStart_tv.setText(tutorSchedule.getMonday().getStartTime());
                 mondayEnd_tv  .setText(tutorSchedule.getMonday().getEndTime());
+
+                sundayStart_tv.setText(tutorSchedule.getSunday().getStartTime());
+                sundayEnd_tv  .setText(tutorSchedule.getSunday().getEndTime());
+
+                //mondayStart_tv.setText(tutorSchedule.getMonday().getStartTime());
+                //mondayEnd_tv  .setText(tutorSchedule.getMonday().getEndTime());
 
                 tuesdayStart_tv.setText(tutorSchedule.getTuesday().getStartTime());
                 tuesdayEnd_tv  .setText(tutorSchedule.getTuesday().getEndTime());

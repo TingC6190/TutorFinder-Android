@@ -35,7 +35,7 @@ import java.util.Locale;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-public class Welcome extends Fragment implements LocationListener {
+public class Welcome extends Fragment {
 
     private static final int REQUEST_LOCATION_PERMISSIONS = 0x03001;
     private WelcomeListener welcomeListener;
@@ -46,6 +46,7 @@ public class Welcome extends Fragment implements LocationListener {
     public Double longitude;
     EditText filterZip_et;
     HomeActivity homeActivity;
+    private boolean isDevice = true;
 
 
     public Welcome() {
@@ -188,47 +189,49 @@ public class Welcome extends Fragment implements LocationListener {
 
             Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
 
-            try {
-                List<Address> addresses = geocoder.getFromLocation(latitude, longitude,1);
-                //List<Address> addresses = geocoder.getFromLocation(40.514658, -74.393104, 1);
 
-                Log.d("__ADDRESS__", addresses.get(0).getPostalCode());
-                Log.d("__ADDRESS__", addresses.get(0).getLocality());
-                Log.d("__ADDRESS__", addresses.get(0).getAdminArea());
+            if (isDevice)
+            {
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude,1);
+                    //List<Address> addresses = geocoder.getFromLocation(40.514658, -74.393104, 1);
 
-                filterZip_et.setText(addresses.get(0).getPostalCode());
+                    Log.d("__ADDRESS__", addresses.get(0).getPostalCode());
+                    Log.d("__ADDRESS__", addresses.get(0).getLocality());
+                    Log.d("__ADDRESS__", addresses.get(0).getAdminArea());
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                    filterZip_et.setText(addresses.get(0).getPostalCode());
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
-
 
             Log.d("__ADDRESS__", String.valueOf(latitude));
             Log.d("__ADDRESS__", String.valueOf(longitude));
         }
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
+//    @Override
+//    public void onLocationChanged(Location location) {
+//        latitude = location.getLatitude();
+//        longitude = location.getLongitude();
+//    }
+//
+//    @Override
+//    public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderEnabled(String provider) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderDisabled(String provider) {
+//
+//    }
 
     public interface WelcomeListener
     {

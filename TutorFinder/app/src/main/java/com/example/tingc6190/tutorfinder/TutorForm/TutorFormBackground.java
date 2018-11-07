@@ -1,9 +1,17 @@
 package com.example.tingc6190.tutorfinder.TutorForm;
 
+import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,10 +29,15 @@ import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Search;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 public class TutorFormBackground extends Fragment {
 
+    private static final int REQUEST_LOCATION_PERMISSIONS = 0x03001;
     String city;
     String state;
     String zipcode;
@@ -39,6 +52,10 @@ public class TutorFormBackground extends Fragment {
     Tutor tutor;
     boolean isTutor;
     Student student;
+    private LocationManager locationManager;
+    public Double latitude;
+    public Double longitude;
+    private boolean isDevice = true;
 
     public TutorFormBackground() {
     }
@@ -66,10 +83,12 @@ public class TutorFormBackground extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSIONS);
+
         homeActivity = (HomeActivity) getActivity();
         isTutor = homeActivity.isTutor();
 
-        tutor = homeActivity.getTutorToEdit();
+        tutor = homeActivity.getCurrentTutorToEdit();
 
         return inflater.inflate(R.layout.content_tutor_form_bg_check, container, false);
     }
@@ -126,6 +145,83 @@ public class TutorFormBackground extends Fragment {
                 }
             });
 
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        {
+            //lastKnown = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+            locationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
+
+            LocationListener locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(android.location.Location location) {
+                    longitude = location.getLongitude();
+                    latitude = location.getLatitude();
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            };
+
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                    2000,
+                    10.0f,
+                    locationListener);
+
+            assert locationManager != null;
+
+            android.location.Location lastKnown = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (lastKnown != null)
+            {
+                latitude = lastKnown.getLatitude();
+                longitude = lastKnown.getLongitude();
+            }
+
+            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+
+            if (isDevice)
+            {
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude,1);
+                    //List<Address> addresses = geocoder.getFromLocation(40.514658, -74.393104, 1);
+
+                    Log.d("__ADDRESS__", addresses.get(0).getPostalCode());
+                    Log.d("__ADDRESS__", addresses.get(0).getLocality());
+                    Log.d("__ADDRESS__", addresses.get(0).getAdminArea());
+
+                    city_et.setText(addresses.get(0).getLocality());
+                    state_et.setText(addresses.get(0).getAdminArea());
+                    zipcode_et.setText(addresses.get(0).getPostalCode());
+
+                    //filterZip_et.setText(addresses.get(0).getPostalCode());
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            Log.d("__ADDRESS__", String.valueOf(latitude));
+            Log.d("__ADDRESS__", String.valueOf(longitude));
         }
     }
 }

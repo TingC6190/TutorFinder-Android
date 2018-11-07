@@ -88,6 +88,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private ArrayList<Transaction> userTransactions = new ArrayList<>();
     private ArrayList<Tutor> tutors_duplicate = new ArrayList<>();
     private ArrayList<ReviewInfo> reviews = new ArrayList<>();
+    private Tutor currentTutorToEdit;
 
     LocationManager locationManager;
     Location lastKnown;
@@ -382,12 +383,11 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         if (isTutor)
         {
-            Tutor tempTutor = getTutorToEdit();
+            Tutor tempTutor = getCurrentTutorToEdit();
 
             tempTutor.setFirstName(first);
             tempTutor.setLastName(last);
             tempTutor.setAboutMe(aboutMe);
-
 
 
             DatabaseReference tutorDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + currentUserUID);
@@ -495,9 +495,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                     filteredTutors.add(tutors_duplicate.get(i));
                 }
             }
-
-
-
             tutors = filteredTutors;
         }
 
@@ -505,6 +502,9 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         {
             if (tutors.get(i).getTutorUID().equals(currentUserUID))
             {
+                currentTutorToEdit = new Tutor();
+                currentTutorToEdit = tutors.get(i);
+
                 tutors.remove(i);
             }
         }
@@ -628,7 +628,11 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 {
                     if (getAllTutors.get(i).getTutorUID().equals(currentUserUID))
                     {
+                        currentTutorToEdit = new Tutor();
+                        currentTutorToEdit = getAllTutors.get(i);
+
                         getAllTutors.remove(i);
+
                     }
                 }
 
@@ -1123,5 +1127,10 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     public ArrayList<ReviewInfo> getReviews()
     {
         return reviews;
+    }
+
+    public Tutor getCurrentTutorToEdit()
+    {
+        return currentTutorToEdit;
     }
 }
