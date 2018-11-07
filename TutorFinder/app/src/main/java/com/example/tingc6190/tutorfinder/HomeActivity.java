@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -68,6 +69,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase myDatabase;
     private DatabaseReference databaseReference;
+    private static final int PERMISSION_ACCESS_FINE_LOCATION = 1;
 
     private ArrayList<Tutor> tutors = new ArrayList<>();
     //private ArrayList<Review> reviews = new ArrayList<>();
@@ -149,6 +151,9 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         email = firebaseAuth.getCurrentUser().getEmail();
 
+        tutorFromInitialSetup = new Tutor();
+
+        pullAllTutors();
 
         Log.d("__NEWACTIVITYCREATED__", "_________");
 
@@ -159,7 +164,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         //Log.d("__CURRENT_UID__", firebaseAuth.get);
 
-        tutorFromInitialSetup = new Tutor();
 
 //        Sunday sunday = new Sunday("10:00 AM", "11:00 PM");
 //        Monday monday = new Monday("09:00 AM", "12:00 AM");
@@ -202,66 +206,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         getCurrentUser();
 
 
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("users/tutors");
-
-        //get our data from the database
-        ValueEventListener tutorListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                ArrayList<Tutor> getAllTutors = new ArrayList<>();
-                ArrayList<String> tutorsUID = new ArrayList<>();
-
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
-                {
-                    Tutor mTutor = postSnapshot.getValue(Tutor.class);
-                    String tutorUID = postSnapshot.getKey();
-
-
-                    //allTutorUID.ad
-
-                    //tutors = new ArrayList<>();
-                    //tutors.add(tutor);
-
-                    getAllTutors.add(mTutor);
-                    tutorsUID.add(tutorUID);
-
-                }
-
-                for (int i = 0; i < getAllTutors.size(); i++)
-                {
-                    if (getAllTutors.get(i).getTutorUID().equals(currentUserUID))
-                    {
-                        getAllTutors.remove(i);
-                    }
-                }
-
-                tutors = getAllTutors;
-                tutors_duplicate = getAllTutors;
-                allTutorUID = tutorsUID;
-                checkIfUserIsTutor();
-
-
-                if (getFragmentManager().findFragmentByTag("tutorListFragment") != null &&
-                        getFragmentManager().findFragmentByTag("tutorListFragment").isVisible())
-                {
-                    getFragmentManager().popBackStack();
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.content_container, new Search(), "tutorListFragment")
-                            .commit();
-                }
-
-                Log.d("__DATABASE__", "__HAS_UPDATED__");
-
-                //Log.d("_______test______", String.valueOf(tutors.get(0).toString()));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("error", "something went wrong when retrieving data");
-            }
-        };
-        databaseReference.addValueEventListener(tutorListener);
 
         String accountUID = firebaseAuth.getUid();
 
@@ -287,7 +231,28 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//
+//        switch (requestCode)
+//        {
+//            case PERMISSION_ACCESS_FINE_LOCATION:
+//            {
+//                if (grantResults.length > 0
+//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    // permission was granted, yay! Do the
+//                    // contacts-related task you need to do.
+//
+//                } else {
+//                    // permission denied, boo! Disable the
+//                    // functionality that depends on this permission.
+//
+//                }
+//                return;
+//            }
+//        }
+//    }
 
     //get the data of our current user
     private void getCurrentUser()
@@ -600,6 +565,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //        Log.d("___TEST____","UPLOAD");
     }
 
+
     @Override
     public void pullReviewOfTutor(String tutorUID) {
 
@@ -627,6 +593,71 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 .replace(R.id.content_container, new Review())
                 .addToBackStack("review")
                 .commit();
+    }
+
+
+    public void pullAllTutors()
+    {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users/tutors");
+
+        //get our data from the database
+        ValueEventListener tutorListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                ArrayList<Tutor> getAllTutors = new ArrayList<>();
+                ArrayList<String> tutorsUID = new ArrayList<>();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
+                {
+                    Tutor mTutor = postSnapshot.getValue(Tutor.class);
+                    String tutorUID = postSnapshot.getKey();
+
+
+                    //allTutorUID.ad
+
+                    //tutors = new ArrayList<>();
+                    //tutors.add(tutor);
+
+                    getAllTutors.add(mTutor);
+                    tutorsUID.add(tutorUID);
+
+                }
+
+                for (int i = 0; i < getAllTutors.size(); i++)
+                {
+                    if (getAllTutors.get(i).getTutorUID().equals(currentUserUID))
+                    {
+                        getAllTutors.remove(i);
+                    }
+                }
+
+                tutors = getAllTutors;
+                tutors_duplicate = getAllTutors;
+                allTutorUID = tutorsUID;
+                checkIfUserIsTutor();
+
+
+                if (getFragmentManager().findFragmentByTag("tutorListFragment") != null &&
+                        getFragmentManager().findFragmentByTag("tutorListFragment").isVisible())
+                {
+                    getFragmentManager().popBackStack();
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.content_container, new Search(), "tutorListFragment")
+                            .commit();
+                }
+
+                Log.d("__DATABASE__", "__HAS_UPDATED__");
+
+                //Log.d("_______test______", String.valueOf(tutors.get(0).toString()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("error", "something went wrong when retrieving data");
+            }
+        };
+        databaseReference.addValueEventListener(tutorListener);
     }
 
 

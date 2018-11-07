@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,10 +70,19 @@ public class Welcome extends Fragment implements LocationListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
+//        getPermission();
+
+        //lastKnown = new Location();
+
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSIONS);
+
         homeActivity = (HomeActivity) getActivity();
 
 //        requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
 //                REQUEST_LOCATION_PERMISSIONS);
+
+
+
 
         return inflater.inflate(R.layout.content_welcome_screen, container, false);
     }
@@ -117,33 +127,85 @@ public class Welcome extends Fragment implements LocationListener {
 
                     //homeActivity.getLocationOfUser();
 
-                    //welcomeListener.getSearchSettings(subject, "");
-                    getLocation();
+                    welcomeListener.getSearchSettings(subject, "");
+                    //getLocation();
 
-//                    getFragmentManager().beginTransaction()
-//                            .replace(R.id.content_container, new Search())
-//                            .commit();
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.content_container, new Search())
+                            .commit();
                 }
             });
-
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        //if permission not request, ask again
-        if (getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
         {
-            requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION_PERMISSIONS);
-        }
+            //lastKnown = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-        //show our map fragment
-        else
-        {
+            locationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
 
+            LocationListener locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(android.location.Location location) {
+                    longitude = location.getLongitude();
+                    latitude = location.getLatitude();
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            };
+
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                    2000,
+                    10.0f,
+                    locationListener);
+
+            assert locationManager != null;
+
+            Location lastKnown = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (lastKnown != null)
+            {
+                latitude = lastKnown.getLatitude();
+                longitude = lastKnown.getLongitude();
+            }
+
+            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+            try {
+                List<Address> addresses = geocoder.getFromLocation(latitude, longitude,1);
+                //List<Address> addresses = geocoder.getFromLocation(40.514658, -74.393104, 1);
+
+                Log.d("__ADDRESS__", addresses.get(0).getPostalCode());
+                Log.d("__ADDRESS__", addresses.get(0).getLocality());
+                Log.d("__ADDRESS__", addresses.get(0).getAdminArea());
+
+                filterZip_et.setText(addresses.get(0).getPostalCode());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
+            Log.d("__ADDRESS__", String.valueOf(latitude));
+            Log.d("__ADDRESS__", String.valueOf(longitude));
         }
     }
 
@@ -173,51 +235,88 @@ public class Welcome extends Fragment implements LocationListener {
         void getSearchSettings(String subject, String zipcode);
     }
 
+    private void getPermission()
+    {
+
+        if (ContextCompat.checkSelfPermission(homeActivity, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            if (ActivityCompat.shouldShowRequestPermissionRationale(homeActivity, Manifest.permission.ACCESS_FINE_LOCATION))
+            {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            }
+            else
+            {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(homeActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_LOCATION_PERMISSIONS);
+            }
+        }
+        else
+        {
+            // Permission has already been granted
+            //lastKnown = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+
+        }
+
+    }
+
     private void getLocation()
     {
-        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED)
-        {
-            // Request location updates using 'this' as our LocationListener.
-            //locationManager = new LocationManager();
-
-            locationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
-
-            //locationManager.requestLocationUpdates(Loca);
 
 
-            assert locationManager != null;
-            Location lastKnown = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if (lastKnown != null)
-            {
-                latitude = lastKnown.getLatitude();
-                longitude = lastKnown.getLongitude();
-            }
+
 
 //            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 //                    2000,
 //                    10.0f,
 //                    (LocationListener) getContext());
 
-            //locationManager.requestLocationUpdates();
+        //locationManager.requestLocationUpdates();
 
-            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+//        if (Geocoder.isPresent())
+//        {
+//
+//        }
+//        else
+//        {
+//            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+//
+//            try {
+//                List<Address> addresses = geocoder.getFromLocation(latitude, longitude,1);
+//
+//                Log.d("__ADDRESS__", addresses.get(0).getPostalCode());
+//                Log.d("__ADDRESS__", addresses.get(0).getLocality());
+//                Log.d("__ADDRESS__", addresses.get(0).getAdminArea());
+//
+//                filterZip_et.setText(addresses.get(0).getPostalCode());
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
-            try {
-                List<Address> addresses = geocoder.getFromLocation(latitude, longitude,1);
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
 
-                Log.d("__ADDRESS__", addresses.get(0).getPostalCode());
-                Log.d("__ADDRESS__", addresses.get(0).getLocality());
-                Log.d("__ADDRESS__", addresses.get(0).getAdminArea());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude,1);
 
-                filterZip_et.setText(addresses.get(0).getPostalCode());
+            Log.d("__ADDRESS__", addresses.get(0).getPostalCode());
+            Log.d("__ADDRESS__", addresses.get(0).getLocality());
+            Log.d("__ADDRESS__", addresses.get(0).getAdminArea());
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            filterZip_et.setText(addresses.get(0).getPostalCode());
 
-            Log.d("__ADDRESS__", String.valueOf(latitude));
-            Log.d("__ADDRESS__", String.valueOf(longitude));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+
+
+        Log.d("__ADDRESS__", String.valueOf(latitude));
+        Log.d("__ADDRESS__", String.valueOf(longitude));
     }
 }
