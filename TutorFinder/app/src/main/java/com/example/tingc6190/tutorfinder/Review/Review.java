@@ -44,7 +44,7 @@ public class Review extends Fragment {
 
     public interface ReviewListener
     {
-        void pushReview(String firstName, String lastName, String currentDate, String description, String tutorUID);
+        void pushReview(String firstName, String lastName, String currentDate, String description, String tutorUID, int rate);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class Review extends Fragment {
 
                             Log.d("__REVIEW__", currentDate);
 
-                            reviewListener.pushReview(firstName, lastName, currentDate, description, tutorUID);
+                            reviewListener.pushReview(firstName, lastName, currentDate, description, tutorUID, rate);
 
                             writeReview_et.setText("");
                         }

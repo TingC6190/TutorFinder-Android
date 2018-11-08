@@ -516,7 +516,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
 
     @Override
-    public void pushReview(String firstName, String lastName, String currentDate, String description, String tutorUID) {
+    public void pushReview(String firstName, String lastName, String currentDate, String description, String tutorUID, int rate) {
 
         //reviews = new ArrayList<>();
 
@@ -534,7 +534,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //        favoriteTutors.add(tutorToAdd);
 
         String reviewerID = currentUserUID + "_" + System.currentTimeMillis();
-        ReviewInfo review = new ReviewInfo(firstName, lastName, currentDate, description, currentUserUID, 0);
+        ReviewInfo review = new ReviewInfo(firstName, lastName, currentDate, description, currentUserUID, rate);
 
         DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + tutorUID + "/reviews/" + reviewerID);
 
