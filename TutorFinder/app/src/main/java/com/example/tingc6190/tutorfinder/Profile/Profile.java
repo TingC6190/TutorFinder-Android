@@ -37,6 +37,7 @@ public class Profile extends Fragment {
     private ProfileListener profileListener;
     private ArrayList<Tutor> favoriteTutors;
     private String tutorUID;
+    private int reviewCount;
 
     public Profile() {
     }
@@ -49,6 +50,7 @@ public class Profile extends Fragment {
         tutor = homeActivity.getTutor();
         favoriteTutors = homeActivity.getFavoriteTutors();
         tutorUID = homeActivity.getTutor().getTutorUID();
+        reviewCount = homeActivity.getSelectedTutorReviewCount();
 
         return inflater.inflate(R.layout.content_profile_screen, container, false);
     }
@@ -97,6 +99,7 @@ public class Profile extends Fragment {
                 TextView verifiedText_tv;
                 TextView notVerifiedText_tv;
                 TextView verifiedDate_tv;
+                TextView reviewCount_tv;
                 final View favorite_checked_v;
                 final View favorite_unchecked_v;
                 final View email_v;
@@ -125,6 +128,7 @@ public class Profile extends Fragment {
                 verifiedText_tv = getView().findViewById(R.id.profile_verified_text);
                 notVerifiedText_tv = getView().findViewById(R.id.profile_not_verified_text);
                 verifiedDate_tv = getView().findViewById(R.id.profile_verified_date);
+                reviewCount_tv = getView().findViewById(R.id.tutor_profile_review_count);
 
                 //check to see if the current tutor already belongs in favorites
 
@@ -147,6 +151,16 @@ public class Profile extends Fragment {
                 String aboutMe = tutor.getAboutMe();
                 String profileImage = tutor.getPicture().trim();
                 String verifiedDate = tutor.getDateVerified();
+                String numOfReview = "";
+
+                if (reviewCount == 1)
+                {
+                    numOfReview = "(" + String.valueOf(reviewCount) + " Review)";
+                }
+                else
+                {
+                    numOfReview = "(" + String.valueOf(reviewCount) + " Reviews)";
+                }
 
                 //tutor schedule
                 Schedule schedule = tutor.getSchedule();
@@ -171,6 +185,7 @@ public class Profile extends Fragment {
                 timeSaturday_tv.setText(timeSaturday);
                 email_textview.setText(email);
                 aboutMe_tv.setText(aboutMe);
+                reviewCount_tv.setText(numOfReview);
 
 
                 if (tutor.getVerified())

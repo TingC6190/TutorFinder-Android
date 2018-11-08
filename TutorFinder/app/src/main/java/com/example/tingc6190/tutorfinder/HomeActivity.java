@@ -89,6 +89,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private ArrayList<Tutor> tutors_duplicate = new ArrayList<>();
     private ArrayList<ReviewInfo> reviews = new ArrayList<>();
     private Tutor currentTutorToEdit;
+    private int selectedTutorReviewCount;
 
     LocationManager locationManager;
     Location lastKnown;
@@ -307,9 +308,35 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     }
 
     @Override
-    public void getTutor(Tutor mTutor) {
+    public void getTutor(final Tutor mTutor) {
 
         tutor = mTutor;
+
+        final DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + mTutor.getTutorUID() + "/reviews");
+
+        ValueEventListener reviewListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshotReview) {
+                if (reviewRef.getKey() != null)
+                {
+                    int reviewCounter = 0;
+                    for (DataSnapshot reviewSnapshot : dataSnapshotReview.getChildren())
+                    {
+                        reviewCounter = reviewCounter + 1;
+                    }
+
+                    selectedTutorReviewCount = reviewCounter;
+
+                    //Log.d("__CHECKING_FOR_REVIEW__", tutorUID + " HAS " + reviewCounter + " REVIEWS AND " + totalStar + " TOTAL STARS");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        reviewRef.addListenerForSingleValueEvent(reviewListener);
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_container, new Profile())
@@ -610,9 +637,53 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
                 {
-                    Tutor mTutor = postSnapshot.getValue(Tutor.class);
-                    String tutorUID = postSnapshot.getKey();
+                    final Tutor mTutor = postSnapshot.getValue(Tutor.class);
+                    final String tutorUID = postSnapshot.getKey();
 
+                    //********* Loop through each tutor to get their review information *********//
+                    final DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + tutorUID + "/reviews");
+
+                    ValueEventListener reviewListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshotReview) {
+                            if (reviewRef.getKey() != null)
+                            {
+                                int reviewCounter = 0;
+                                int totalStar = 0;
+                                for (DataSnapshot reviewSnapshot : dataSnapshotReview.getChildren())
+                                {
+                                    ReviewInfo review = reviewSnapshot.getValue(ReviewInfo.class);
+                                    assert review != null;
+                                    totalStar = totalStar + review.getRate();
+                                    reviewCounter = reviewCounter + 1;
+                                }
+
+                                if (reviewCounter > 1)
+                                {
+                                    Double averageRating = (double) totalStar / (double) reviewCounter;
+                                    assert mTutor != null;
+                                    mTutor.setRating(averageRating);
+                                }
+                                else
+                                {
+                                    mTutor.setRating(0.0);
+                                }
+
+
+                                Log.d("__CHECKING_FOR_REVIEW__", tutorUID + " HAS " + reviewCounter + " REVIEWS AND " + totalStar + " TOTAL STARS");
+                            }
+                            else
+                            {
+                                Log.d("__CHECKING_FOR_REVIEW__", tutorUID + " no REVIEW");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    };
+                    reviewRef.addListenerForSingleValueEvent(reviewListener);
 
                     //allTutorUID.ad
 
@@ -1132,5 +1203,10 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     public Tutor getCurrentTutorToEdit()
     {
         return currentTutorToEdit;
+    }
+
+    public int getSelectedTutorReviewCount()
+    {
+        return selectedTutorReviewCount;
     }
 }

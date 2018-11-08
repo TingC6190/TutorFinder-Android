@@ -77,10 +77,13 @@ public class TutorAdapter extends BaseAdapter {
         if (tutor != null)
         {
             String name = tutor.getFirstName() + " " + tutor.getLastName();
-            String rating = String.valueOf(tutor.getRating()) + " Rating";
             String price = "$" + String.valueOf(tutor.getPrice()) + "/hr";
             String subject = tutor.getSubject();
 
+            String tutorRating = String.valueOf(tutor.getRating());
+            String tempRating = tutorRating.substring(0, 3);
+
+            String rating = tempRating + " Rating";
             Location location = tutor.getLocation();
 
             String tutorLocation = location.getCity() + ", " + location.getState() + " " + location.getZipcode();
