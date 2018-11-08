@@ -46,7 +46,7 @@ public class Welcome extends Fragment {
     public Double longitude;
     EditText filterZip_et;
     HomeActivity homeActivity;
-    private boolean isDevice = true;
+    private boolean isDevice = false;
 
 
     public Welcome() {

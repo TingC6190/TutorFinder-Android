@@ -534,7 +534,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //        favoriteTutors.add(tutorToAdd);
 
         String reviewerID = currentUserUID + "_" + System.currentTimeMillis();
-        ReviewInfo review = new ReviewInfo(firstName, lastName, currentDate, description, currentUserUID);
+        ReviewInfo review = new ReviewInfo(firstName, lastName, currentDate, description, currentUserUID, 0);
 
         DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + tutorUID + "/reviews/" + reviewerID);
 

@@ -7,16 +7,18 @@ public class ReviewInfo {
     String date;
     String description;
     String reviewerID;
+    int rate;
 
     public ReviewInfo() {
     }
 
-    public ReviewInfo(String firstName, String lastName, String date, String description, String reviewerID) {
+    public ReviewInfo(String firstName, String lastName, String date, String description, String reviewerID, int rate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.date = date;
         this.description = description;
         this.reviewerID = reviewerID;
+        this.rate = rate;
     }
 
     public String getFirstName() {
@@ -57,5 +59,13 @@ public class ReviewInfo {
 
     public void setReviewerID(String reviewerID) {
         this.reviewerID = reviewerID;
+    }
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
     }
 }

@@ -55,7 +55,7 @@ public class TutorFormBackground extends Fragment {
     private LocationManager locationManager;
     public Double latitude;
     public Double longitude;
-    private boolean isDevice = true;
+    private boolean isDevice = false;
 
     public TutorFormBackground() {
     }

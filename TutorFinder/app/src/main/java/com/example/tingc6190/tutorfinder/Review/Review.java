@@ -32,6 +32,12 @@ public class Review extends Fragment {
     ReviewListener reviewListener;
     String tutorUID;
     ArrayList<ReviewInfo> reviews;
+    View star1;
+    View star2;
+    View star3;
+    View star4;
+    View star5;
+    int rate = 0;
 
     public Review() {
     }
@@ -81,6 +87,12 @@ public class Review extends Fragment {
 
         if (getView() != null)
         {
+            star1 = getView().findViewById(R.id.review_rating_star_1);
+            star2 = getView().findViewById(R.id.review_rating_star_2);
+            star3 = getView().findViewById(R.id.review_rating_star_3);
+            star4 = getView().findViewById(R.id.review_rating_star_4);
+            star5 = getView().findViewById(R.id.review_rating_star_5);
+
             Log.d("__CHECREVIEWSss__", String.valueOf(reviews.size()));
 
             final EditText writeReview_et;
@@ -100,6 +112,40 @@ public class Review extends Fragment {
                 reviewAdapter.notifyDataSetChanged();
             }
 
+            star1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rateReviewOne();
+                }
+            });
+
+            star2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rateReviewTwo();
+                }
+            });
+
+            star3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rateReviewThree();
+                }
+            });
+
+            star4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rateReviewFour();
+                }
+            });
+
+            star5.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rateReviewFive();
+                }
+            });
 
             publishReviewButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,24 +155,86 @@ public class Review extends Fragment {
 
                     if (!TextUtils.isEmpty(description))
                     {
-                        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-                        String currentDate = sdf.format(new Date());
+                        if (rate != 0)
+                        {
+                            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                            String currentDate = sdf.format(new Date());
 
-                        String firstName = currentStudent.getFirstName();
-                        String lastName = currentStudent.getLastName();
+                            String firstName = currentStudent.getFirstName();
+                            String lastName = currentStudent.getLastName();
 
-                        Log.d("__REVIEW__", currentDate);
+                            Log.d("__REVIEW__", currentDate);
 
-                        reviewListener.pushReview(firstName, lastName, currentDate, description, tutorUID);
+                            reviewListener.pushReview(firstName, lastName, currentDate, description, tutorUID);
 
-                        writeReview_et.setText("");
+                            writeReview_et.setText("");
+                        }
+                        else
+                        {
+                            Toast.makeText(getContext(), "Please give the tutor a rating.", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     else
                     {
-                        Toast.makeText(getContext(), "Please write a review before publishing.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please write a review before publishing.", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }
+    }
+
+    private void rateReviewOne()
+    {
+        rate = 1;
+
+        star1.setBackgroundResource(R.drawable.star_rating);
+        star2.setBackgroundResource(R.drawable.star_rating_empty);
+        star3.setBackgroundResource(R.drawable.star_rating_empty);
+        star4.setBackgroundResource(R.drawable.star_rating_empty);
+        star5.setBackgroundResource(R.drawable.star_rating_empty);
+    }
+
+    private void rateReviewTwo()
+    {
+        rate = 2;
+
+        star1.setBackgroundResource(R.drawable.star_rating);
+        star2.setBackgroundResource(R.drawable.star_rating);
+        star3.setBackgroundResource(R.drawable.star_rating_empty);
+        star4.setBackgroundResource(R.drawable.star_rating_empty);
+        star5.setBackgroundResource(R.drawable.star_rating_empty);
+    }
+
+    private void rateReviewThree()
+    {
+        rate = 3;
+
+        star1.setBackgroundResource(R.drawable.star_rating);
+        star2.setBackgroundResource(R.drawable.star_rating);
+        star3.setBackgroundResource(R.drawable.star_rating);
+        star4.setBackgroundResource(R.drawable.star_rating_empty);
+        star5.setBackgroundResource(R.drawable.star_rating_empty);
+    }
+
+    private void rateReviewFour()
+    {
+        rate = 4;
+
+        star1.setBackgroundResource(R.drawable.star_rating);
+        star2.setBackgroundResource(R.drawable.star_rating);
+        star3.setBackgroundResource(R.drawable.star_rating);
+        star4.setBackgroundResource(R.drawable.star_rating);
+        star5.setBackgroundResource(R.drawable.star_rating_empty);
+    }
+
+    private void rateReviewFive()
+    {
+        rate = 5;
+
+        star1.setBackgroundResource(R.drawable.star_rating);
+        star2.setBackgroundResource(R.drawable.star_rating);
+        star3.setBackgroundResource(R.drawable.star_rating);
+        star4.setBackgroundResource(R.drawable.star_rating);
+        star5.setBackgroundResource(R.drawable.star_rating);
     }
 }
