@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Schedule;
 import com.example.tingc6190.tutorfinder.HomeActivity;
+import com.example.tingc6190.tutorfinder.Message.Message;
 import com.example.tingc6190.tutorfinder.Payment.Payment;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Review.Review;
@@ -105,6 +106,7 @@ public class Profile extends Fragment {
                 final View email_v;
                 Button hireButton;
                 Button reviewButton;
+                Button messageButton;
                 CircleImageView profileImage_riv;
 
                 name_tv = getView().findViewById(R.id.profile_name);
@@ -123,6 +125,7 @@ public class Profile extends Fragment {
                 email_textview = getView().findViewById(R.id.profile_email);
                 hireButton = getView().findViewById(R.id.hire_button);
                 reviewButton = getView().findViewById(R.id.review_button);
+                messageButton = getView().findViewById(R.id.message_button);
                 aboutMe_tv = getView().findViewById(R.id.profile_aboutme);
                 profileImage_riv = getView().findViewById(R.id.tutor_profile_image);
                 verifiedText_tv = getView().findViewById(R.id.profile_verified_text);
@@ -276,6 +279,17 @@ public class Profile extends Fragment {
                                 .addToBackStack("review")
                                 .commit();
 
+                    }
+                });
+
+                messageButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.content_container, new Message(), "messageFragment")
+                                .addToBackStack("message")
+                                .commit();
                     }
                 });
 

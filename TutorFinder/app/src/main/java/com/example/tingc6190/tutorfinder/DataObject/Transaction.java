@@ -8,17 +8,21 @@ public class Transaction {
     private String pictureUrl;
     private String date;
     private String email;
+    private String tutorUID;
+    private String tutorMilli;
 
     public Transaction() {
     }
 
-    public Transaction(String firstName, String lastName, String price, String pictureUrl, String date, String email) {
+    public Transaction(String firstName, String lastName, String price, String pictureUrl, String date, String email, String tutorUID, String tutorMilli) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.price = price;
         this.pictureUrl = pictureUrl;
         this.date = date;
         this.email = email;
+        this.tutorUID = tutorUID;
+        this.tutorMilli = tutorMilli;
     }
 
     public String getFirstName() {
@@ -71,5 +75,21 @@ public class Transaction {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTutorUID() {
+        return tutorUID;
+    }
+
+    public void setTutorUID(String tutorUID) {
+        this.tutorUID = tutorUID;
+    }
+
+    public String getTutorMilli() {
+        return tutorMilli;
+    }
+
+    public void setTutorMilli(String tutorMilli) {
+        this.tutorMilli = tutorMilli;
     }
 }

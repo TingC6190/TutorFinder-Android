@@ -90,6 +90,7 @@ public class Payment extends Fragment {
     DatePickerDialog datePickerDialog;
     TimePickerDialog timePickerDialog;
     String dayOfWeek = "";
+    String uniueTime;
 
 
     public Payment() {
@@ -97,7 +98,7 @@ public class Payment extends Fragment {
 
     public interface PaymentListener
     {
-        void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl, String date, String email, String tutorUID);
+        void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl, String date, String email, String tutorUID, String uniqueTime);
     }
 
     @Override
@@ -255,6 +256,8 @@ public class Payment extends Fragment {
                     {
                         //make sure day is after current
 
+                        long time = System.currentTimeMillis();
+                        uniueTime = String.valueOf(time);
 
                         //********************************* REAL PAYMENT *********************************//
                         //request our payment
@@ -323,12 +326,12 @@ public class Payment extends Fragment {
 
                             if (!TextUtils.isEmpty(tutor.getPicture().trim()))
                             {
-                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture(), currentDate, tutor.getEmail(), tutor.getTutorUID());
+                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture(), currentDate, tutor.getEmail(), tutor.getTutorUID(), uniueTime);
 
                             }
                             else
                             {
-                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ", currentDate, tutor.getEmail(), tutor.getTutorUID());
+                                paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ", currentDate, tutor.getEmail(), tutor.getTutorUID(), uniueTime);
 
                             }
                             Toast.makeText(getContext(), "Payment Successful", Toast.LENGTH_SHORT).show();
@@ -693,12 +696,12 @@ public class Payment extends Fragment {
 
         if (!TextUtils.isEmpty(tutor.getPicture().trim()))
         {
-            paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture(), currentDate, tutor.getEmail(), tutor.getTutorUID());
+            paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), tutor.getPicture(), currentDate, tutor.getEmail(), tutor.getTutorUID(), uniueTime);
 
         }
         else
         {
-            paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ", currentDate, tutor.getEmail(), tutor.getTutorUID());
+            paymentListener.getPaymentInfo(tutor.getFirstName(), tutor.getLastName(), String.valueOf(totalPrice), " ", currentDate, tutor.getEmail(), tutor.getTutorUID(), uniueTime);
 
         }
         Toast.makeText(getContext(), "Payment Successful", Toast.LENGTH_SHORT).show();

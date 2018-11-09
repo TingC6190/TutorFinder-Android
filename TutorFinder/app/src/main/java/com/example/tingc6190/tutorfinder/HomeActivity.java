@@ -65,7 +65,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         TutorFormInitial.TutorFormListener, TutorFormBackground.BackgroundFormListener,
         Account.AccountListener, Setting.SettingListener, Profile.ProfileListener,
         Favorite.FavoriteListener, Payment.PaymentListener, Welcome.WelcomeListener,
-        Review.ReviewListener {
+        Review.ReviewListener, Message.MessageListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase myDatabase;
@@ -505,7 +505,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     }
 
     @Override
-    public void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl, String date, String email, String tutorUID)
+    public void getPaymentInfo(String firstName, String lastName, String price, String pictureUrl, String date, String email, String tutorUID, String uniqueTime)
     {
 //        ArrayList<Transaction> tempTransaction = new ArrayList<>();
 //
@@ -516,11 +516,13 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
 //        userTransactions.add(new Transaction(firstName, lastName, price, pictureUrl, date, email));
 
-        Transaction transaction = new Transaction(firstName, lastName, price, pictureUrl, date, email);
+        Transaction transaction = new Transaction(firstName, lastName, price, pictureUrl, date, email, tutorUID, uniqueTime);
 
+        //long time = System.currentTimeMillis();
 
+        String transactionID = tutorUID + "_" + uniqueTime;
         //upload to db
-        DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/transactions/" + tutorUID);
+        DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/transactions/" + transactionID);
 
         transactionRef.setValue(transaction);
     }
@@ -644,6 +646,15 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 .replace(R.id.content_container, new Review())
                 .addToBackStack("review")
                 .commit();
+    }
+
+
+    //work on this!!!
+    @Override
+    public void pushMessage(String fromUserUID, String toTutorUID, String dateTime, String message) {
+
+        Log.d("__MESSAGEINHOME__", "Message from " + fromUserUID + " to " + toTutorUID + " at " + dateTime);
+        Log.d("__MESSAGEINHOME__", message);
     }
 
 
@@ -1283,4 +1294,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     {
         return selectedTutorReviewCount;
     }
+
+
 }

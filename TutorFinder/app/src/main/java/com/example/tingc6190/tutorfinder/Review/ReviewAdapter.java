@@ -69,8 +69,8 @@ public class ReviewAdapter extends BaseAdapter {
 
         if (review != null)
         {
-            //String name = review.getFirstName() + " " + review.getLastName();
-            String name = "Anonymous";
+            String name = review.getFirstName() + " " + review.getLastName();
+            //String name = "Anonymous";
             String date = review.getDate();
             String description = review.getDescription();
             int rate = review.getRate();
