@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.MainActivity;
@@ -124,16 +126,26 @@ public class Welcome extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    Log.d("__SEARCH_TAPPED__", subject);
+                    zipcode = filterZip_et.getText().toString().trim();
 
-                    //homeActivity.getLocationOfUser();
+                    //make sure no fields are empty
+                    if (TextUtils.isEmpty(zipcode))
+                    {
+                        Toast.makeText(getContext(), "Please enter a zipcode.", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Log.d("__SEARCH_TAPPED__", subject);
 
-                    welcomeListener.getSearchSettings(subject, "");
-                    //getLocation();
+                        //homeActivity.getLocationOfUser();
 
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.content_container, new Search())
-                            .commit();
+                        welcomeListener.getSearchSettings(subject, "");
+                        //getLocation();
+
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.content_container, new Search())
+                                .commit();
+                    }
                 }
             });
         }

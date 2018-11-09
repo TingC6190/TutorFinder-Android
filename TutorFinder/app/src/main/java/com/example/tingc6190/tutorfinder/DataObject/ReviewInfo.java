@@ -8,17 +8,20 @@ public class ReviewInfo {
     String description;
     String reviewerID;
     int rate;
+    long timeInMilli;
+
 
     public ReviewInfo() {
     }
 
-    public ReviewInfo(String firstName, String lastName, String date, String description, String reviewerID, int rate) {
+    public ReviewInfo(String firstName, String lastName, String date, String description, String reviewerID, int rate, long timeInMilli) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.date = date;
         this.description = description;
         this.reviewerID = reviewerID;
         this.rate = rate;
+        this.timeInMilli = timeInMilli;
     }
 
     public String getFirstName() {
@@ -67,5 +70,13 @@ public class ReviewInfo {
 
     public void setRate(int rate) {
         this.rate = rate;
+    }
+
+    public long getTimeInMilli() {
+        return timeInMilli;
+    }
+
+    public void setTimeInMilli(long timeInMilli) {
+        this.timeInMilli = timeInMilli;
     }
 }

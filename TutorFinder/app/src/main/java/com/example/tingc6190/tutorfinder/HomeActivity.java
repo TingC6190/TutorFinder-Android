@@ -9,6 +9,7 @@ import android.location.Geocoder;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -90,6 +91,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private ArrayList<ReviewInfo> reviews = new ArrayList<>();
     private Tutor currentTutorToEdit;
     private int selectedTutorReviewCount;
+    private ArrayList<ReviewInfo> currentTutorToEditReviews = new ArrayList<>();
+    ArrayList<ReviewInfo> tempReview = new ArrayList<>();
 
     LocationManager locationManager;
     Location lastKnown;
@@ -312,31 +315,32 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         tutor = mTutor;
 
-        final DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + mTutor.getTutorUID() + "/reviews");
-
-        ValueEventListener reviewListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshotReview) {
-                if (reviewRef.getKey() != null)
-                {
-                    int reviewCounter = 0;
-                    for (DataSnapshot reviewSnapshot : dataSnapshotReview.getChildren())
-                    {
-                        reviewCounter = reviewCounter + 1;
-                    }
-
-                    selectedTutorReviewCount = reviewCounter;
-
-                    //Log.d("__CHECKING_FOR_REVIEW__", tutorUID + " HAS " + reviewCounter + " REVIEWS AND " + totalStar + " TOTAL STARS");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        reviewRef.addListenerForSingleValueEvent(reviewListener);
+        //get the num of reviews for the selected tutor
+//        final DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + mTutor.getTutorUID() + "/reviews");
+//
+//        ValueEventListener reviewListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshotReview) {
+//                if (reviewRef.getKey() != null)
+//                {
+//                    int reviewCounter = 0;
+//                    for (DataSnapshot reviewSnapshot : dataSnapshotReview.getChildren())
+//                    {
+//                        reviewCounter = reviewCounter + 1;
+//                    }
+//
+//                    selectedTutorReviewCount = reviewCounter;
+//
+//                    //Log.d("__CHECKING_FOR_REVIEW__", tutorUID + " HAS " + reviewCounter + " REVIEWS AND " + totalStar + " TOTAL STARS");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        };
+//        reviewRef.addListenerForSingleValueEvent(reviewListener);
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_container, new Profile())
@@ -368,7 +372,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         tutorFromInitialSetup.setPicture(currentUserInfo.getPicture());
 
         pushTutorToDatabase();
-//
+
         //createTutor.setValue(tutorFromInitialSetup);
     }
 
@@ -426,6 +430,24 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         studentDatabaseRef.setValue(currentUserInfo);
 
+
+        if (currentTutorToEditReviews.size() > 0)
+        {
+            Log.d("CHECKFORCOUNTER", "IS IT 00000000?");
+            for (int i = 0; i < currentTutorToEditReviews.size(); i++)
+            {
+                String uniqueID = currentTutorToEditReviews.get(i).getReviewerID() + "_" + currentTutorToEditReviews.get(i).getTimeInMilli();
+                DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + currentTutorToEdit.getTutorUID() + "/reviews/" + uniqueID);
+
+                reviewRef.setValue(currentTutorToEditReviews.get(i));
+
+                //Log.d("REVIEWDETAIL", re)
+            }
+
+            //DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + tutor.getTutorUID() + "/reviews");
+
+            //reviewRef.setValue(reviews);
+        }
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_container, new Account())
@@ -560,8 +582,10 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //
 //        favoriteTutors.add(tutorToAdd);
 
-        String reviewerID = currentUserUID + "_" + System.currentTimeMillis();
-        ReviewInfo review = new ReviewInfo(firstName, lastName, currentDate, description, currentUserUID, rate);
+        long time = System.currentTimeMillis();
+
+        String reviewerID = currentUserUID + "_" + time;
+        ReviewInfo review = new ReviewInfo(firstName, lastName, currentDate, description, currentUserUID, rate, time);
 
         DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + tutorUID + "/reviews/" + reviewerID);
 
@@ -656,17 +680,25 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                                     assert review != null;
                                     totalStar = totalStar + review.getRate();
                                     reviewCounter = reviewCounter + 1;
-                                }
 
-                                if (reviewCounter > 1)
+                                    if (tutorUID.equals(currentTutorToEdit.getTutorUID()))
+                                    {
+                                        tempReview.add(review);
+                                    }
+                                }
+                                currentTutorToEditReviews = tempReview;
+
+                                if (reviewCounter > 0)
                                 {
                                     Double averageRating = (double) totalStar / (double) reviewCounter;
                                     assert mTutor != null;
                                     mTutor.setRating(averageRating);
+                                    mTutor.setReviewCounter(reviewCounter);
                                 }
                                 else
                                 {
                                     mTutor.setRating(0.0);
+                                    mTutor.setReviewCounter(0);
                                 }
 
 
@@ -683,7 +715,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                         }
                     };
-                    reviewRef.addListenerForSingleValueEvent(reviewListener);
+                    reviewRef.addValueEventListener(reviewListener);
 
                     //allTutorUID.ad
 
@@ -738,9 +770,49 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
     public void pushTutorToDatabase()
     {
+
+
+        //FIX THIS!!!!!!!!!!!!!!!!!!!!!
+        //only update, do not recreate
         DatabaseReference createTutor = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + currentUserUID);
 
         createTutor.setValue(tutorFromInitialSetup);
+
+//        if (currentTutorToEditReviews.size() > 0)
+//        {
+//            for (int i = 0; i < currentTutorToEditReviews.size(); i++)
+//            {
+//                String desc = currentTutorToEditReviews.get(i).getDescription();
+//                String time = String.valueOf(currentTutorToEditReviews.get(i).getTimeInMilli());
+//                String rate = String.valueOf(currentTutorToEditReviews.get(i).getRate());
+//
+//                Log.d("HOPINGTHISWORKSSS", rate + " " + desc + " " + time);
+//            }
+//        }
+//        else
+//        {
+//            Log.d("HOPINGTHISWORKSSS", "AHHHHH");
+//        }
+
+        //SystemClock.sleep(7000);
+
+        if (currentTutorToEditReviews.size() > 0)
+        {
+            Log.d("CHECKFORCOUNTER", "IS IT 00000000?");
+            for (int i = 0; i < currentTutorToEditReviews.size(); i++)
+            {
+                String uniqueID = currentTutorToEditReviews.get(i).getReviewerID() + "_" + currentTutorToEditReviews.get(i).getTimeInMilli();
+                DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + currentTutorToEdit.getTutorUID() + "/reviews/" + uniqueID);
+
+                reviewRef.setValue(currentTutorToEditReviews.get(i));
+
+                //Log.d("REVIEWDETAIL", re)
+            }
+
+            //DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + tutor.getTutorUID() + "/reviews");
+
+            //reviewRef.setValue(reviews);
+        }
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_container, new Search())
@@ -1150,6 +1222,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
 
     }
+
+
 
     public Tutor getCurrentTutor()
     {

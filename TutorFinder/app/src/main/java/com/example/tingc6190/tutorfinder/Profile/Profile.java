@@ -37,7 +37,7 @@ public class Profile extends Fragment {
     private ProfileListener profileListener;
     private ArrayList<Tutor> favoriteTutors;
     private String tutorUID;
-    private int reviewCount;
+    //private int reviewCount;
 
     public Profile() {
     }
@@ -50,7 +50,7 @@ public class Profile extends Fragment {
         tutor = homeActivity.getTutor();
         favoriteTutors = homeActivity.getFavoriteTutors();
         tutorUID = homeActivity.getTutor().getTutorUID();
-        reviewCount = homeActivity.getSelectedTutorReviewCount();
+        //reviewCount = homeActivity.getSelectedTutorReviewCount();
 
         return inflater.inflate(R.layout.content_profile_screen, container, false);
     }
@@ -151,15 +151,15 @@ public class Profile extends Fragment {
                 String aboutMe = tutor.getAboutMe();
                 String profileImage = tutor.getPicture().trim();
                 String verifiedDate = tutor.getDateVerified();
-                String numOfReview = "";
+                String numOfReview = String.valueOf(tutor.getReviewCounter());
 
-                if (reviewCount == 1)
+                if (tutor.getReviewCounter() == 1)
                 {
-                    numOfReview = "(" + String.valueOf(reviewCount) + " Review)";
+                    numOfReview = "(" + String.valueOf(numOfReview) + " Review)";
                 }
                 else
                 {
-                    numOfReview = "(" + String.valueOf(reviewCount) + " Reviews)";
+                    numOfReview = "(" + String.valueOf(numOfReview) + " Reviews)";
                 }
 
                 //tutor schedule

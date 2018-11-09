@@ -22,6 +22,7 @@ public class Tutor {
     private String aboutMe;
     private String picture;
     private String tutorUID;
+    private int reviewCounter;
 
     public Tutor() {
     }
@@ -50,7 +51,7 @@ public class Tutor {
     public Tutor(String firstName, String lastName, Double rating,
                  Integer price, Schedule schedule, Location location,
                  Boolean isVerified, String dateVerified, String licenseNumber, String email,
-                 String aboutMe, String picture, String subject, String tutorUID) {
+                 String aboutMe, String picture, String subject, String tutorUID, int reviewCounter) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.rating = rating;
@@ -65,6 +66,7 @@ public class Tutor {
         this.picture = picture;
         this.subject = subject;
         this.tutorUID = tutorUID;
+        this.reviewCounter = reviewCounter;
     }
 
     public String getFirstName() {
@@ -177,5 +179,13 @@ public class Tutor {
 
     public void setTutorUID(String tutorUID) {
         this.tutorUID = tutorUID;
+    }
+
+    public int getReviewCounter() {
+        return reviewCounter;
+    }
+
+    public void setReviewCounter(int reviewCounter) {
+        this.reviewCounter = reviewCounter;
     }
 }
