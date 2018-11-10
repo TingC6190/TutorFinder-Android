@@ -140,6 +140,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                     getFragmentManager().popBackStack();
                     getFragmentManager().beginTransaction()
                             .replace(R.id.content_container, new Account())
+                            .addToBackStack("account")
                             .commit();
                     return true;
             }

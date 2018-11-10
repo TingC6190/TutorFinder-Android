@@ -110,14 +110,12 @@
                 android:background="@drawable/ic_settings_black_24dp"
                 />
 
-            <TextView
+            <View
                 android:id="@+id/account_transactions"
-                android:layout_width="90dp"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="-30dp"
-                android:textColor="@color/royalBlue"
-                android:textStyle="bold"
-                android:text="Transactions"/>
+                android:background="@drawable/icons_transaction"/>
 
         </LinearLayout>
 
@@ -200,14 +198,29 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_gravity="center"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:background="@drawable/rounded_corner"
+        android:text="Become a Tutor"/>
+
+    <Button
+        android:id="@+id/self_tutor_profile_button"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
         android:textStyle="bold"
         android:textSize="20sp"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:background="@drawable/rounded_corner"
 
-        android:text="Become a Tutor"/>
+        android:text="Tutor Profile"/>
 
     <Button
         android:id="@+id/logout_button"

@@ -51,7 +51,7 @@ public class Account extends Fragment {
     private Student student;
     private String email;
     private View settingButton;
-    private TextView transaction_tv;
+    private View transaction_tv;
     private Boolean isTutor;
 
     private StorageReference storageReference;
@@ -108,6 +108,7 @@ public class Account extends Fragment {
             {
                 Button logoutButton = getView().findViewById(R.id.logout_button);
                 Button applyTutorButton = getView().findViewById(R.id.apply_tutor_button);
+                Button tutorProfile = getView().findViewById(R.id.self_tutor_profile_button);
                 TextView email_tv = getView().findViewById(R.id.account_email);
                 TextView name_tv = getView().findViewById(R.id.account_name);
                 TextView aboutMe_tv = getView().findViewById(R.id.account_aboutme);
@@ -205,12 +206,19 @@ public class Account extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        homeActivity.getTransactions();
-
+                        getFragmentManager().popBackStack();
                         getFragmentManager().beginTransaction()
                                 .replace(R.id.content_container, new Transactions(), "transactionsFragment")
-                                .addToBackStack("account")
+                                .addToBackStack("transactions view")
                                 .commit();
+                        homeActivity.getTransactions();
+                    }
+                });
+
+                tutorProfile.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //go to tutor profile
                     }
                 });
             }
