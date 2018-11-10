@@ -11,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.tingc6190.tutorfinder.DataObject.MessageInfo;
 import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
@@ -23,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Message extends Fragment {
@@ -33,6 +36,7 @@ public class Message extends Fragment {
     private Tutor tutor;
     private String currentUserUID;
     private MessageListener messageListener;
+    private ArrayList<MessageInfo> messages = new ArrayList<>();
 
     public Message() {
     }
@@ -65,7 +69,10 @@ public class Message extends Fragment {
 
         tutor = homeActivity.getTutor();
         currentUserUID = homeActivity.getCurrentUserUID();
-
+        if (homeActivity.getMessages().size() > 0)
+        {
+            messages = homeActivity.getMessages();
+        }
 
         return inflater.inflate(R.layout.content_message_screen, container, false);
     }
@@ -78,6 +85,20 @@ public class Message extends Fragment {
         {
             message_et = getView().findViewById(R.id.message_et);
             sendMessageButton = getView().findViewById(R.id.send_message_button);
+
+            for (int i = 0; i < messages.size(); i++)
+            {
+                Log.d("__MESSAGEFRAG", messages.get(i).getMessage());
+            }
+
+            if (messages.size() > 0)
+            {
+                ListView listView = getView().findViewById(R.id.list_message);
+                MessageAdapter messageAdapter = new MessageAdapter(getContext(), messages);
+                listView.setAdapter(messageAdapter);
+
+                messageAdapter.notifyDataSetChanged();
+            }
 
 
             sendMessageButton.setOnClickListener(new View.OnClickListener() {

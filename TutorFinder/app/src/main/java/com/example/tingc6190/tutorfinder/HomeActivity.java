@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.tingc6190.tutorfinder.Account.Account;
 import com.example.tingc6190.tutorfinder.Account.Transactions;
 import com.example.tingc6190.tutorfinder.DataObject.Location;
+import com.example.tingc6190.tutorfinder.DataObject.MessageInfo;
 import com.example.tingc6190.tutorfinder.DataObject.ReviewInfo;
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Friday;
 import com.example.tingc6190.tutorfinder.DataObject.Schedule.Monday;
@@ -93,6 +94,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private int selectedTutorReviewCount;
     private ArrayList<ReviewInfo> currentTutorToEditReviews = new ArrayList<>();
     ArrayList<ReviewInfo> tempReview = new ArrayList<>();
+    ArrayList<MessageInfo> messages = new ArrayList<>();
 
     LocationManager locationManager;
     Location lastKnown;
@@ -210,7 +212,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         getCurrentUser();
 
-
+        //getAllMessages();
 
         String accountUID = firebaseAuth.getUid();
 
@@ -236,28 +238,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//
-//        switch (requestCode)
-//        {
-//            case PERMISSION_ACCESS_FINE_LOCATION:
-//            {
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    // permission was granted, yay! Do the
-//                    // contacts-related task you need to do.
-//
-//                } else {
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission.
-//
-//                }
-//                return;
-//            }
-//        }
-//    }
 
     //get the data of our current user
     private void getCurrentUser()
@@ -655,6 +635,12 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         Log.d("__MESSAGEINHOME__", "Message from " + fromUserUID + " to " + toTutorUID + " at " + dateTime);
         Log.d("__MESSAGEINHOME__", message);
+
+        DatabaseReference userMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + fromUserUID + "/" + toTutorUID);
+        DatabaseReference tutorMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + toTutorUID + "/" + fromUserUID);
+
+        userMessageRef.push().setValue(new MessageInfo(fromUserUID, toTutorUID, message, dateTime));
+        tutorMessageRef.push().setValue(new MessageInfo(fromUserUID, toTutorUID, message, dateTime));
     }
 
 
@@ -1235,6 +1221,82 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     }
 
 
+    private void getAllMessages()
+    {
+        //databaseReference = FirebaseDatabase.getInstance().getReference().child("users/tutors");
+
+        DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + getCurrentUserUID());
+
+        //get our data from the database
+        ValueEventListener messageListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                final ArrayList<MessageInfo> tempMessages = new ArrayList<>();
+
+                for (final DataSnapshot postSnapshot : dataSnapshot.getChildren())
+                {
+
+                    String uid = postSnapshot.getKey();
+
+                    DatabaseReference childMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + getCurrentUserUID() + "/" + uid);
+
+                    ValueEventListener childMessageListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot messageDataSnapshot) {
+
+                            for (DataSnapshot messagePostSnapshot : messageDataSnapshot.getChildren())
+                            {
+                                                    //NEEDS SOME FIX
+                                final MessageInfo message = messagePostSnapshot.getValue(MessageInfo.class);
+                   //final String tutorUID = postSnapshot.getKey();
+
+                                Log.d("__INSIDE_MESSAGE_REF__", message.getMessage());
+
+                                tempMessages.add(message);
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    };
+                    childMessageRef.addValueEventListener(childMessageListener);
+
+
+                }
+
+                if (tempMessages.size() > 0)
+                {
+                    messages = tempMessages;
+                }
+                //checkIfUserIsTutor();
+
+                for (int i = 0; i < messages.size(); i++)
+                {
+                    Log.d("__MESSAGEFRAG", messages.get(i).getMessage());
+                }
+
+                if (getFragmentManager().findFragmentByTag("messageFragment") != null &&
+                        getFragmentManager().findFragmentByTag("messageFragment").isVisible())
+                {
+                    getFragmentManager().popBackStack();
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.content_container, new Message(), "messageFragment")
+                            .commit();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("error", "something went wrong when retrieving data");
+            }
+        };
+        messageRef.addValueEventListener(messageListener);
+    }
+
 
     public Tutor getCurrentTutor()
     {
@@ -1295,5 +1357,9 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         return selectedTutorReviewCount;
     }
 
+    public ArrayList<MessageInfo> getMessages()
+    {
+        return messages;
+    }
 
 }
