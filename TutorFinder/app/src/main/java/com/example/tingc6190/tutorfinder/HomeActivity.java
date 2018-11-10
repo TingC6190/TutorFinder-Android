@@ -429,6 +429,18 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
             //reviewRef.setValue(reviews);
         }
 
+        if (userTransactions.size() > 0)
+        {
+            DatabaseReference transactionsRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + firebaseAuth.getUid() + "/transactions");
+            transactionsRef.setValue(userTransactions);
+        }
+
+        if (favoriteTutors.size() > 0)
+        {
+            DatabaseReference favoritesRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + firebaseAuth.getUid() + "/favorites");
+            favoritesRef.setValue(favoriteTutors);
+        }
+
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_container, new Account())
                 .commit();
@@ -678,7 +690,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                                     totalStar = totalStar + review.getRate();
                                     reviewCounter = reviewCounter + 1;
 
-                                    if (tutorUID.equals(currentTutorToEdit.getTutorUID()))
+                                    if (tutorUID.equals(firebaseAuth.getUid()))
                                     {
                                         tempReview.add(review);
                                     }
