@@ -140,6 +140,9 @@ public class TutorFormBackground extends Fragment {
                         {
                             //student user becomes a tutor user
                             backgroundFormListener.getBackgroundFormListener(city, state, zipcode, license);
+
+                            getFragmentManager().popBackStack("background form", 1);
+                            getFragmentManager().popBackStack("initial form", 1);
                         }
                     }
                 }

@@ -125,10 +125,14 @@ public class Account extends Fragment {
                 {
                     String editTutor = "Edit Tutor";
                     applyTutorButton.setText(editTutor);
+                    tutorProfile.setEnabled(true);
+                    tutorProfile.setBackgroundResource(R.drawable.rounded_corner);
                 }
                 else
                 {
                     //if student account
+                    tutorProfile.setEnabled(false);
+                    tutorProfile.setBackgroundResource(R.drawable.rounded_corner_gray);
                 }
 
                 if (student.getPicture() != null)
@@ -206,7 +210,7 @@ public class Account extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        getFragmentManager().popBackStack();
+                        //getFragmentManager().popBackStack();
                         getFragmentManager().beginTransaction()
                                 .replace(R.id.content_container, new Transactions(), "transactionsFragment")
                                 .addToBackStack("transactions view")
@@ -219,6 +223,10 @@ public class Account extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //go to tutor profile
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.content_container, new CurrentTutorProfile())
+                                .addToBackStack("current tutor profile")
+                                .commit();
                     }
                 });
             }

@@ -140,7 +140,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                     getFragmentManager().popBackStack();
                     getFragmentManager().beginTransaction()
                             .replace(R.id.content_container, new Account())
-                            .addToBackStack("account")
                             .commit();
                     return true;
             }
@@ -353,6 +352,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         tutorFromInitialSetup.setPicture(currentUserInfo.getPicture());
 
         pushTutorToDatabase();
+
 
         //createTutor.setValue(tutorFromInitialSetup);
     }
@@ -824,8 +824,9 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
             //reviewRef.setValue(reviews);
         }
 
+        //getFragmentManager().popBackStack("launch", 1);
         getFragmentManager().beginTransaction()
-                .replace(R.id.content_container, new Search())
+                .replace(R.id.content_container, new Account())
                 .commit();
     }
 
