@@ -9,10 +9,8 @@ import android.location.Geocoder;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,22 +19,16 @@ import android.widget.Toast;
 
 import com.example.tingc6190.tutorfinder.Account.Account;
 import com.example.tingc6190.tutorfinder.Account.Transactions;
+import com.example.tingc6190.tutorfinder.DataObject.AllMessageInfo;
 import com.example.tingc6190.tutorfinder.DataObject.Location;
 import com.example.tingc6190.tutorfinder.DataObject.MessageInfo;
 import com.example.tingc6190.tutorfinder.DataObject.ReviewInfo;
-import com.example.tingc6190.tutorfinder.DataObject.Schedule.Friday;
-import com.example.tingc6190.tutorfinder.DataObject.Schedule.Monday;
-import com.example.tingc6190.tutorfinder.DataObject.Schedule.Saturday;
-import com.example.tingc6190.tutorfinder.DataObject.Schedule.Schedule;
-import com.example.tingc6190.tutorfinder.DataObject.Schedule.Sunday;
-import com.example.tingc6190.tutorfinder.DataObject.Schedule.Thursday;
-import com.example.tingc6190.tutorfinder.DataObject.Schedule.Tuesday;
-import com.example.tingc6190.tutorfinder.DataObject.Schedule.Wednesday;
 import com.example.tingc6190.tutorfinder.DataObject.Student;
 import com.example.tingc6190.tutorfinder.DataObject.Transaction;
 import com.example.tingc6190.tutorfinder.DataObject.User;
 import com.example.tingc6190.tutorfinder.Favorite.Favorite;
 import com.example.tingc6190.tutorfinder.Message.Message;
+import com.example.tingc6190.tutorfinder.Message.MessageList;
 import com.example.tingc6190.tutorfinder.Payment.Payment;
 import com.example.tingc6190.tutorfinder.Profile.Profile;
 import com.example.tingc6190.tutorfinder.Review.Review;
@@ -56,7 +48,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -66,7 +57,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         TutorFormInitial.TutorFormListener, TutorFormBackground.BackgroundFormListener,
         Account.AccountListener, Setting.SettingListener, Profile.ProfileListener,
         Favorite.FavoriteListener, Payment.PaymentListener, Welcome.WelcomeListener,
-        Review.ReviewListener, Message.MessageListener {
+        Review.ReviewListener, Message.MessageListener, MessageList.MessageListListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase myDatabase;
@@ -95,6 +86,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     private ArrayList<ReviewInfo> currentTutorToEditReviews = new ArrayList<>();
     ArrayList<ReviewInfo> tempReview = new ArrayList<>();
     ArrayList<MessageInfo> messages = new ArrayList<>();
+    ArrayList<ArrayList<MessageInfo>> allMessages = new ArrayList<>();
+    ArrayList<AllMessageInfo> testAllMessages = new ArrayList<>();
 
     LocationManager locationManager;
     Location lastKnown;
@@ -120,7 +113,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                     //launch messages fragment
                     getFragmentManager().popBackStack();
                     getFragmentManager().beginTransaction()
-                            .replace(R.id.content_container, new Message())
+                            .replace(R.id.content_container, new MessageList())
                             .commit();
                     return true;
 
@@ -212,7 +205,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         getCurrentUser();
 
-        //getAllMessages();
+        getAllMessages();
 
         String accountUID = firebaseAuth.getUid();
 
@@ -644,18 +637,30 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
     //work on this!!!
     @Override
-    public void pushMessage(String fromUserUID, String toTutorUID, String dateTime, String message) {
+    public void pushMessage(Student fromStudent, Tutor toTutor, String dateTime, String message) {
 
-        Log.d("__MESSAGEINHOME__", "Message from " + fromUserUID + " to " + toTutorUID + " at " + dateTime);
+        Log.d("__MESSAGEINHOME__", "Message from " + fromStudent.getEmail() + " to " + toTutor.getEmail() + " at " + dateTime);
         Log.d("__MESSAGEINHOME__", message);
 
-        DatabaseReference userMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + fromUserUID + "/" + toTutorUID);
-        DatabaseReference tutorMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + toTutorUID + "/" + fromUserUID);
+        DatabaseReference userMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + firebaseAuth.getUid() + "/" + toTutor.getTutorUID());
+        DatabaseReference tutorMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + toTutor.getTutorUID() + "/" + firebaseAuth.getUid());
 
-        userMessageRef.push().setValue(new MessageInfo(fromUserUID, toTutorUID, message, dateTime));
-        tutorMessageRef.push().setValue(new MessageInfo(fromUserUID, toTutorUID, message, dateTime));
+        userMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), toTutor.getEmail(), fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
+        tutorMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), toTutor.getEmail(), fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
     }
 
+
+    @Override
+    public void getTutorMessage(ArrayList<MessageInfo> tutorMessages) {
+
+        messages = tutorMessages;
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.content_container, new Message(), "messageFragment")
+                .addToBackStack("message")
+                .commit();
+
+    }
 
     public void pullAllTutors()
     {
@@ -1239,6 +1244,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     {
         //databaseReference = FirebaseDatabase.getInstance().getReference().child("users/tutors");
 
+
         DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + getCurrentUserUID());
 
         //get our data from the database
@@ -1246,12 +1252,17 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                final ArrayList<MessageInfo> tempMessages = new ArrayList<>();
+                //final ArrayList<AllMessageInfo> tempAllMessages = new ArrayList<>();
+
+                final ArrayList<ArrayList<MessageInfo>> tempAllMessages = new ArrayList<>();
+                final ArrayList<AllMessageInfo> blah = new ArrayList<>();
 
                 for (final DataSnapshot postSnapshot : dataSnapshot.getChildren())
                 {
-
+                    //Log.d("__TEMPMESSAGESIZE1__", String.valueOf(tempMessages.size()));
                     String uid = postSnapshot.getKey();
+
+                    Log.d("__TESTFORUID__", uid);
 
                     DatabaseReference childMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + getCurrentUserUID() + "/" + uid);
 
@@ -1259,17 +1270,29 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                         @Override
                         public void onDataChange(@NonNull DataSnapshot messageDataSnapshot) {
 
+                            ArrayList<MessageInfo> tempMessages = new ArrayList<>();
+
                             for (DataSnapshot messagePostSnapshot : messageDataSnapshot.getChildren())
                             {
-                                                    //NEEDS SOME FIX
+                                //Log.d("__TEMPMESSAGESIZE2__", String.valueOf(tempMessages.size()));
+                                //String checkID =  messagePostSnapshot.getValue();
+
+                                //Log.d("__TESTFORUID__", checkID);
+
+                                //NEEDS SOME FIX
                                 final MessageInfo message = messagePostSnapshot.getValue(MessageInfo.class);
-                   //final String tutorUID = postSnapshot.getKey();
+                                //final String tutorUID = postSnapshot.getKey();
 
                                 Log.d("__INSIDE_MESSAGE_REF__", message.getMessage());
 
                                 tempMessages.add(message);
                             }
+                            //messages = tempMessages;
+                            //tempAllMessages.add(tempMessages);
+                            //tempAllMessages.add(tempMessages);
 
+                            tempAllMessages.add(tempMessages);
+                            //blah.add(tempMessages, "somethingcool");
                         }
 
                         @Override
@@ -1279,13 +1302,17 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                     };
                     childMessageRef.addValueEventListener(childMessageListener);
 
+                    allMessages = tempAllMessages;
+                    //testAllMessages = tempAllMessages;
 
                 }
 
-                if (tempMessages.size() > 0)
-                {
-                    messages = tempMessages;
-                }
+//                Log.d("__TEMPMESSAGESIZE3__", String.valueOf(tempMessages.size()));
+//
+//                if (tempMessages.size() > 0)
+//                {
+//                    messages = tempMessages;
+//                }
                 //checkIfUserIsTutor();
 
                 for (int i = 0; i < messages.size(); i++)
@@ -1375,5 +1402,11 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     {
         return messages;
     }
+
+    public ArrayList<ArrayList<MessageInfo>> getAllMessage()
+    {
+        return allMessages;
+    }
+
 
 }

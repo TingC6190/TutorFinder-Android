@@ -72,13 +72,9 @@
     </string-array>
 
 
-    <string-array name="spinner_items_left">
-        <item>Price</item>
-    </string-array>
-
     <string-array name="spinner_items_right">
-        <item>Ascending</item>
-        <item>Descending</item>
+        <item>Price Ascending</item>
+        <item>Price Descending</item>
     </string-array>
 
 </resources>

@@ -14,7 +14,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.tingc6190.tutorfinder.DataObject.AllMessageInfo;
 import com.example.tingc6190.tutorfinder.DataObject.MessageInfo;
+import com.example.tingc6190.tutorfinder.DataObject.Student;
 import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.R;
 import com.example.tingc6190.tutorfinder.Search.Tutor;
@@ -37,13 +39,15 @@ public class Message extends Fragment {
     private String currentUserUID;
     private MessageListener messageListener;
     private ArrayList<MessageInfo> messages = new ArrayList<>();
+    private Student student;
+    private  ArrayList<ArrayList<MessageInfo>> allMessages = new ArrayList<>();
 
     public Message() {
     }
 
     public interface MessageListener
     {
-        void pushMessage(String fromUserUID, String toTutorUID, String dateTime, String message);
+        void pushMessage(Student fromStudent, Tutor toTutor, String dateTime, String message);
     }
 
     @Override
@@ -66,9 +70,13 @@ public class Message extends Fragment {
 
         homeActivity = (HomeActivity) getActivity();
         tutor = new Tutor();
+        student = new Student();
 
         tutor = homeActivity.getTutor();
         currentUserUID = homeActivity.getCurrentUserUID();
+        student = homeActivity.getCurrentStudent();
+        allMessages = homeActivity.getAllMessage();
+
         if (homeActivity.getMessages().size() > 0)
         {
             messages = homeActivity.getMessages();
@@ -114,12 +122,12 @@ public class Message extends Fragment {
                     else
                     {
                         //send message to database
-                        Log.d("__INSIDEMESSAGES__", "message from " + currentUserUID + " to " + tutor.getTutorUID());
+                        //Log.d("__INSIDEMESSAGES__", "message from " + student.getEmail() + " to " + tutor.getEmail());
 
                         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy (hh:mm:ss)");
                         String currentDateTime = sdf.format(new Date());
 
-                        messageListener.pushMessage(currentUserUID, tutor.getTutorUID(), currentDateTime, message);
+                        messageListener.pushMessage(student, tutor, currentDateTime, message);
                     }
                 }
             });

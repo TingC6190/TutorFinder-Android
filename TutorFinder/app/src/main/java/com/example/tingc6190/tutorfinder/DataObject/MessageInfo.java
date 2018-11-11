@@ -2,35 +2,55 @@ package com.example.tingc6190.tutorfinder.DataObject;
 
 public class MessageInfo {
 
-    private String fromUID;
-    private String toUID;
+    private String fromEmail;
+    private String toEmail;
+    private String firstName;
+    private String lastName;
     private String message;
     private String dateTime;
 
     public MessageInfo() {
     }
 
-    public MessageInfo(String fromUID, String toUID, String message, String dateTime) {
-        this.fromUID = fromUID;
-        this.toUID = toUID;
+    public MessageInfo(String fromEmail, String toEmail, String firstName, String lastName, String message, String dateTime) {
+        this.fromEmail = fromEmail;
+        this.toEmail = toEmail;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.message = message;
         this.dateTime = dateTime;
     }
 
-    public String getFromUID() {
-        return fromUID;
+    public String getFromEmail() {
+        return fromEmail;
     }
 
-    public void setFromUID(String fromUID) {
-        this.fromUID = fromUID;
+    public void setFromEmail(String fromEmail) {
+        this.fromEmail = fromEmail;
     }
 
-    public String getToUID() {
-        return toUID;
+    public String getToEmail() {
+        return toEmail;
     }
 
-    public void setToUID(String toUID) {
-        this.toUID = toUID;
+    public void setToEmail(String toEmail) {
+        this.toEmail = toEmail;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getMessage() {

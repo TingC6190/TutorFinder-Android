@@ -134,16 +134,16 @@ public class Search extends Fragment {
 
 
                 //spinners
-                leftSpinner = getView().findViewById(R.id.setting_spinner_left);
+                //leftSpinner = getView().findViewById(R.id.setting_spinner_left);
                 rightSpinner = getView().findViewById(R.id.setting_spinner_right);
 
-                leftSpinnerString = "Price";
-                rightSpinnerString = "Ascending";
+                //leftSpinnerString = "Price";
+                rightSpinnerString = "Price Ascending";
 
-                ArrayAdapter<CharSequence> leftAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_items_left,
-                        android.R.layout.simple_spinner_item);
-                leftAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-                leftSpinner.setAdapter(leftAdapter);
+//                ArrayAdapter<CharSequence> leftAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_items_left,
+//                        android.R.layout.simple_spinner_item);
+//                leftAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+//                leftSpinner.setAdapter(leftAdapter);
 
                 ArrayAdapter<CharSequence> rightAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_items_right, android.R.layout.simple_spinner_item);
                 rightAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -155,7 +155,7 @@ public class Search extends Fragment {
 
                         rightSpinnerString = parent.getItemAtPosition(position).toString();
 
-                        if (rightSpinnerString.equals("Ascending") && leftSpinnerString.equals("Price"))
+                        if (rightSpinnerString.equals("Price Ascending"))
                         {
                             Collections.sort(tutors, new Comparator<Tutor>() {
                                 @Override
@@ -165,7 +165,7 @@ public class Search extends Fragment {
                             });
                         }
 
-                        if (rightSpinnerString.equals("Descending") && leftSpinnerString.equals("Price"))
+                        if (rightSpinnerString.equals("Price Descending"))
                         {
                             Collections.sort(tutors, new Comparator<Tutor>() {
                                 @Override
