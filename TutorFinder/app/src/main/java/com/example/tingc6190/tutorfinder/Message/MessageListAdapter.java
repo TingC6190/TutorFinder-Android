@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.tingc6190.tutorfinder.DataObject.MessageInfo;
+import com.example.tingc6190.tutorfinder.DataObject.Student;
 import com.example.tingc6190.tutorfinder.R;
 
 import org.w3c.dom.Text;
@@ -18,6 +19,7 @@ public class MessageListAdapter extends BaseAdapter {
 
     private final Context mContext;
     private final ArrayList<ArrayList<MessageInfo>> mAllMessages;
+
 
     public MessageListAdapter(Context mContext, ArrayList<ArrayList<MessageInfo>> mAllMessages) {
         this.mContext = mContext;

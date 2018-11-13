@@ -66,7 +66,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
     private ArrayList<Tutor> tutors = new ArrayList<>();
     //private ArrayList<Review> reviews = new ArrayList<>();
-    private ArrayList<Student> students = new ArrayList<>();
     private Tutor tutor;
     //private Review review;
     private User user;
@@ -89,8 +88,11 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     ArrayList<ArrayList<MessageInfo>> allMessages = new ArrayList<>();
     ArrayList<AllMessageInfo> testAllMessages = new ArrayList<>();
     ArrayList<String> messageTutorUID = new ArrayList<>();
+    private ArrayList<Student> allStudentData = new ArrayList<>();
+    private ArrayList<String> allStudentUID = new ArrayList<>();
     int messagePosition;
-    boolean hasPosition = false;
+    boolean hasPositionFromListClick = false;
+    boolean hasTappedTutorMessageButton = false;
 
     LocationManager locationManager;
     Location lastKnown;
@@ -155,6 +157,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         email = firebaseAuth.getCurrentUser().getEmail();
 
         tutorFromInitialSetup = new Tutor();
+
+        getAllStudentDataAndUID();
 
         pullAllTutors();
 
@@ -316,6 +320,9 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     public void getTutor(final Tutor mTutor) {
 
         tutor = mTutor;
+
+        hasPositionFromListClick = false;
+        hasTappedTutorMessageButton = true;
 
         //get the num of reviews for the selected tutor
 //        final DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + mTutor.getTutorUID() + "/reviews");
@@ -671,11 +678,27 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         Log.d("__MESSAGEINHOME__", "Message from " + fromStudent.getEmail() + " to " + toTutor.getEmail() + " at " + dateTime);
         Log.d("__MESSAGEINHOME__", message);
 
-        DatabaseReference userMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + firebaseAuth.getUid() + "/" + toTutor.getTutorUID());
-        DatabaseReference tutorMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + toTutor.getTutorUID() + "/" + firebaseAuth.getUid());
+        //CHECK THIS CONDITION STATEMENT***************************************
+        if (hasTappedTutorMessageButton && !hasPositionFromListClick)
+        {
+            Log.d("__PUSH_CONDITION__", "MESSAGE BUTTON");
+            DatabaseReference userMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + firebaseAuth.getUid() + "/" + toTutor.getTutorUID());
+            DatabaseReference tutorMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + toTutor.getTutorUID() + "/" + firebaseAuth.getUid());
 
-        userMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), toTutor.getEmail(), fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
-        tutorMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), toTutor.getEmail(), fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
+            userMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), toTutor.getEmail(), fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
+            tutorMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), toTutor.getEmail(), fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
+        }
+        else if (!hasTappedTutorMessageButton && hasPositionFromListClick)
+        {
+            Log.d("__PUSH_CONDITION__", "LIST CLICK");
+            DatabaseReference userMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + firebaseAuth.getUid() + "/" + messageTutorUID.get(messagePosition));
+            DatabaseReference tutorMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + messageTutorUID.get(messagePosition) + "/" + firebaseAuth.getUid());
+
+            userMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), toTutor.getEmail(), fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
+            tutorMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), toTutor.getEmail(), fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
+        }
+
+
 
 
     }
@@ -684,7 +707,9 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     @Override
     public void getTutorMessage(ArrayList<MessageInfo> tutorMessages, int position) {
 
-        hasPosition = true;
+        hasPositionFromListClick = true;
+        hasTappedTutorMessageButton = false;
+
         messagePosition = position;
 
         Log.d("__POSITION__", String.valueOf(messagePosition));
@@ -1275,11 +1300,45 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
     }
 
+    public void getAllStudentDataAndUID()
+    {
+        DatabaseReference studentRef = FirebaseDatabase.getInstance().getReference().child("users/students");
+
+        //get our data from the database
+        ValueEventListener studentListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                ArrayList<String> tempStudentKeys = new ArrayList<>();
+                ArrayList<Student> tempAllStudentData = new ArrayList<>();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
+                {
+                    String tempKey = dataSnapshot.getKey();
+                    Student tempStudent = dataSnapshot.getValue(Student.class);
+
+                    tempStudentKeys.add(tempKey);
+                    tempAllStudentData.add(tempStudent);
+                }
+                allStudentUID = tempStudentKeys;
+                allStudentData = tempAllStudentData;
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("error", "something went wrong when retrieving data");
+            }
+        };
+        studentRef.addValueEventListener(studentListener);
+    }
+
 
     public void getAllMessages()
     {
         //databaseReference = FirebaseDatabase.getInstance().getReference().child("users/tutors");
         allMessages = new ArrayList<>();
+        messageTutorUID = new ArrayList<>();
 
         final DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + getCurrentUserUID());
 
@@ -1303,6 +1362,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 {
                     //Log.d("__TEMPMESSAGESIZE1__", String.valueOf(tempMessages.size()));
                     String uid = postSnapshot.getKey();
+                    messageTutorUID.add(uid);
 
                     Log.d("__TESTFORUID__", uid);
 
@@ -1366,7 +1426,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                     };
                     childMessageRef.addListenerForSingleValueEvent(childMessageListener);
 
-                    messageTutorUID.add(tempUID);
+                    //messageTutorUID.add(tempUID);
                     //allMessages = tempAllMessages;
                     //testAllMessages = tempAllMessages;
 
@@ -1410,7 +1470,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //                }
 
 
-//                if (hasPosition)
+//                if (hasPositionFromListClick)
 //                {
 //                    messages = allMessages.get(messagePosition);
 //                    if (getFragmentManager().findFragmentByTag("messageFragment") != null &&
@@ -1538,5 +1598,19 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         return allMessages;
     }
 
+    public ArrayList<String> getMessageTutorUID()
+    {
+        return messageTutorUID;
+    }
+
+    public ArrayList<String> getAllStudentUID()
+    {
+        return allStudentUID;
+    }
+
+    public ArrayList<Student> getAllStudentData()
+    {
+        return allStudentData;
+    }
 
 }
