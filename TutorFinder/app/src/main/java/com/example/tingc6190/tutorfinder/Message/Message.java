@@ -38,9 +38,10 @@ public class Message extends Fragment {
     private Tutor tutor;
     private String currentUserUID;
     private MessageListener messageListener;
-    private ArrayList<MessageInfo> messages = new ArrayList<>();
+    private ArrayList<MessageInfo> messages;
     private Student student;
-    private  ArrayList<ArrayList<MessageInfo>> allMessages = new ArrayList<>();
+    private ArrayList<ArrayList<MessageInfo>> allMessages;
+    private int position;
 
     public Message() {
     }
@@ -71,16 +72,19 @@ public class Message extends Fragment {
         homeActivity = (HomeActivity) getActivity();
         tutor = new Tutor();
         student = new Student();
+        messages = new ArrayList<>();
+        allMessages = new ArrayList<>();
 
         tutor = homeActivity.getTutor();
         currentUserUID = homeActivity.getCurrentUserUID();
         student = homeActivity.getCurrentStudent();
         allMessages = homeActivity.getAllMessage();
 
-        if (homeActivity.getMessages().size() > 0)
-        {
-            messages = homeActivity.getMessages();
-        }
+        messages = homeActivity.getMessages();
+//        if (homeActivity.getMessages().size() > 0)
+//        {
+//            messages = homeActivity.getMessages();
+//        }
 
         return inflater.inflate(R.layout.content_message_screen, container, false);
     }
@@ -91,6 +95,8 @@ public class Message extends Fragment {
 
         if (getView() != null)
         {
+            Log.d("__INSIDE_MESSAGECHAT__", String.valueOf(allMessages.size()));
+
             message_et = getView().findViewById(R.id.message_et);
             sendMessageButton = getView().findViewById(R.id.send_message_button);
 
@@ -99,15 +105,28 @@ public class Message extends Fragment {
                 Log.d("__MESSAGEFRAG", messages.get(i).getMessage());
             }
 
-            if (messages.size() > 0)
-            {
-                ListView listView = getView().findViewById(R.id.list_message);
-                MessageAdapter messageAdapter = new MessageAdapter(getContext(), messages);
-                listView.setAdapter(messageAdapter);
+//            if (messages.size() > 0)
+//            {
+//                MessageInfo tempMessage = new MessageInfo("a", "b", "c", "d", "e", "f");
+//                ArrayList<MessageInfo> tempArray = new ArrayList<>();
+//                tempArray.add(tempMessage);
+//
+//                ListView listView = getView().findViewById(R.id.list_message);
+//                MessageAdapter messageAdapter = new MessageAdapter(getContext(), allMessages.get(position));
+//                listView.setAdapter(messageAdapter);
+//
+//                messageAdapter.notifyDataSetChanged();
+//            }
 
-                messageAdapter.notifyDataSetChanged();
-            }
+            MessageInfo tempMessage = new MessageInfo("a", "b", "c", "d", "e", "f");
+            ArrayList<MessageInfo> tempArray = new ArrayList<>();
+            tempArray.add(tempMessage);
 
+            ListView listView = getView().findViewById(R.id.list_message);
+            MessageAdapter messageAdapter = new MessageAdapter(getContext(), messages);
+            listView.setAdapter(messageAdapter);
+
+            messageAdapter.notifyDataSetChanged();
 
             sendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -128,6 +147,8 @@ public class Message extends Fragment {
                         String currentDateTime = sdf.format(new Date());
 
                         messageListener.pushMessage(student, tutor, currentDateTime, message);
+                        //getActivity().finish();
+                        //startActivity(homeActivity.getIntent());
                     }
                 }
             });

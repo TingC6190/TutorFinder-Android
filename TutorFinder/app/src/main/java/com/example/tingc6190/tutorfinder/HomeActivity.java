@@ -88,6 +88,9 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     ArrayList<MessageInfo> messages = new ArrayList<>();
     ArrayList<ArrayList<MessageInfo>> allMessages = new ArrayList<>();
     ArrayList<AllMessageInfo> testAllMessages = new ArrayList<>();
+    ArrayList<String> messageTutorUID = new ArrayList<>();
+    int messagePosition;
+    boolean hasPosition = false;
 
     LocationManager locationManager;
     Location lastKnown;
@@ -231,6 +234,32 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+    //TESTING THIS!!!!!!
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        getAllMessages();
+//    }
+//
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        getAllMessages();
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        getAllMessages();
+//    }
+//
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//       // finish();
+//        //startActivity(getIntent());
+////        getAllMessages();
+//    }
 
     //get the data of our current user
     private void getCurrentUser()
@@ -647,11 +676,18 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         userMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), toTutor.getEmail(), fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
         tutorMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), toTutor.getEmail(), fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
+
+
     }
 
 
     @Override
-    public void getTutorMessage(ArrayList<MessageInfo> tutorMessages) {
+    public void getTutorMessage(ArrayList<MessageInfo> tutorMessages, int position) {
+
+        hasPosition = true;
+        messagePosition = position;
+
+        Log.d("__POSITION__", String.valueOf(messagePosition));
 
         messages = tutorMessages;
 
@@ -1240,22 +1276,28 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     }
 
 
-    private void getAllMessages()
+    public void getAllMessages()
     {
         //databaseReference = FirebaseDatabase.getInstance().getReference().child("users/tutors");
+        allMessages = new ArrayList<>();
 
-
-        DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + getCurrentUserUID());
+        final DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + getCurrentUserUID());
 
         //get our data from the database
-        ValueEventListener messageListener = new ValueEventListener() {
+        ValueEventListener messageListener = new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
 
                 //final ArrayList<AllMessageInfo> tempAllMessages = new ArrayList<>();
 
                 final ArrayList<ArrayList<MessageInfo>> tempAllMessages = new ArrayList<>();
                 final ArrayList<AllMessageInfo> blah = new ArrayList<>();
+                ArrayList<String> tempMessageTutorUID = new ArrayList<>();
+
+                final long dbSize = dataSnapshot.getChildrenCount();
+                Log.d("SIZEEEEEE", String.valueOf(dbSize));
 
                 for (final DataSnapshot postSnapshot : dataSnapshot.getChildren())
                 {
@@ -1264,6 +1306,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                     Log.d("__TESTFORUID__", uid);
 
+                    String tempUID = postSnapshot.getKey();
+
                     DatabaseReference childMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + getCurrentUserUID() + "/" + uid);
 
                     ValueEventListener childMessageListener = new ValueEventListener() {
@@ -1271,6 +1315,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                         public void onDataChange(@NonNull DataSnapshot messageDataSnapshot) {
 
                             ArrayList<MessageInfo> tempMessages = new ArrayList<>();
+
 
                             for (DataSnapshot messagePostSnapshot : messageDataSnapshot.getChildren())
                             {
@@ -1281,6 +1326,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                                 //NEEDS SOME FIX
                                 final MessageInfo message = messagePostSnapshot.getValue(MessageInfo.class);
+
                                 //final String tutorUID = postSnapshot.getKey();
 
                                 Log.d("__INSIDE_MESSAGE_REF__", message.getMessage());
@@ -1293,6 +1339,24 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                             tempAllMessages.add(tempMessages);
                             //blah.add(tempMessages, "somethingcool");
+                            allMessages = tempAllMessages;
+                            if (allMessages.size() == dbSize)
+                            {
+                                messages = allMessages.get(messagePosition);
+                                //messages = allMessages.get(messagePosition);
+                                if (getFragmentManager().findFragmentByTag("messageFragment") != null &&
+                                        getFragmentManager().findFragmentByTag("messageFragment").isVisible())
+                                {
+                                    getFragmentManager().popBackStack();
+                                    getFragmentManager().beginTransaction()
+                                            .replace(R.id.content_container, new Message(), "messageFragment")
+                                            .commit();
+                                }
+                            }
+
+
+                            Log.d("__REFRESH_TEMPALL__", String.valueOf(allMessages.size()));
+
                         }
 
                         @Override
@@ -1300,10 +1364,16 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                         }
                     };
-                    childMessageRef.addValueEventListener(childMessageListener);
+                    childMessageRef.addListenerForSingleValueEvent(childMessageListener);
 
-                    allMessages = tempAllMessages;
+                    messageTutorUID.add(tempUID);
+                    //allMessages = tempAllMessages;
                     //testAllMessages = tempAllMessages;
+
+                    Log.d("__allmessagecount__", String.valueOf(allMessages.size()));
+
+                    Log.d("__PLZ__WORK__", "______________");
+
 
                 }
 
@@ -1315,19 +1385,76 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //                }
                 //checkIfUserIsTutor();
 
+                if (messageTutorUID.size() > 0)
+                {
+                    Log.d("MESSAGETUTORUID","====================================");
+                    for (int i = 0; i < messageTutorUID.size(); i++)
+                    {
+                        Log.d("MESSAGETUTORUID", messageTutorUID.get(i).toString());
+                    }
+                }
+
+                //_________________________________stuff
+//                if (tempAllMessages.size() > 0)
+//                {
+//                    Log.d("TESTING", "INSIDELOAD");
+//                    messages = tempAllMessages.get(messagePosition);
+//
+//                }
+
+                //if (messagePosition != null)
+//                messagePosition = 0;
+//                if (messagePosition > -1)
+//                {
+//                    messages = allMessages.get(messagePosition);
+//                }
+
+
+//                if (hasPosition)
+//                {
+//                    messages = allMessages.get(messagePosition);
+//                    if (getFragmentManager().findFragmentByTag("messageFragment") != null &&
+//                            getFragmentManager().findFragmentByTag("messageFragment").isVisible())
+//                    {
+//                        getFragmentManager().popBackStack();
+//                        getFragmentManager().beginTransaction()
+//                                .replace(R.id.content_container, new Message(), "messageFragment")
+//                                .commit();
+//                    }
+//                }
+
+
                 for (int i = 0; i < messages.size(); i++)
                 {
                     Log.d("__MESSAGEFRAG", messages.get(i).getMessage());
                 }
 
-                if (getFragmentManager().findFragmentByTag("messageFragment") != null &&
-                        getFragmentManager().findFragmentByTag("messageFragment").isVisible())
+
+
+                if (messages.size() > 0)
                 {
-                    getFragmentManager().popBackStack();
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.content_container, new Message(), "messageFragment")
-                            .commit();
+                    for (int i = 0; i < messages.size(); i++)
+                    {
+                        Log.d("__CHECK_FOR_MESSAGE__", messages.get(i).getMessage());
+                    }
                 }
+
+//                getFragmentManager().beginTransaction()
+//                        .replace(R.id.content_container, new Message())
+//                        .commit();
+
+//                getFragmentManager().beginTransaction()
+//                        .replace(R.id.content_container, new Message())
+//                        .commit();
+
+//                if (getFragmentManager().findFragmentByTag("messageFragment") != null &&
+//                        getFragmentManager().findFragmentByTag("messageFragment").isVisible())
+//                {
+//                    getFragmentManager().popBackStack();
+//                    getFragmentManager().beginTransaction()
+//                            .replace(R.id.content_container, new Message(), "messageFragment")
+//                            .commit();
+//                }
             }
 
             @Override
@@ -1336,6 +1463,9 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
             }
         };
         messageRef.addValueEventListener(messageListener);
+
+
+
     }
 
 

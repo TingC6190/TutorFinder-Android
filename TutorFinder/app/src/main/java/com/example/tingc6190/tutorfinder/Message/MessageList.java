@@ -28,7 +28,7 @@ public class MessageList extends Fragment {
 
     public interface MessageListListener
     {
-        void getTutorMessage(ArrayList<MessageInfo> tutorMessages);
+        void getTutorMessage(ArrayList<MessageInfo> tutorMessages, int position);
     }
 
     @Override
@@ -53,6 +53,9 @@ public class MessageList extends Fragment {
         allMessages = new ArrayList<>();
         allMessages = homeActivity.getAllMessage();
 
+
+        Log.d("__INSIDELIST__", String.valueOf(allMessages.size()));
+
         return inflater.inflate(R.layout.content_message_list, container, false);
     }
 
@@ -73,7 +76,7 @@ public class MessageList extends Fragment {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        messageListListener.getTutorMessage(allMessages.get(position));
+                        messageListListener.getTutorMessage(allMessages.get(position), position);
                     }
                 });
             }
