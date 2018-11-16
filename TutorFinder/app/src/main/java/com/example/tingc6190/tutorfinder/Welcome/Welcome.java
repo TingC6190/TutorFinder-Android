@@ -139,7 +139,7 @@ public class Welcome extends Fragment {
 
                         //homeActivity.getLocationOfUser();
 
-                        welcomeListener.getSearchSettings(subject, "");
+                        welcomeListener.getSearchSettings(subject, zipcode);
                         //getLocation();
 
                         getFragmentManager().beginTransaction()

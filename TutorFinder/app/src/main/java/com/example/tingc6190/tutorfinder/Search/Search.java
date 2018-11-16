@@ -36,12 +36,16 @@ public class Search extends Fragment {
 
     HomeActivity homeActivity;
     ArrayList<Tutor> tutors = new ArrayList<>();
+    ArrayList<Tutor> dupeTutors;
     private TutorListener tutorListener;
     private DatabaseReference databaseReference;
     Spinner leftSpinner;
     Spinner rightSpinner;
+    Spinner radiusSpinner;
     String leftSpinnerString;
     String rightSpinnerString;
+    String radiusSpinnerString;
+    int userSelectedZip;
 
     public Search() {
     }
@@ -70,8 +74,10 @@ public class Search extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         homeActivity = (HomeActivity) getActivity();
-
+        userSelectedZip = homeActivity.getUserSelectedZip();
         tutors = homeActivity.getTutors();
+
+        dupeTutors = tutors;
 
 //        for (int i = 0; i < tutors.size(); i++)
 //        {
@@ -113,7 +119,7 @@ public class Search extends Fragment {
                 final TutorAdapter tutorAdapter = new TutorAdapter(getContext(), tutors);
                 listView.setAdapter(tutorAdapter);
 
-                tutorAdapter.notifyDataSetChanged();
+                //tutorAdapter.notifyDataSetChanged();
 
                 //get the selected tutor's profile
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -136,9 +142,12 @@ public class Search extends Fragment {
                 //spinners
                 //leftSpinner = getView().findViewById(R.id.setting_spinner_left);
                 rightSpinner = getView().findViewById(R.id.setting_spinner_right);
+                radiusSpinner = getView().findViewById(R.id.spinner_radius);
 
                 //leftSpinnerString = "Price";
                 rightSpinnerString = "Price Ascending";
+                radiusSpinnerString = "Any Range";
+
 
 //                ArrayAdapter<CharSequence> leftAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_items_left,
 //                        android.R.layout.simple_spinner_item);
@@ -148,6 +157,10 @@ public class Search extends Fragment {
                 ArrayAdapter<CharSequence> rightAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_items_right, android.R.layout.simple_spinner_item);
                 rightAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                 rightSpinner.setAdapter(rightAdapter);
+
+                ArrayAdapter<CharSequence> radiusAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_mile_radius, android.R.layout.simple_spinner_item);
+                radiusAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                radiusSpinner.setAdapter(radiusAdapter);
 
                 rightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -175,7 +188,9 @@ public class Search extends Fragment {
                             });
                         }
 
-                        tutorAdapter.notifyDataSetChanged();
+                        ListView listView = getView().findViewById(R.id.list_search);
+                        TutorAdapter tutorAdapter = new TutorAdapter(getContext(), tutors);
+                        listView.setAdapter(tutorAdapter);
                     }
 
                     @Override
@@ -185,6 +200,113 @@ public class Search extends Fragment {
                 });
 
 
+                radiusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+                        radiusSpinnerString = parent.getItemAtPosition(position).toString();
+
+                        int lowRadius;
+                        int highRadius;
+
+                        ArrayList<Tutor> tempTutors = new ArrayList<>();
+                        int getSelectedRange= 0;
+
+                        if (!radiusSpinnerString.equals("Any Range"))
+                        {
+                            if (radiusSpinnerString.equals("5 Mile Radius"))
+                            {
+                                getSelectedRange = 5;
+                            }
+
+                            if (radiusSpinnerString.equals("10 Mile Radius"))
+                            {
+                                getSelectedRange = 10;
+                            }
+
+                            if (radiusSpinnerString.equals("15 Mile Radius"))
+                            {
+                                getSelectedRange = 15;
+                            }
+
+                            if (radiusSpinnerString.equals("20 Mile Radius"))
+                            {
+                                getSelectedRange = 20;
+                            }
+
+                            if (radiusSpinnerString.equals("25 Mile Radius"))
+                            {
+                                getSelectedRange = 25;
+                            }
+
+                            Log.d("__RADIUS__", "*********************************************");
+                            for (int i = 0; i < dupeTutors.size(); i++)
+                            {
+                                int tutorZipToInt = Integer.parseInt(dupeTutors.get(i).getLocation().getZipcode());
+
+                                lowRadius = userSelectedZip - (getSelectedRange * 5);
+                                highRadius = userSelectedZip + (getSelectedRange * 5);
+
+
+                                if (tutorZipToInt >= lowRadius && tutorZipToInt <= highRadius)
+                                {
+                                    Log.d("__RADIUS__", highRadius + " > " + tutorZipToInt + " > " + lowRadius);
+                                    tempTutors.add(dupeTutors.get(i));
+                                }
+                                tutors = tempTutors;
+                                //tutorAdapter.notifyDataSetChanged();
+                            }
+
+                            ListView listView = getView().findViewById(R.id.list_search);
+                            TutorAdapter tutorAdapter = new TutorAdapter(getContext(), tutors);
+                            listView.setAdapter(tutorAdapter);
+
+                            //Log.d("__ZIP_IN_LIST__", hig);
+
+                            Log.d("__ZIP_IN_LIST__", "*********************BEFORE***********************");
+                            for (int i = 0; i < dupeTutors.size(); i++)
+                            {
+
+                                Log.d("__ZIP_IN_LIST__", dupeTutors.get(i).getLocation().getZipcode());
+                            }
+//                            tutors = tempTutors;
+//                            tutorAdapter.notifyDataSetChanged();
+                            Log.d("__ZIP_IN_LIST__", "*********************AFTER***********************");
+                            for (int i = 0; i < tutors.size(); i++)
+                            {
+
+                                Log.d("__ZIP_IN_LIST__", tutors.get(i).getLocation().getZipcode());
+                            }
+
+                            //tutorAdapter.notifyDataSetChanged();
+                        }
+                        else
+                        {
+                            tutors = dupeTutors;
+                            //tutorAdapter.notifyDataSetChanged();
+
+                            ListView listView = getView().findViewById(R.id.list_search);
+                            TutorAdapter tutorAdapter = new TutorAdapter(getContext(), tutors);
+                            listView.setAdapter(tutorAdapter);
+
+                            Log.d("__ZIP_IN_LIST__", "*********************ALL***********************");
+                            for (int i = 0; i < tutors.size(); i++)
+                            {
+
+                                Log.d("__ZIP_IN_LIST__", tutors.get(i).getLocation().getZipcode());
+                            }
+                        }
+                        //tutors = tempTutors;
+//
+//                        tutorAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
             }
 
             filterText_tv.setOnClickListener(new View.OnClickListener() {

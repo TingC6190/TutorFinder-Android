@@ -71,6 +71,14 @@
         <item>History</item>
     </string-array>
 
+    <string-array name="spinner_mile_radius">
+        <item>Any Range</item>
+        <item>5 Mile Radius</item>
+        <item>10 Mile Radius</item>
+        <item>15 Mile Radius</item>
+        <item>20 Mile Radius</item>
+        <item>25 Mile Radius</item>
+    </string-array>
 
     <string-array name="spinner_items_right">
         <item>Price Ascending</item>

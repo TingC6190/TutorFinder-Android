@@ -93,6 +93,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     int messagePosition;
     boolean hasPositionFromListClick = false;
     boolean hasTappedTutorMessageButton = false;
+    int userSelectedZip;
 
     LocationManager locationManager;
     Location lastKnown;
@@ -552,6 +553,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     @Override
     public void getSearchSettings(String subject, String zipcode) {
 
+        userSelectedZip = Integer.parseInt(zipcode);
 
         if (subject.equals("Any"))
         {
@@ -675,8 +677,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     @Override
     public void pushMessage(Student fromStudent, Tutor toTutor, String dateTime, String message) {
 
-        Log.d("__MESSAGEINHOME__", "Message from " + fromStudent.getEmail() + " to " + toTutor.getEmail() + " at " + dateTime);
-        Log.d("__MESSAGEINHOME__", message);
+//        Log.d("__MESSAGEINHOME__", "Message from " + fromStudent.getEmail() + " to " + toTutor.getEmail() + " at " + dateTime);
+//        Log.d("__MESSAGEINHOME__", message);
 
         //CHECK THIS CONDITION STATEMENT***************************************
         if (hasTappedTutorMessageButton && !hasPositionFromListClick)
@@ -694,8 +696,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
             DatabaseReference userMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + firebaseAuth.getUid() + "/" + messageTutorUID.get(messagePosition));
             DatabaseReference tutorMessageRef = FirebaseDatabase.getInstance().getReference().child("users/messages/" + messageTutorUID.get(messagePosition) + "/" + firebaseAuth.getUid());
 
-            userMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), toTutor.getEmail(), fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
-            tutorMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), toTutor.getEmail(), fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
+            userMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), "", fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
+            tutorMessageRef.push().setValue(new MessageInfo(fromStudent.getEmail(), "", fromStudent.getFirstName(), fromStudent.getLastName(), message, dateTime));
         }
 
 
@@ -1611,6 +1613,11 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     public ArrayList<Student> getAllStudentData()
     {
         return allStudentData;
+    }
+
+    public int getUserSelectedZip()
+    {
+        return userSelectedZip;
     }
 
 }
