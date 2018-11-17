@@ -1451,7 +1451,7 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
                         }
                     };
-                    childMessageRef.addListenerForSingleValueEvent(childMessageListener);
+                    childMessageRef.addValueEventListener(childMessageListener);
 
                     //messageTutorUID.add(tempUID);
                     //allMessages = tempAllMessages;
@@ -1542,7 +1542,13 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //                            .replace(R.id.content_container, new Message(), "messageFragment")
 //                            .commit();
 //                }
+
+                for (int i = 0; i < messageTutorUID.size(); i++)
+                {
+                    Log.d("*****************", messageTutorUID.get(i).toString());
+                }
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

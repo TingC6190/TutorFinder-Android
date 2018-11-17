@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.tingc6190.tutorfinder.DataObject.MessageInfo;
 import com.example.tingc6190.tutorfinder.DataObject.Student;
+import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.R;
 
 import org.w3c.dom.Text;
@@ -19,11 +20,13 @@ public class MessageListAdapter extends BaseAdapter {
 
     private final Context mContext;
     private final ArrayList<ArrayList<MessageInfo>> mAllMessages;
+    ArrayList<String> mMessageTutorList;
 
 
-    public MessageListAdapter(Context mContext, ArrayList<ArrayList<MessageInfo>> mAllMessages) {
+    public MessageListAdapter(Context mContext, ArrayList<ArrayList<MessageInfo>> mAllMessages, ArrayList<String> mMessageTutorList) {
         this.mContext = mContext;
         this.mAllMessages = mAllMessages;
+        this.mMessageTutorList = mMessageTutorList;
     }
 
 
@@ -69,10 +72,11 @@ public class MessageListAdapter extends BaseAdapter {
         }
 
         ArrayList<MessageInfo> messages = (ArrayList<MessageInfo>) getItem(position);
+        //String name = mMessageTutorList = (ArrayList<String>) getItem(position);
 
         if (messages != null)
         {
-            vh.name_tv.setText("hmmm");
+            vh.name_tv.setText("Name");
         }
 
         return convertView;

@@ -15,6 +15,7 @@ import com.example.tingc6190.tutorfinder.DataObject.MessageInfo;
 import com.example.tingc6190.tutorfinder.DataObject.Student;
 import com.example.tingc6190.tutorfinder.HomeActivity;
 import com.example.tingc6190.tutorfinder.R;
+import com.example.tingc6190.tutorfinder.Search.Tutor;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class MessageList extends Fragment {
     private ArrayList<String> allStudentUID;
     private ArrayList<Student> allStudentData;
     private ArrayList<Student> filteredStudentData;
+    ArrayList<Tutor> tutors = new ArrayList<>();
 
     public MessageList() {
     }
@@ -62,6 +64,7 @@ public class MessageList extends Fragment {
         allStudentData = new ArrayList<>();
         filteredStudentData = new ArrayList<>();
 
+        tutors = homeActivity.getTutors();
         allMessages = homeActivity.getAllMessage();
         messageTutorUID = homeActivity.getMessageTutorUID();
         allStudentUID = homeActivity.getAllStudentUID();
@@ -79,40 +82,25 @@ public class MessageList extends Fragment {
 
         if (getView() != null)
         {
-//            for (int i = 0; i < allStudentUID.size(); i++)
-//            {
-//                allStudentData.get(i).setAboutMe(allStudentUID.get(i));
-//
-//            }
-//
-//            for (int i = 0; i < messageTutorUID.size(); i++)
-//            {
-//                for (int j = 0; j < allStudentData.size(); j++)
-//                {
-//                    if (allStudentData.get(j).getAboutMe().equals(messageTutorUID.get(i).toString()))
-//                    {
-//                        filteredStudentData.add(allStudentData.get(j));
-//                    }
-//                }
-//            }
-//
-//            Log.d("__CHECKINFOOOOOO__","____________1");
-//            for (int i = 0; i < filteredStudentData.size(); i++)
-//            {
-//                Log.d("__CHECKINFOOOOOO__", filteredStudentData.get(i).getFirstName() + " " + filteredStudentData.get(i).getLastName() + "====" + filteredStudentData.get(i).getAboutMe());
-//            }
-//            Log.d("__CHECKINFOOOOOO__","____________2");
-//            for (int i = 0; i < messageTutorUID.size(); i++)
-//            {
-//                //messageTutorUID.get(i).toString();
-//                Log.d("__MTUTORUID__", messageTutorUID.get(i).toString());
-//            }
-//            Log.d("__MTUTORUID__", "====================");
+
+            ArrayList<String> nameList = new ArrayList<>();
+            for (int i = 0; i < messageTutorUID.size(); i++)
+            {
+                for (int j = 0; j < tutors.size(); j++)
+                {
+                    if (messageTutorUID.get(i).equals(tutors.get(j).getTutorUID()))
+                    {
+                        Log.d("__NAMELIST__", tutors.get(j).getTutorUID());
+                        String name = tutors.get(j).getFirstName() + " " + tutors.get(j).getLastName();
+                        nameList.add(name);
+                    }
+                }
+            }
 
             if (allMessages.size() != 0)
             {
                 ListView listView = getView().findViewById(R.id.list_message);
-                MessageListAdapter messageListAdapter = new MessageListAdapter(getContext(), allMessages);
+                MessageListAdapter messageListAdapter = new MessageListAdapter(getContext(), allMessages, nameList);
                 listView.setAdapter(messageListAdapter);
 
                 messageListAdapter.notifyDataSetChanged();
