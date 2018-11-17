@@ -23,6 +23,7 @@ import com.example.tingc6190.tutorfinder.DataObject.AllMessageInfo;
 import com.example.tingc6190.tutorfinder.DataObject.Location;
 import com.example.tingc6190.tutorfinder.DataObject.MessageInfo;
 import com.example.tingc6190.tutorfinder.DataObject.ReviewInfo;
+import com.example.tingc6190.tutorfinder.DataObject.Reviewable;
 import com.example.tingc6190.tutorfinder.DataObject.Student;
 import com.example.tingc6190.tutorfinder.DataObject.Transaction;
 import com.example.tingc6190.tutorfinder.DataObject.User;
@@ -89,12 +90,14 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     ArrayList<ArrayList<MessageInfo>> allMessages = new ArrayList<>();
     ArrayList<AllMessageInfo> testAllMessages = new ArrayList<>();
     ArrayList<String> messageTutorUID = new ArrayList<>();
+    ArrayList<Reviewable> reviewables = new ArrayList<>();
     private ArrayList<Student> allStudentData = new ArrayList<>();
     private ArrayList<String> allStudentUID = new ArrayList<>();
     int messagePosition;
     boolean hasPositionFromListClick = false;
     boolean hasTappedTutorMessageButton = false;
     int userSelectedZip;
+    boolean canReviewSelectedTutor = false;
 
     LocationManager locationManager;
     Location lastKnown;
@@ -163,6 +166,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         getAllStudentDataAndUID();
 
         pullAllTutors();
+
+        pullReviewables();
 
         Log.d("__NEWACTIVITYCREATED__", "_________");
 
@@ -240,32 +245,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    //TESTING THIS!!!!!!
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        getAllMessages();
-//    }
-//
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        getAllMessages();
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        getAllMessages();
-//    }
-//
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//       // finish();
-//        //startActivity(getIntent());
-////        getAllMessages();
-//    }
 
     //get the data of our current user
     private void getCurrentUser()
@@ -310,7 +289,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     }
 
 
-
     public void logOut()
     {
         firebaseAuth.signOut();
@@ -326,32 +304,13 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         hasPositionFromListClick = false;
         hasTappedTutorMessageButton = true;
 
-        //get the num of reviews for the selected tutor
-//        final DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference().child("users/tutors/" + mTutor.getTutorUID() + "/reviews");
-//
-//        ValueEventListener reviewListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshotReview) {
-//                if (reviewRef.getKey() != null)
-//                {
-//                    int reviewCounter = 0;
-//                    for (DataSnapshot reviewSnapshot : dataSnapshotReview.getChildren())
-//                    {
-//                        reviewCounter = reviewCounter + 1;
-//                    }
-//
-//                    selectedTutorReviewCount = reviewCounter;
-//
-//                    //Log.d("__CHECKING_FOR_REVIEW__", tutorUID + " HAS " + reviewCounter + " REVIEWS AND " + totalStar + " TOTAL STARS");
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        };
-//        reviewRef.addListenerForSingleValueEvent(reviewListener);
+        for (int i = 0; i < reviewables.size(); i++)
+        {
+            if (mTutor.getTutorUID().equals(reviewables.get(i).getTutorUID()))
+            {
+                canReviewSelectedTutor = reviewables.get(i).isCanReview();
+            }
+        }
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_container, new Profile())
@@ -407,7 +366,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         }
         //updateTutorPicture(imageUrl);
     }
-
 
 
     @Override
@@ -540,6 +498,18 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
 //        userTransactions.add(new Transaction(firstName, lastName, price, pictureUrl, date, email));
 
+
+        for (int i = 0; i < reviewables.size(); i++)
+        {
+            Log.d("__CHECKREVIEWS__", reviewables.get(i).getTutorUID() + " " + reviewables.get(i).isCanReview());
+
+            if (reviewables.get(i).getTutorUID().equals(tutorUID))
+            {
+                reviewables.get(i).setCanReview(true);
+            }
+        }
+
+
         Transaction transaction = new Transaction(firstName, lastName, price, pictureUrl, date, email, tutorUID, uniqueTime);
         Transaction tutorTransaction = new Transaction(currentUserInfo.getFirstName(), currentUserInfo.getLastName(), price,
                 currentUserInfo.getPicture(), date, firebaseAuth.getCurrentUser().getEmail(), firebaseAuth.getUid(), uniqueTime);
@@ -603,16 +573,17 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         //getTutorReviews(tutorUID);
 
+        canReviewSelectedTutor = false;
 
+        for (int i = 0; i < reviewables.size(); i++)
+        {
+            Log.d("__CHECKREVIEWS__", reviewables.get(i).getTutorUID() + " " + reviewables.get(i).isCanReview());
 
-//        ArrayList<Tutor> tempFav = new ArrayList<>();
-//
-//        if (favoriteTutors == null)
-//        {
-//            favoriteTutors = tempFav;
-//        }
-//
-//        favoriteTutors.add(tutorToAdd);
+            if (reviewables.get(i).getTutorUID().equals(tutorUID))
+            {
+                reviewables.get(i).setCanReview(false);
+            }
+        }
 
         long time = System.currentTimeMillis();
 
@@ -745,6 +716,38 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 
         transactionRef.removeValue();
         tutorTransactionRef.removeValue();
+    }
+
+    public void pullReviewables()
+    {
+        //final ArrayList<Reviewable> dupeReviewables = reviewables;
+
+        DatabaseReference reviewableRef = FirebaseDatabase.getInstance().getReference().child("users/tutors");
+
+        ValueEventListener reviewableListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                ArrayList<Reviewable> tempReviewables = new ArrayList<>();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
+                {
+                    Tutor tutor = postSnapshot.getValue(Tutor.class);
+
+
+                    Reviewable reviewable = new Reviewable(tutor.getTutorUID(), false);
+                    tempReviewables.add(reviewable);
+                }
+                Log.d("__REVIEWABLE__", "CHECKED REVIEWABLE DATABASE");
+                reviewables = tempReviewables;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        reviewableRef.addListenerForSingleValueEvent(reviewableListener);
     }
 
     public void pullAllTutors()
@@ -1640,6 +1643,11 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     public int getUserSelectedZip()
     {
         return userSelectedZip;
+    }
+
+    public boolean getCanReviewSelectedTutor()
+    {
+        return canReviewSelectedTutor;
     }
 
 

@@ -41,91 +41,104 @@
     </ListView>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:id="@+id/reviewable_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.0"
+        android:layout_marginBottom="4dp"
+        android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.75"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp">
-
-            <EditText
-                android:id="@+id/write_review_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Write Review"
-                android:layout_gravity="center"
-                android:textColor="@android:color/black"
-                android:textColorHint="@android:color/darker_gray"
-                android:backgroundTint="@android:color/black"
-                android:inputType="textCapSentences" />
-        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="0.25"
-            android:gravity="center">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <View
-                android:id="@+id/review_rating_star_1"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="0dp"
-                android:layout_height="16dp"
-                android:layout_weight="0.2"
-                android:background="@drawable/star_rating_empty" />
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp">
 
-            <View
-                android:id="@+id/review_rating_star_2"
-                android:layout_width="0dp"
-                android:layout_height="16dp"
-                android:layout_weight="0.2"
-                android:background="@drawable/star_rating_empty" />
+                <EditText
+                    android:id="@+id/write_review_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Write Review"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:backgroundTint="@android:color/black"
+                    android:inputType="textCapSentences" />
+            </android.support.design.widget.TextInputLayout>
 
-            <View
-                android:id="@+id/review_rating_star_3"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="16dp"
-                android:layout_weight="0.2"
-                android:background="@drawable/star_rating_empty" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="0.25"
+                android:gravity="center">
 
-            <View
-                android:id="@+id/review_rating_star_4"
-                android:layout_width="0dp"
-                android:layout_height="16dp"
-                android:layout_weight="0.2"
-                android:background="@drawable/star_rating_empty" />
+                <View
+                    android:id="@+id/review_rating_star_1"
+                    android:layout_width="0dp"
+                    android:layout_height="16dp"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/star_rating_empty" />
 
-            <View
-                android:id="@+id/review_rating_star_5"
-                android:layout_width="0dp"
-                android:layout_height="16dp"
-                android:layout_weight="0.2"
-                android:background="@drawable/star_rating_empty" />
+                <View
+                    android:id="@+id/review_rating_star_2"
+                    android:layout_width="0dp"
+                    android:layout_height="16dp"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/star_rating_empty" />
+
+                <View
+                    android:id="@+id/review_rating_star_3"
+                    android:layout_width="0dp"
+                    android:layout_height="16dp"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/star_rating_empty" />
+
+                <View
+                    android:id="@+id/review_rating_star_4"
+                    android:layout_width="0dp"
+                    android:layout_height="16dp"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/star_rating_empty" />
+
+                <View
+                    android:id="@+id/review_rating_star_5"
+                    android:layout_width="0dp"
+                    android:layout_height="16dp"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/star_rating_empty" />
+            </LinearLayout>
+
         </LinearLayout>
+
+
+        <Button
+            android:id="@+id/publish_review_button"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_corner"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:text="Publish Review"/>
 
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/publish_review_button"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/rounded_corner"
-        android:layout_gravity="center"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:text="Publish Review"/>
 
 </LinearLayout>

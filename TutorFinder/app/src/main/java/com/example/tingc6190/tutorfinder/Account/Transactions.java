@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.example.tingc6190.tutorfinder.DataObject.Transaction;
@@ -28,6 +30,7 @@ public class Transactions extends Fragment {
     HomeActivity homeActivity;
     TransactionAdapter transactionAdapter;
     TransactionListener transactionListener;
+
 
     public Transactions() {
     }
@@ -62,6 +65,7 @@ public class Transactions extends Fragment {
 
         transactions = homeActivity.getAllTransactions();
         favoriteTutors = homeActivity.getFavoriteTutors();
+
 
         return inflater.inflate(R.layout.content_transaction_screen, container, false);
     }

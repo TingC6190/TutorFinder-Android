@@ -72,7 +72,7 @@ public class MessageListAdapter extends BaseAdapter {
 
         if (messages != null)
         {
-
+            vh.name_tv.setText("hmmm");
         }
 
         return convertView;

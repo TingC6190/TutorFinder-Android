@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,8 @@ public class Review extends Fragment {
     View star4;
     View star5;
     int rate = 0;
+    boolean canReviewSelectedTutor;
+    LinearLayout reviewLayout;
 
     public Review() {
     }
@@ -78,6 +82,8 @@ public class Review extends Fragment {
         //homeActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         homeActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
+        canReviewSelectedTutor = homeActivity.getCanReviewSelectedTutor();
+
         return inflater.inflate(R.layout.content_review_screen, container, false);
     }
 
@@ -87,6 +93,22 @@ public class Review extends Fragment {
 
         if (getView() != null)
         {
+
+            reviewLayout = getView().findViewById(R.id.reviewable_layout);
+
+            if (canReviewSelectedTutor)
+            {
+                Log.d("__REVIEW_LAYOUT__", "TRUE");
+                LinearLayout.LayoutParams layoutParams = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.2f);
+                reviewLayout.setLayoutParams(layoutParams);
+            }
+            else
+            {
+                Log.d("__REVIEW_LAYOUT__", "FALSE");
+                LinearLayout.LayoutParams layoutParams = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.0f);
+                reviewLayout.setLayoutParams(layoutParams);
+            }
+
             star1 = getView().findViewById(R.id.review_rating_star_1);
             star2 = getView().findViewById(R.id.review_rating_star_2);
             star3 = getView().findViewById(R.id.review_rating_star_3);
@@ -166,6 +188,9 @@ public class Review extends Fragment {
                             Log.d("__REVIEW__", currentDate);
 
                             reviewListener.pushReview(firstName, lastName, currentDate, description, tutorUID, rate);
+
+//                            LinearLayout.LayoutParams layoutParams = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.0f);
+//                            reviewLayout.setLayoutParams(layoutParams);
 
                             writeReview_et.setText("");
                         }
