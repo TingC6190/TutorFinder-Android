@@ -57,7 +57,8 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
         TutorFormInitial.TutorFormListener, TutorFormBackground.BackgroundFormListener,
         Account.AccountListener, Setting.SettingListener, Profile.ProfileListener,
         Favorite.FavoriteListener, Payment.PaymentListener, Welcome.WelcomeListener,
-        Review.ReviewListener, Message.MessageListener, MessageList.MessageListListener {
+        Review.ReviewListener, Message.MessageListener, MessageList.MessageListListener,
+        Transactions.TransactionListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase myDatabase;
@@ -540,14 +541,19 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
 //        userTransactions.add(new Transaction(firstName, lastName, price, pictureUrl, date, email));
 
         Transaction transaction = new Transaction(firstName, lastName, price, pictureUrl, date, email, tutorUID, uniqueTime);
+        Transaction tutorTransaction = new Transaction(currentUserInfo.getFirstName(), currentUserInfo.getLastName(), price,
+                currentUserInfo.getPicture(), date, firebaseAuth.getCurrentUser().getEmail(), firebaseAuth.getUid(), uniqueTime);
 
         //long time = System.currentTimeMillis();
 
         String transactionID = tutorUID + "_" + uniqueTime;
+        String tutorTransactionID = firebaseAuth.getUid() + "_" + uniqueTime;
         //upload to db
         DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/transactions/" + transactionID);
+        DatabaseReference tutorTransactionRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + tutorUID + "/transactions/" + tutorTransactionID);
 
         transactionRef.setValue(transaction);
+        tutorTransactionRef.setValue(tutorTransaction);
     }
 
     @Override
@@ -723,6 +729,22 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
                 .addToBackStack("message")
                 .commit();
 
+    }
+
+    @Override
+    public void removeTransaction(Transaction transaction) {
+
+        String tutorUID = transaction.getTutorUID();
+        String uniqueTime = transaction.getTutorMilli();
+
+        String transactionID = tutorUID + "_" + uniqueTime;
+        String tutorTransactionID = firebaseAuth.getUid() + "_" + uniqueTime;
+
+        DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + currentUserUID + "/transactions/" + transactionID);
+        DatabaseReference tutorTransactionRef = FirebaseDatabase.getInstance().getReference().child("users/students/" + tutorUID + "/transactions/" + tutorTransactionID);
+
+        transactionRef.removeValue();
+        tutorTransactionRef.removeValue();
     }
 
     public void pullAllTutors()
@@ -1619,5 +1641,6 @@ public class HomeActivity extends AppCompatActivity implements Search.TutorListe
     {
         return userSelectedZip;
     }
+
 
 }

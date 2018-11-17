@@ -542,6 +542,8 @@ public class Payment extends Fragment {
                 selectDay_tv.setText(selectedDay);
 
                 String selectStartTime = "Select Start Time";
+                String selectDurationAmount = "Select Lesson Duration";
+                String totalPriceString = "Total Price: $0";
 
                 if (!availability.contains("Not"))
                 {
@@ -554,6 +556,12 @@ public class Payment extends Fragment {
                     selectTime_tv.setEnabled(false);
                     selectTime_tv.setBackgroundResource(R.drawable.rounded_corner_gray);
                     selectTime_tv.setText(selectStartTime);
+
+                    selectDuration_tv.setEnabled(false);
+                    selectDuration_tv.setBackgroundResource(R.drawable.rounded_corner_gray);
+                    selectDuration_tv.setText(selectDurationAmount);
+
+                    totalAmount_tv.setText(totalPriceString);
                 }
 
 
@@ -675,6 +683,11 @@ public class Payment extends Fragment {
                 }
 
                 String time = hourToDisplay + ":" + minuteToDisplay + " " + amOrPm;
+
+                String selectDurationAmount = "Select Lesson Duration";
+                selectDuration_tv.setEnabled(true);
+                selectDuration_tv.setBackgroundResource(R.drawable.rounded_corner);
+                selectDuration_tv.setText(selectDurationAmount);
 
                 selectTime_tv.setText(time);
                 //saveSchedule(tv, time);
